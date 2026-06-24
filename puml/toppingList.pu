@@ -36,11 +36,14 @@ activate servlet
 servlet->>dao:updateDisplayFlag(toppingId)
 activate dao
 dao->>db:toppingテーブルのdisplay_flagを切り替える
-deactivate db
 deactivate dao
+activate db
 jsp-->servlet:deleteButton押下でToppingListServletへ遷移
 servlet->>dao:updateToppingDeleteFlag(toppingId)
+activate dao
 dao->>db:toppingテーブルのtopping_delete_flagを切り替える
+deactivate db
+deactivate dao
 jsp->:homeButton押下でHomeServletへ遷移
 end
 

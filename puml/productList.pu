@@ -36,11 +36,14 @@ activate servlet
 servlet->>dao:updateDisplayFlag(productId)
 activate dao
 dao->>db:productテーブルのdisplay_flagを切り替える
-deactivate db
 deactivate dao
+activate db
 jsp-->servlet:deleteButton押下でProductListServletへ遷移
 servlet->>dao:updateProductDeleteFlag(productId)
+activate dao
 dao->>db:productテーブルのproduct_delete_flagを切り替える
+deactivate db
+deactivate dao
 jsp->:homeButton押下でHomeServletへ遷移
 end
 
