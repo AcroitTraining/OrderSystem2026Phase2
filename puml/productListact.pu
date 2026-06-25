@@ -1,0 +1,47 @@
+@startuml
+
+title Phase2 Product List画面 アクティビティ図
+
+start
+
+repeat
+
+:カテゴリの選択している商品リスト表示;
+switch (userが商品にあるボタンを押下)
+
+case (categoryButton)
+    :選択したカテゴリに移動;
+    
+
+case (editButton)
+    :商品編集画面へ遷移;
+    stop
+
+
+case (switchButton)
+    if (スウィッチボタンの状態) then (ON)
+
+        :商品を表示状態に変更;
+    else (OFF)
+        :商品を非表示状態に変更;
+
+    endif
+
+
+case (deleteButton)
+    if (ポップアップのボタンを) then (Yes)
+        :商品を削除状態に変更;
+    else (No)
+    endif
+
+
+case (homeButton)
+    :Home画面へ遷移;
+    stop
+
+
+endswitch
+
+
+
+@enduml

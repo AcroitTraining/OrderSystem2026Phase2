@@ -1,0 +1,35 @@
+@startuml
+
+title Phase2 Served History画面 アクティビティ図
+
+start
+
+repeat
+
+:ServedHistory画面を表示;
+
+switch (userがボタンを押下)
+
+case (returnButton)
+
+    if (ポップアップボタン) then (Yes)
+        :注文状態を未提供に変更;
+    else (No)
+    endif
+
+
+case (orderManagementButton)
+    :OrderManagement画面へ遷移;
+    stop
+
+case (editButton)
+    :EditOrder画面へ遷移;
+    stop
+
+case (homeButton)
+    :Home画面へ遷移;
+    stop
+
+endswitch
+
+@enduml
