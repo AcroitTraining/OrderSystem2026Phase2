@@ -1,4 +1,5 @@
 @startuml
+
 title Phase2 ログイン画面
 skinparam defaulttextalignment center
 

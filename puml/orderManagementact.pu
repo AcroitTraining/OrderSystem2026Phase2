@@ -1,1 +1,24 @@
 @startuml
+
+title Phase2 注文管理画面
+skinparam defaulttextalignment center
+
+start
+
+repeat
+  :メニュー画面を表示する;
+
+  switch (ユーザーがいずれかのボタンを押す)
+  case ( ホームボタン )
+    :ホーム画面へ遷移する;
+    stop
+  case ( 編集ボタン )
+    :注文編集へ遷移する;
+    stop
+  case ( 履歴ボタン )
+    :提供済み履歴画面へ遷移する;
+    stop
+  case ( 提供ボタン )
+    :注文を提供済みにする処理を実行;
+  endswitch
+@enduml
