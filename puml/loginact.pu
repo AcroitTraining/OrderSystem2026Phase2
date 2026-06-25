@@ -1,0 +1,19 @@
+@startuml
+title Phase2 ログイン画面
+skinparam defaulttextalignment center
+
+start
+:アプリを起動する;
+
+:IDを入力する;
+:パスワードを入力する;
+while (loginIdが正しく入力されている\nand\nパスワードが正しく入力されている) is (no)
+:エラーメッセージを出力する;
+:loginIdとパスワードを入力し直す;
+endwhile (yes)
+:次の画面に進む;
+stop
+
+
+
+@enduml

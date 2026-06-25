@@ -1,0 +1,23 @@
+@startuml
+title 朝の準備フロー
+
+start
+
+:目が覚める;
+
+if (時間は十分にある？) then (yes)
+  :布団の中でスマホを見る;
+else (no)
+  :急いでベッドから飛び起きる;
+endif
+
+:顔を洗う;
+
+while (コーヒーは残っている？) is (yes)
+  :コーヒーを飲む;
+endwhile (no)
+
+:服を着替える;
+
+stop
+@enduml
