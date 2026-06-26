@@ -1,33 +1,33 @@
 @startuml
 
-title Phase2 Served History画面 アクティビティ図
+title Phase2 提供済み履歴画面
 
 start
 
 repeat
 
-:ServedHistory画面を表示;
+:提供済み履歴画面を表示;
 
-switch (userがボタンを押下)
+switch (ユーザーがボタンを押下)
 
-case (returnButton)
+case ( 戻るボタン)
 
-    if (ポップアップボタン) then (Yes)
+    if ( ポップアップボタン) then (はい)
         :注文状態を未提供に変更;
-    else (No)
+    else (いいえ)
     endif
 
 
-case (orderManagementButton)
-    :OrderManagement画面へ遷移;
+case (\n 注文管理ボタン)
+    :注文管理画面へ遷移;
     stop
 
-case (editButton)
-    :EditOrder画面へ遷移;
+case ( 編集ボタン)
+    :編集画面へ遷移;
     stop
 
-case (homeButton)
-    :Home画面へ遷移;
+case ( ホームボタン)
+    :ホーム画面へ遷移;
     stop
 
 endswitch

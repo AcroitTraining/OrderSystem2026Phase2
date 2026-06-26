@@ -9,10 +9,10 @@ start
 repeat
 :IDを入力する;
 :パスワードを入力する;
-while (loginIdが正しく入力されている\nand\nパスワードが正しく入力されている) is (yes)
+while (ログインIdが正しく入力されている\nand\nパスワードが正しく入力されている) is (yes)
 :ホーム画面に遷移;
 stop
-endwhile (no)
+endwhile (いいえ)
 :エラーメッセージを出力する;
 
 

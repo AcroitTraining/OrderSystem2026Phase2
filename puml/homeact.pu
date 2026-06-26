@@ -1,13 +1,13 @@
 @startuml
 
-title Phase2 Home画面
+title Phase2 ホーム画面
 
 start
 repeat
-:Home画面を表示;
-switch (userがボタンを押下)
+:ホーム画面を表示;
+switch (ユーザーがボタンを押下)
 
-case ( logoutButton)
+case ( ログアウトボタン)
 if (ポップアップ表示) then (はいボタン)
 :login画面に遷移;
 stop
@@ -15,17 +15,17 @@ else (いいえボタン)
 :ポップアップを消す;
 end if
 
-case (orderManagementButton)
-    :Order Management画面へ遷移;
+case ( 注文管理画面)
+    :注文管理画面へ遷移;
 stop
-case (productButton)
-    :Product List画面へ遷移;
+case ( 商品一覧ボタン)
+    :商品一覧画面へ遷移;
 stop
-case (toppingButton)
-    :Topping List画面へ遷移;
+case ( トッピング一覧ボタン)
+    :トッピング一覧画面へ遷移;
 stop
-case (categoryButton)
-    :Category List画面へ遷移;
+case ( カテゴリー一覧ボタン)
+    :カテゴリー一覧画面へ遷移;
 stop
 endswitch
 

@@ -1,38 +1,38 @@
 @startuml
 
-title Phase2 ToppingList画面 アクティビティ図
+title Phase2 トッピング画面 
 
 start
 
 repeat
 
 :トッピングリスト表示;
-switch (userがトッピングにあるボタンを押下)
+switch (ユーザーがトッピングにあるボタンを押下)
 
-case (editButton)
+case ( 編集ボタン)
     :トッピング編集画面へ遷移;
     stop
 
 
-case (switchButton)
-    if (スウィッチボタンの状態) then (ON)
+case (\n スウィッチボタン)
+    if (スウィッチボタンの状態) then (オン)
 
         :トッピングを表示状態に変更;
-    else (OFF)
+    else (オフ)
         :トッピングを非表示状態に変更;
 
     endif
 
 
-case (deleteButton)
-    if (ポップアップのボタンを) then (Yes)
+case ( 削除ボタン)
+    if (ポップアップ表示) then (はいボタン)
         :トッピングを削除状態に変更;
-    else (No)
+    else (いいえボタン)
     endif
 
 
-case (homeButton)
-    :Home画面へ遷移;
+case ( ホームボタン)
+    :ホーム画面へ遷移;
     stop
 
 

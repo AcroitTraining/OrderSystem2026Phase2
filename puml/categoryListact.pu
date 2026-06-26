@@ -1,9 +1,9 @@
 @startuml
 
-title Phase2 CategoryList画面 
+title Phase2 カテゴリー一覧画面 
 start
 :カテゴリリストを表示;
-:homeButton押下;
+:ホームボタン押下;
 :ホーム画面に遷移する;
 stop
 @enduml

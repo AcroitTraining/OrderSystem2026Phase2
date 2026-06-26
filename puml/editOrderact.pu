@@ -11,22 +11,22 @@ repeat
 switch (ユーザーがいずれかのボタンを押す)
 
 case( 注文のマイナスボタン)
-if (1<x<5) then (true)
+if (1<x<5) then (正しい場合)
 :注文個数を1減らす;
 endif
 
 case( 注文のプラスボタン)
-if (0<x<4) then (true)
+if (0<x<4) then (正しい場合)
 :注文個数を1増やす;
 endif
 
 case(トッピングのマイナスボタン)
-if (1<y<5\nand\n0<z<5) then (true)
+if (1<y<5\nand\n0<z<5) then (正しい場合)
 :トッピング個数を１減らす;
 end if
 
 case(トッピングのプラスボタン)
-if (0<y<4\nand\n-1<z<4) then (true)
+if (0<y<4\nand\n-1<z<4) then (正しい場合)
 :トッピング個数を１増やす;
 endif
 
