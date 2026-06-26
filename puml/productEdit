@@ -56,7 +56,8 @@ deactivate Servlet
 end
 
 activate JSP
-JSP->:商品一覧画面に遷移
+JSP->:returnButton押下で商品一覧画面に遷移
+JSP->:homeButton押下でホーム画面に遷移
 deactivate JSP
 @enduml
 

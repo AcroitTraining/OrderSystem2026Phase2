@@ -30,7 +30,6 @@ deactivate dao
 servlet->>jsp:フォワード;session(productName, productPrice, categoryName)
 deactivate servlet
 activate jsp
-jsp->:editButton押下でProductEditServletへ遷移
 jsp->servlet:switchButton押下でProductListServletへ遷移
 activate servlet
 servlet->>dao:updateDisplayFlag(productId)
@@ -44,6 +43,8 @@ activate dao
 dao->>db:productテーブルのproduct_delete_flagを切り替える
 deactivate db
 deactivate dao
+jsp->:editButton押下でProductEditServletへ遷移\nhidden(orderId)
+jsp->:addButton押下でProductEditServletへ遷移
 jsp->:homeButton押下でHomeServletへ遷移
 end
 

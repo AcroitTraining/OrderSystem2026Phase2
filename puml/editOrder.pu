@@ -45,7 +45,7 @@ DB-->DAO:更新完了
 deactivate DB
 DAO-->Servlet:update結果返却
 deactivate DAO
-Servlet ->:redirect\nOrderManagement
+Servlet ->:redirect\nOrderManagementServlet
 
 activate JSP
 JSP -> Servlet:注文取り消しをしたら
@@ -58,10 +58,11 @@ DB-->DAO:更新完了
 deactivate DB
 DAO-->Servlet:delete結果返却
 deactivate DAO
-Servlet ->:redirect\nOrderManagement
+Servlet ->:redirect\nOrderManagementServlet
 
 activate JSP
-JSP->:OrderManagementに遷移
+JSP->:returnButton押下で注文管理画面に遷移遷移
+JSP->:homeButton押下でホーム画面に遷移
 deactivate JSP
 @enduml
 

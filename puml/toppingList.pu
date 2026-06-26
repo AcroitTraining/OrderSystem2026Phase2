@@ -30,7 +30,6 @@ deactivate dao
 servlet->>jsp:フォワード;session(oppingName, toppingPrice, categoryName)
 deactivate servlet
 activate jsp
-jsp->:editButton押下でToppingEditServletへ遷移
 jsp->servlet:switchButton押下でToppingListServletへ遷移
 activate servlet
 servlet->>dao:updateDisplayFlag(toppingId)
@@ -44,6 +43,8 @@ activate dao
 dao->>db:toppingテーブルのtopping_delete_flagを切り替える
 deactivate db
 deactivate dao
+jsp->:editButton押下でToppingEditServletへ遷移\nhidden(orderId)
+jsp->:addButton押下でToppingEditServletへ遷移
 jsp->:homeButton押下でHomeServletへ遷移
 end
 

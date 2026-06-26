@@ -64,5 +64,10 @@ deactivate db
 servlet->:ToppingListServletへリダイレクト
 deactivate servlet
 end
+
+activate jsp
+jsp->:returnButton押下でトッピング一覧画面に遷移
+jsp->:homeButton押下でホーム画面に遷移
+deactivate jsp
 @enduml
 
