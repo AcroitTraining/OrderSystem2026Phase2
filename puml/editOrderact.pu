@@ -4,35 +4,34 @@ title Phase2 注文編集画面
 skinparam defaulttextalignment center
 
 start
-repeat
+repeat 
 :画面を表示する;
 :オーダーの個数:x(0<x<5)\nトッピングの個数y(0<y<5)\nトッピングの総数z(0<z<5);
 
 switch (ユーザーがいずれかのボタンを押す)
 
-case(注文のマイナスボタン)
+case( 注文のマイナスボタン)
 if (1<x<5) then (true)
-:n-1;
-end if
+:注文個数を1減らす;
+endif
 
-case(注文のプラスボタン)
+case( 注文のプラスボタン)
 if (0<x<4) then (true)
-:n+1;
-end if
+:注文個数を1増やす;
+endif
 
 case(トッピングのマイナスボタン)
 if (1<y<5\nand\n0<z<5) then (true)
-:y-1;
+:トッピング個数を１減らす;
 end if
 
 case(トッピングのプラスボタン)
 if (0<y<4\nand\n-1<z<4) then (true)
-:y+1;
-end if
+:トッピング個数を１増やす;
+endif
 
-case(注文取り消しボタン)
-:ポップアップ表示;
-if (ボタンの選択) then (はいボタン)
+case( 注文取り消しボタン)
+if (ポップアップ表示) then (はいボタン)
 :注文を取り消す;
 :注文管理画面に遷移;
 stop
@@ -40,9 +39,9 @@ else (いいえボタン)
 :ポップアップを消す;
 endif
 
-case(変更ボタン)
-:ポップアップ表示;
-if (ボタンの選択) then (はいボタン)
+case( 変更ボタン)
+
+if (ポップアップ表示) then (はいボタン)
 :注文の変更を適用;
 :注文管理画面に遷移;
 stop
@@ -50,11 +49,11 @@ else (いいえボタン)
 :ポップアップを消す;
 endif
 
-case(一覧に戻るボタン)
+case( 一覧に戻るボタン)
 :注文管理画面に遷移;
 stop
 
-case(ホームボタン)
+case( ホームボタン)
 :ホーム画面に遷移;
 stop
 

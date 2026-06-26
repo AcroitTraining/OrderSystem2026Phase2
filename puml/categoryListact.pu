@@ -1,6 +1,6 @@
 @startuml
 
-title Phase2 CategoryList画面 アクティビティ図
+title Phase2 CategoryList画面 
 start
 :カテゴリリストを表示;
 :homeButton押下;

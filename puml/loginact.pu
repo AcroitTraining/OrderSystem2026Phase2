@@ -4,16 +4,17 @@ title Phase2 ログイン画面
 skinparam defaulttextalignment center
 
 start
-:アプリを起動する;
 
+:ログイン画面を表示;
+repeat
 :IDを入力する;
 :パスワードを入力する;
-while (loginIdが正しく入力されている\nand\nパスワードが正しく入力されている) is (no)
-:エラーメッセージを出力する;
-:loginIdとパスワードを入力し直す;
-endwhile (yes)
-:次の画面に進む;
+while (loginIdが正しく入力されている\nand\nパスワードが正しく入力されている) is (yes)
+:ホーム画面に遷移;
 stop
+endwhile (no)
+:エラーメッセージを出力する;
+
 
 
 

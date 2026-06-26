@@ -1,5 +1,5 @@
 @startuml
-
+title Phase2 カテゴリー一覧
 !include ./color_setting.pu
 
 participant CategoryListServlet as servlet

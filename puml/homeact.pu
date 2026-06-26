@@ -1,28 +1,33 @@
 @startuml
 
-title Phase2 Home画面 アクティビティ図
+title Phase2 Home画面
 
 start
-
+repeat
 :Home画面を表示;
 switch (userがボタンを押下)
 
-case (logoutButton)
-    :Login画面へ遷移;
+case ( logoutButton)
+if (ポップアップ表示) then (はいボタン)
+:login画面に遷移;
+stop
+else (いいえボタン)
+:ポップアップを消す;
+end if
 
 case (orderManagementButton)
     :Order Management画面へ遷移;
-
+stop
 case (productButton)
     :Product List画面へ遷移;
-
+stop
 case (toppingButton)
     :Topping List画面へ遷移;
-
+stop
 case (categoryButton)
     :Category List画面へ遷移;
-    
+stop
 endswitch
 
-stop
+
 @enduml
