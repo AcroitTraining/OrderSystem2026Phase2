@@ -4,9 +4,7 @@ title Phase2 トッピング画面
 
 start
 
-repeat
-
-:トッピングリスト表示;
+repeat:トッピングリスト表示;
 switch (ユーザーがトッピングにあるボタンを押下)
 
 case ( 編集ボタン)

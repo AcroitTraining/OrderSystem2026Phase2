@@ -3,8 +3,7 @@ title Phase2　トッピング新規作成・編集画面
 
 start
 
-:画面を表示する;
-repeat
+repeat:画面を表示する;
 
 switch(各種イベント実行)
 

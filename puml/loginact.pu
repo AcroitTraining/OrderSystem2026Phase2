@@ -5,8 +5,8 @@ skinparam defaulttextalignment center
 
 start
 
-:ログイン画面を表示;
-repeat
+repeat:ログイン画面を表示;
+
 :IDを入力する;
 :パスワードを入力する;
 while (ログインIdが正しく入力されている\nand\nパスワードが正しく入力されている) is (yes)

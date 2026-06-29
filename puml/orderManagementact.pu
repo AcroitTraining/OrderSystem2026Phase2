@@ -5,20 +5,20 @@ skinparam defaulttextalignment center
 
 start
 
-repeat
-  :メニュー画面を表示する;
+repeat :メニュー画面を表示する;
 
-  switch (ユーザーがいずれかのボタンを押す)
-  case ( ホームボタン )
-    :ホーム画面へ遷移する;
-    stop
-  case ( 編集ボタン )
-    :注文編集画面へ遷移する;
-    stop
-  case (\n履歴ボタン )
-    :提供済み履歴画面へ遷移する;
-    stop
-  case ( 提供ボタン )
-    :注文を提供済みにする処理を実行;
-  endswitch
+switch (ユーザーがいずれかのボタンを押す)
+case ( ホームボタン )
+  :ホーム画面へ遷移する;
+  stop
+case ( 編集ボタン )
+  :注文編集画面へ遷移する;
+  stop
+case (\n履歴ボタン )
+  :提供済み履歴画面へ遷移する;
+  stop
+case ( 提供ボタン )
+  :注文を提供済みにする処理を実行;
+endswitch
+
 @enduml

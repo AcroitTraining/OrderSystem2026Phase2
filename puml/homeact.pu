@@ -3,8 +3,7 @@
 title Phase2 ホーム画面
 
 start
-repeat
-:ホーム画面を表示;
+repeat:ホーム画面を表示;
 switch (ユーザーがボタンを押下)
 
 case ( ログアウトボタン)

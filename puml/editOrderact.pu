@@ -4,29 +4,36 @@ title Phase2 注文編集画面
 skinparam defaulttextalignment center
 
 start
-repeat 
-:画面を表示する;
-:オーダーの個数:x(0<x<5)\nトッピングの個数y(0<y<5)\nトッピングの総数z(0<z<5);
+
+floating note left
+  【変数の定義】
+  ・オーダーの個数：x (1<=x<=4)
+  ・トッピングの個数：y (1<=y<=4)
+  ・トッピングの総数：z (1=<z<=4)
+end note
+
+repeat:画面を表示する;
+
 
 switch (ユーザーがいずれかのボタンを押す)
 
 case( 注文のマイナスボタン)
-if (1<x<5) then (正しい場合)
+if (2<=x<=4) then (正しい場合)
 :注文個数を1減らす;
 endif
 
 case( 注文のプラスボタン)
-if (0<x<4) then (正しい場合)
+if (1<=x<=3) then (正しい場合)
 :注文個数を1増やす;
 endif
 
 case(トッピングのマイナスボタン)
-if (1<y<5\nand\n0<z<5) then (正しい場合)
+if (2<=y<=4\nand\n2<=z<=4) then (正しい場合)
 :トッピング個数を１減らす;
 end if
 
 case(トッピングのプラスボタン)
-if (0<y<4\nand\n-1<z<4) then (正しい場合)
+if (1<=y<=3\nand\n1<=z<=3) then (正しい場合)
 :トッピング個数を１増やす;
 endif
 

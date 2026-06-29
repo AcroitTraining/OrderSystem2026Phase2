@@ -4,9 +4,7 @@ title Phase2 提供済み履歴画面
 
 start
 
-repeat
-
-:提供済み履歴画面を表示;
+repeat:提供済み履歴画面を表示;
 
 switch (ユーザーがボタンを押下)
 

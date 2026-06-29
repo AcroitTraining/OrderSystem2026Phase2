@@ -4,9 +4,7 @@ title Phase2 商品一覧画面
 
 start
 
-repeat
-
-:選択しているカテゴリの商品リスト表示;
+repeat:選択しているカテゴリの商品リスト表示;
 switch (userが商品にあるボタンを押下)
 
 case ( カテゴリボタン)
