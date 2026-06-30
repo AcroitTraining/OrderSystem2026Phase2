@@ -1,25 +1,55 @@
 package servlet;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.List;
 
+import dao.OrderManagementDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import model.OrderManagementInfo;
 
 @WebServlet("/OrderManagementServlet")
 public class OrderManagementServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session = request.getSession(false);
-	}
+	//DB接続情報
+	private final String URL = "jdbc:mysql://localhost:3306/order_management";
+	private final String USER = "order";
+	private final String PASS = "1234";
+	
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+			throws ServletException, IOException {
 
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		}
+		try (Connection conn = DriverManager.getConnection(URL, USER, PASS)) {
+
+			OrderManagementDAO dao = new OrderManagementDAO(conn);
+
+			List<OrderManagementInfo> omList = dao.findorderDetails();
+
+			// 4. リクエストスコープに保存してJSPへ渡す
+			request.setAttribute("omList", omList);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			// 必要に応じてエラー画面への遷移処理など
+		}
+
+		// 5. 画面（JSP）へフォワード
+		request.getRequestDispatcher("/WEB-INF/jsp/orderManagement.jsp").forward(request, response);
+	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 	}
-
 }
