@@ -46,8 +46,9 @@
 					</c:if></td>
 				<td>
 					<form action="EditOrderServlet" method="get">
-						<input type="submit" name="action" value="履歴編集"> <input
-							type="hidden" name="oid" value="${item.orderId}">
+						<input type="submit" name="action" value="履歴編集"> 
+						<input	type="hidden" name="oid" value="${item.orderId}">
+						<input type="hidden" name="from" value="servedHistory">
 					</form>
 				</td>
 				<td>

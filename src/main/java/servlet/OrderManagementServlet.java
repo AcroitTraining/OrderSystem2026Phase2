@@ -22,7 +22,7 @@ public class OrderManagementServlet extends HttpServlet {
 	private final String URL = "jdbc:mysql://localhost:3306/order_management";
 	private final String USER = "order";
 	private final String PASS = "1234";
-	
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
 		OrderManagementLogic logic = new OrderManagementLogic();
@@ -36,21 +36,26 @@ public class OrderManagementServlet extends HttpServlet {
 		try (Connection conn = DriverManager.getConnection(URL, USER, PASS)) {
 
 			OrderManagementDAO dao = new OrderManagementDAO(conn);
-			
+
 
 			List<OrderManagementInfo> omList = dao.findorderDetails();
+			logic.calculateOrderTimes(omList);
+
+			// 受け取った値を使って、カテゴリーまたは卓番で絞り込む
+			omList = logic.filterOrders(omList, tableFilter);
+
+			//  絞り込まれたデータに対して時間の計算をして色を決定する
 			logic.calculateOrderTimes(omList);
 			// 4. リクエストスコープに保存してJSPへ渡す
 			request.setAttribute("omList", omList);
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-			// 必要に応じてエラー画面への遷移処理など
 		}
-		
+
 		request.getRequestDispatcher("/WEB-INF/jsp/orderManagement.jsp").forward(request, response);
 	}
-	
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
@@ -60,13 +65,13 @@ public class OrderManagementServlet extends HttpServlet {
 		}
 		String oidstr = request.getParameter("oid");
 		String action = request.getParameter("action");
-		
+
 		int orderId = Integer.parseInt(oidstr);
-		
+
 		try (Connection conn = DriverManager.getConnection(URL, USER, PASS)) {
 			OrderManagementDAO dao = new OrderManagementDAO(conn);
-			
-			
+
+
 			if(action.equals("提供")) {
 				dao.updateServedFlag(orderId);
 			}
@@ -75,7 +80,7 @@ public class OrderManagementServlet extends HttpServlet {
 			// 必要に応じてエラー画面への遷移処理など
 		}
 		response.sendRedirect("OrderManagementServlet");
-		
-		
+
+
 	}
 }

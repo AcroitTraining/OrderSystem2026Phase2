@@ -11,18 +11,20 @@
 </head>
 <body>
 	<category-area>
-		<td><input type="submit" name="category" value="全て" class="全て"></td>
-		<td><input type="submit" name="category" value="お好み焼き" class="お好み焼き"></td>
-		<td><input type="submit" name="category" value="もんじゃ焼き" class="もんじゃ焼き"></td>
-		<td><input type="submit" name="category" value="鉄板焼き" class="鉄板焼き"></td>
-		<td><input type="submit" name="category" value="サイドメニュー" class="サイドメニュー"></td>
-		<td><input type="submit" name="category" value="ソフトドリンク" class="ソフトドリンク"></td>
-		<td><input type="submit" name="category" value="お酒" class="お酒"></td>
-		<td><input type="submit" name="category" value="ボトル" class="ボトル"></td>
-		<td><input type="submit" name="category" value="1卓" class="1卓"></td>
-		<td><input type="submit" name="category" value="2卓" class="2卓"></td>
-		<td><input type="submit" name="category" value="3卓" class="3卓"></td>
-		<td><input type="submit" name="category" value="4卓" class="4卓"></td>
+	<form action="OrderManagementServlet" method="get" style="display: inline;">
+		<input type="submit" name="tableFilter" value="全て" class="全て">
+		<input type="submit" name="tableFilter" value="お好み焼き" class="お好み焼き">
+		<input type="submit" name="tableFilter" value="もんじゃ焼き" class="もんじゃ焼き">
+		<input type="submit" name="tableFilter" value="鉄板焼き" class="鉄板焼き">
+		<input type="submit" name="tableFilter" value="サイドメニュー" class="サイドメニュー">
+		<input type="submit" name="tableFilter" value="ソフトドリンク" class="ソフトドリンク">
+		<input type="submit" name="tableFilter" value="お酒" class="お酒">
+		<input type="submit" name="tableFilter" value="ボトル" class="ボトル">
+		<input type="submit" name="tableFilter" value="1卓" class="1卓">
+		<input type="submit" name="tableFilter" value="2卓" class="2卓">
+		<input type="submit" name="tableFilter" value="3卓" class="3卓">
+		<input type="submit" name="tableFilter" value="4卓" class="4卓">
+	</form>
 	</category-area>
 
 	<h1>注文管理画面</h1>
@@ -53,6 +55,7 @@
 					<form action="EditOrderServlet" method="get">
 						<input type="submit" name="action" value="注文編集"> 
 						<input type="hidden" name="oid" value="${item.orderId}">
+						<input type="hidden" name="from" value="orderManagement">
 					</form>
 				</td>
 				<td>

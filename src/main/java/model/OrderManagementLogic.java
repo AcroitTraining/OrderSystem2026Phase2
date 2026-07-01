@@ -2,6 +2,7 @@ package model;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -52,5 +53,44 @@ public class OrderManagementLogic {
                 System.err.println("時間の解析に失敗しました: " + timeStr);
             }
         }
+    }
+    
+    /**
+     * 【新規機能】カテゴリー名、または卓番号で注文リストを絞り込む
+     * @param omList DAOから取得した全注文リスト
+     * @param filterStr JSPから届いた文字列（例: "お好み焼き", "1卓", "全て"）
+     * @return 絞り込み後のリスト
+     */
+    public List<OrderManagementInfo> filterOrders(List<OrderManagementInfo> omList, String filterStr) {
+        // リストが空、または「全て」が選ばれた、あるいはまだボタンが押されていない（null）の場合は全件返す
+        if (omList == null || filterStr == null || filterStr.equals("全て") || filterStr.isEmpty()) {
+            return omList;
+        }
+
+        List<OrderManagementInfo> filteredList = new ArrayList<>();
+
+        // 💡 判定：末尾に「卓」がついているかどうかで、卓番絞り込みかカテゴリー絞り込みかを自動で判別する
+        if (filterStr.endsWith("卓")) {
+            // 【卓番号での絞り込み】
+            String numericStr = filterStr.replaceAll("[^0-9]", "");
+            if (numericStr.isEmpty()) return omList;
+            
+            int targetTableId = Integer.parseInt(numericStr);
+            
+            for (OrderManagementInfo item : omList) {
+                if (item.getTableId() == targetTableId) {
+                    filteredList.add(item);
+                }
+            }
+        } else {
+            // 【カテゴリー名での絞り込み】
+            for (OrderManagementInfo item : omList) {
+                if (item.getCategoryName() != null && item.getCategoryName().equals(filterStr)) {
+                    filteredList.add(item);
+                }
+            }
+        }
+
+        return filteredList;
     }
 }
