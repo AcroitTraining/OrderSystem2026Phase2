@@ -45,7 +45,7 @@ public List<OrderManagementInfo> findorderDetails() throws SQLException {
                 + "WHERE od.order_flag = 1 "
                 + "AND od.served_flag = 0 "
                 + "AND od.accounting_flag = 0 "
-                + "ORDER BY od.order_id ASC";
+                + "ORDER BY od.order_id DESC";
 		
 		 try (PreparedStatement ps = conn.prepareStatement(sql)) {
 	            try (ResultSet rs = ps.executeQuery()) {

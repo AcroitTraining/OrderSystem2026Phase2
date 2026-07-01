@@ -1,0 +1,23 @@
+@charset "UTF-8";
+
+* テーブル全体の共通設定 */
+table {
+    border-collapse: collapse;
+    width: 100%; /* 画面幅いっぱいに広げる場合（お好みで調整してください） */
+    margin-bottom: 20px;
+}
+
+/* ヘッダー部分（aquamarine） */
+table th {
+    background-color: aquamarine;
+    border: solid 1px #330000;
+    padding: 10px;
+}
+
+/* データ部分（th以外はすべて背景を白に固定） */
+table td {
+    border: solid 1px #330000;
+    background-color: #ffffff; /* 👈 th以外を全部白に */
+    padding: 10px;
+    text-align: center; /* 文字を中央寄せ（見やすさのため追加） */
+}

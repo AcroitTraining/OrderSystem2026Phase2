@@ -51,7 +51,7 @@
 				</td>
 				<td>
 					<form action="EditOrderServlet" method="get">
-						<input type="submit" name="action" value="編集"> 
+						<input type="submit" name="action" value="注文編集"> 
 						<input type="hidden" name="oid" value="${item.orderId}">
 					</form>
 				</td>
@@ -70,7 +70,11 @@
 		<tr>
 			<td class="bg-green" style="display: table-cell; border: solid 1px #330000;">～5分</td>
 			<td class="bg-yellow" style="display: table-cell; border: solid 1px #330000; color: #333333;">5分～10分</td>
-			<td class="bg-red" style="display: table-cell; border: solid 1px #330000;">10分～</td>
+			<td class="bg-red" style="display: table-cell; border: solid 1px #330000;">10分～
+			<form action="ServedHistoryServlet" method="get">
+			<input type="submit" name="action" value="履歴">
+			</form>
+			</td>
 		</tr>
 	</table>
 </body>

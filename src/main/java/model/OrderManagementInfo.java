@@ -40,6 +40,12 @@ public static class ToppingList implements Serializable {
 	}
 }
 
+public OrderManagementInfo() {}
+
+public OrderManagementInfo(int orderId) {
+	this.orderId = orderId;
+}
+
 public int getTableId() {
 	return tableId;
 }
@@ -166,11 +172,7 @@ public void addTopping(String name, int quantity, int price) {
 	}	
 }
 
-public OrderManagementInfo() {}
 
-public OrderManagementInfo(int orderId) {
-	this.orderId = orderId;
-}
 
 public int getOrderId() {
 	return orderId;

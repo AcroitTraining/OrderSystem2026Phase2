@@ -6,27 +6,29 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
 
-import dao.OrderManagementDAO;
+import dao.ServedHistoryDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import model.OrderManagementInfo;
-import model.OrderManagementLogic;
+import model.ServedHistoryInfo;
+import model.ServedHistoryLogic;
 
-@WebServlet("/OrderManagementServlet")
-public class OrderManagementServlet extends HttpServlet {
+@WebServlet("/ServedHistoryServlet")
+public class ServedHistoryServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+
 	//DB接続情報
 	private final String URL = "jdbc:mysql://localhost:3306/order_management";
 	private final String USER = "order";
 	private final String PASS = "1234";
-	
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
-		OrderManagementLogic logic = new OrderManagementLogic();
+		
 		String tableFilter = request.getParameter("tableFilter");
+		
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 		} catch (ClassNotFoundException e) {
@@ -35,46 +37,45 @@ public class OrderManagementServlet extends HttpServlet {
 		}
 		try (Connection conn = DriverManager.getConnection(URL, USER, PASS)) {
 
-			OrderManagementDAO dao = new OrderManagementDAO(conn);
+			ServedHistoryDAO dao = new ServedHistoryDAO(conn);
+			List<ServedHistoryInfo> shList = dao.findorderDetails();
 			
 
-			List<OrderManagementInfo> omList = dao.findorderDetails();
-			logic.calculateOrderTimes(omList);
-			// 4. リクエストスコープに保存してJSPへ渡す
-			request.setAttribute("omList", omList);
-
+			ServedHistoryLogic logic = new ServedHistoryLogic();
+			shList = logic.filterByTable(shList, tableFilter);
+			
+			request.setAttribute("shList", shList);
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
-			// 必要に応じてエラー画面への遷移処理など
 		}
-		
-		request.getRequestDispatcher("/WEB-INF/jsp/orderManagement.jsp").forward(request, response);
+
+		request.getRequestDispatcher("/WEB-INF/jsp/servedHistory.jsp").forward(request, response);
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 		} catch (ClassNotFoundException e) {
-			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
 		}
 		String oidstr = request.getParameter("oid");
 		String action = request.getParameter("action");
 		
 		int orderId = Integer.parseInt(oidstr);
-		
 		try (Connection conn = DriverManager.getConnection(URL, USER, PASS)) {
-			OrderManagementDAO dao = new OrderManagementDAO(conn);
-			
-			
-			if(action.equals("提供")) {
-				dao.updateServedFlag(orderId);
+			ServedHistoryDAO dao = new ServedHistoryDAO(conn);
+
+			dao.updateServedFlag(orderId);
+			if(action.equals("戻す")) {
+				
+			}else {
 			}
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
-			// 必要に応じてエラー画面への遷移処理など
 		}
-		response.sendRedirect("OrderManagementServlet");
+		response.sendRedirect("ServedHistoryServlet");
 		
 		
 	}
