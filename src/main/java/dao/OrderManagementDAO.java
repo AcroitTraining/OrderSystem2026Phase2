@@ -43,6 +43,7 @@ public List<OrderManagementInfo> findorderDetails() throws SQLException {
                 + "LEFT JOIN topping AS t "
                 + "ON mt.topping_id = t.topping_id "
                 + "WHERE od.order_flag = 1 "
+                + "AND od.served_flag = 0 "
                 + "AND od.accounting_flag = 0 "
                 + "ORDER BY od.order_id ASC";
 		
@@ -55,7 +56,7 @@ public List<OrderManagementInfo> findorderDetails() throws SQLException {
 	                    if (info == null) {
 	                        info = new OrderManagementInfo();
 	                        info.setOrderId(orderId);
-	                        info.setOrderTime("order_time");
+	                        info.setOrderTime(rs.getString("order_time")); 
 	                        info.setCategoryName(rs.getString("category_name"));
 	                        info.setProductName(rs.getString("product_name"));
 	                        info.setOrderQuantity(rs.getInt("product_quantity"));
@@ -91,5 +92,23 @@ public List<OrderManagementInfo> findorderDetails() throws SQLException {
 	            throw new RuntimeException(e); 		
 	        }
 		return new ArrayList<>(map.values());
+}
+
+public void updateServedFlag(int orderId) {
+	//JDBCドライバを読み込む
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+		}catch(ClassNotFoundException e){
+			throw new IllegalStateException("JDBCドライバを読み込めませんでしたあ♡");
+		}
+		
+		String sql = "UPDATE order_details SET served_flag = 1 WHERE order_id = ?";
+		
+		 try (PreparedStatement ps = conn.prepareStatement(sql)) {
+			 ps.setInt(1, orderId);
+	            int rs = ps.executeUpdate();
+		 }catch(SQLException e) {
+			 
+		 }
 }
 }

@@ -1,0 +1,67 @@
+@charset "UTF-8";
+
+/* 画面全体の基本設定 */
+body {
+    width: 100%;
+    background-color: #ffffff;    
+    font-family: sans-serif;
+}
+
+/* テーブル全体の共通設定 */
+table {
+    border-collapse: collapse;
+    width: 100%; /* 画面幅いっぱいに広げる場合（お好みで調整してください） */
+    margin-bottom: 20px;
+}
+
+/* ヘッダー部分（aquamarine） */
+table th {
+    background-color: aquamarine;
+    border: solid 1px #330000;
+    padding: 10px;
+}
+
+/* データ部分（th以外はすべて背景を白に固定） */
+table td {
+    border: solid 1px #330000;
+    background-color: #ffffff; /* 👈 th以外を全部白に */
+    padding: 10px;
+    text-align: center; /* 文字を中央寄せ（見やすさのため追加） */
+}
+
+/* ===================================================
+   💡 ここから追加：経過時間に応じた「編集ボタン」のスタイル
+   =================================================== */
+
+/* ボタン共通の基本デザイン（枠線を消して、押しやすく少し余白を持たせる） */
+.bg-green, .bg-yellow, .bg-red {
+    border: none;
+    padding: 6px 15px;
+    border-radius: 4px;      /* 角を少し丸くしてモダンに */
+    font-weight: bold;       /* 文字を太字に */
+    cursor: pointer;         /* マウスを乗せたときに指マークにする */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* 軽い影をつけてボタンらしく */
+}
+
+/* 🟢 5分未満（鮮やかな緑・文字は白） */
+.bg-green {
+    background-color: #2ecc71;
+    color: #ffffff;
+}
+
+/* 🟡 5分〜10分未満（警告の黄色・文字は黒の方が見やすい） */
+.bg-yellow {
+    background-color: #f1c40f;
+    color: #333333;
+}
+
+/* 🔴 10分以上（緊急の赤・文字は白） */
+.bg-red {
+    background-color: #e74c3c;
+    color: #ffffff;
+}
+
+/* ボタンにマウスが乗ったときに、少しだけ暗くして「押せる感」を出す演出 */
+.bg-green:hover { background-color: #27ae60; }
+.bg-yellow:hover { background-color: #d4ac0d; }
+.bg-red:hover { background-color: #c0392b; }

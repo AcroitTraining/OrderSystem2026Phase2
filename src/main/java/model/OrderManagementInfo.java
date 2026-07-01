@@ -8,6 +8,7 @@ public class OrderManagementInfo {
 private int orderId, tableId, toppingQuantity, toppingPrice, subTotal, productPrice,orderQuantity, toppingStock, productStock, allOrderPrice, sessionId, orderPrice, orderFlag;
 private String categoryName, productName;
 private String orderTime;
+private String timeColorClass;
 private List<ToppingList>toppings = new ArrayList<>();
 
 public static class ToppingList implements Serializable {
@@ -185,5 +186,13 @@ public String getOrderTime() {
 
 public void setOrderTime(String orderTime) {
 	this.orderTime = orderTime;
+}
+
+public String getTimeColorClass() {
+	return timeColorClass;
+}
+
+public void setTimeColorClass(String timeColorClass) {
+	this.timeColorClass = timeColorClass;
 }
 }

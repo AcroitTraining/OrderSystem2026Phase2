@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.OrderManagementInfo;
+import model.OrderManagementLogic;
 
 @WebServlet("/OrderManagementServlet")
 public class OrderManagementServlet extends HttpServlet {
@@ -24,7 +25,7 @@ public class OrderManagementServlet extends HttpServlet {
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
-
+		OrderManagementLogic logic = new OrderManagementLogic();
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 		} catch (ClassNotFoundException e) {
@@ -34,9 +35,10 @@ public class OrderManagementServlet extends HttpServlet {
 		try (Connection conn = DriverManager.getConnection(URL, USER, PASS)) {
 
 			OrderManagementDAO dao = new OrderManagementDAO(conn);
+			
 
 			List<OrderManagementInfo> omList = dao.findorderDetails();
-
+			logic.calculateOrderTimes(omList);
 			// 4. リクエストスコープに保存してJSPへ渡す
 			request.setAttribute("omList", omList);
 
@@ -44,12 +46,36 @@ public class OrderManagementServlet extends HttpServlet {
 			e.printStackTrace();
 			// 必要に応じてエラー画面への遷移処理など
 		}
-
+		
 		// 5. 画面（JSP）へフォワード
 		request.getRequestDispatcher("/WEB-INF/jsp/orderManagement.jsp").forward(request, response);
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		}
+		String oidstr = request.getParameter("oid");
+		String action = request.getParameter("action");
+		
+		int orderId = Integer.parseInt(oidstr);
+		
+		try (Connection conn = DriverManager.getConnection(URL, USER, PASS)) {
+			OrderManagementDAO dao = new OrderManagementDAO(conn);
+			
+			
+			if(action.equals("提供")) {
+				dao.updateServedFlag(orderId);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			// 必要に応じてエラー画面への遷移処理など
+		}
+		response.sendRedirect("OrderManagementServlet");
+		
 		
 	}
 }
