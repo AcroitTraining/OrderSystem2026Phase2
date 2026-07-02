@@ -8,7 +8,7 @@
 <head>
 <meta charset="UTF-8">
 <link rel="stylesheet" href="./css/servedHistory.css">
-<title>Insert title here</title>
+<title>注文済み履歴画面</title>
 </head>
 <body>
 <body>

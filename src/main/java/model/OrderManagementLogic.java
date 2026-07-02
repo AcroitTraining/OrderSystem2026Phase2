@@ -69,7 +69,7 @@ public class OrderManagementLogic {
 
         List<OrderManagementInfo> filteredList = new ArrayList<>();
 
-        // 💡 判定：末尾に「卓」がついているかどうかで、卓番絞り込みかカテゴリー絞り込みかを自動で判別する
+        //  判定：末尾に「卓」がついているかどうかで、卓番絞り込みかカテゴリー絞り込みかを自動で判別する
         if (filterStr.endsWith("卓")) {
             // 【卓番号での絞り込み】
             String numericStr = filterStr.replaceAll("[^0-9]", "");

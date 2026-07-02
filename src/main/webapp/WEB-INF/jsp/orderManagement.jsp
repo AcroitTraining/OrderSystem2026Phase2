@@ -10,6 +10,10 @@
 <title>注文管理画面</title>
 </head>
 <body>
+<form action="HomeServlet" method="get">
+<input type="submit" name="action" value="home">
+</form>
+
 	<category-area>
 	<form action="OrderManagementServlet" method="get" style="display: inline;">
 		<input type="submit" name="tableFilter" value="全て" class="全て">

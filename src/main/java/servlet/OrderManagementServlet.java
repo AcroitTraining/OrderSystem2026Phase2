@@ -30,7 +30,6 @@ public class OrderManagementServlet extends HttpServlet {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 		} catch (ClassNotFoundException e) {
-			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
 		}
 		try (Connection conn = DriverManager.getConnection(URL, USER, PASS)) {
