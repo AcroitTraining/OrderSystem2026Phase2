@@ -38,15 +38,12 @@ public class ProductListServlet extends HttpServlet {
 			ProductListDAO dao = new ProductListDAO(conn);
 			
 			List<ProductListInfo> pList = dao.findAllProduct();
-			int n = pList.size();
-			System.out.println("リストのサイズ" + n);
 			pList = logic.fillterProducts(pList, filter);
 			
 			request.setAttribute("pList", pList);
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
-			System.out.println("sippai");
 		}
 		
 		request.getRequestDispatcher("/WEB-INF/jsp/productList.jsp").forward(request, response);
@@ -70,7 +67,7 @@ public class ProductListServlet extends HttpServlet {
 			ProductListDAO dao = new ProductListDAO(conn);
 
 
-			if(action.equals("表示")) {
+			if(action.equals("表示切り替え")) {
 				dao.updateProductDisplayFlag(productId);
 			}else if(action.equals("削除")) {
 				dao.updateProductDeleteFlag(productId);

@@ -7,45 +7,42 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.ProductListInfo;
+import model.ToppingListInfo;
 
-public class ProductListDAO {
+public class ToppingListDAO {
 	private Connection conn;
 
-	public ProductListDAO(Connection conn) {
+	public ToppingListDAO(Connection conn) {
 		this.conn = conn;
 	}
 
-	public List<ProductListInfo> findAllProduct() throws SQLException {
+	public List<ToppingListInfo> findAllTopping() throws SQLException {
 		//JDBCドライバを読み込む
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 		}catch(ClassNotFoundException e){
 			throw new IllegalStateException("JDBCドライバを読み込めませんでした");
 		}
-
-		String sql = "SELECT product_id, product_name, category_name, product_price, "
-				+ "product_stock, product_display_flag, product_delete_flag "
-				+ "FROM product "
-				+ "WHERE product_delete_flag = 1";
-
-		List<ProductListInfo> pList = new ArrayList<>();
+		
+		String sql = "SELECT topping_id, topping_name, topping_price, topping_stock, "
+				+ "topping_display_flag, topping_delete_flag "
+				+ "FROM topping "
+				+ "WHERE topping_delete_flag = 1";
+		List<ToppingListInfo> tList = new ArrayList<>();
 
 		try (PreparedStatement ps = conn.prepareStatement(sql)) {
 			try (ResultSet rs = ps.executeQuery()) {
 				while (rs.next()) {
-					ProductListInfo pInfo = new ProductListInfo();
+					ToppingListInfo tInfo = new ToppingListInfo();
 
-					pInfo.setProductId(rs.getInt("product_id"));
-					pInfo.setProductName(rs.getString("product_name"));
-					pInfo.setCategoryName(rs.getString("category_name"));
-					pInfo.setProductPrice(rs.getInt("product_price"));
-					pInfo.setProductStock(rs.getInt("product_stock"));
-					pInfo.setProductDisplayFlag(rs.getInt("product_display_flag")); 
-					pInfo.setProductDeleteFlag(rs.getInt("product_delete_flag"));   
-
+					tInfo.setToppingId(rs.getInt("topping_id"));
+					tInfo.setToppingName(rs.getString("topping_name"));
+					tInfo.setToppingPrice(rs.getInt("topping_price"));
+					tInfo.setToppingStock(rs.getInt("topping_stock")); 
+					tInfo.setToppingDeleteFlag(rs.getInt("topping_delete_flag"));   
+					tInfo.setToppingDisplayFlag(rs.getInt("topping_display_flag"));
 					// リストに追加
-					pList.add(pInfo);
+					tList.add(tInfo);
 
 				}
 			}catch(SQLException e){
@@ -53,10 +50,10 @@ public class ProductListDAO {
 			}
 
 		}
-		return pList;	
+		return tList;	
 	}
-
-	public void updateProductDisplayFlag(int productId) throws SQLException{
+	
+	public void updateToppingDisplayFlag(int toppingId) throws SQLException{
 		//JDBCドライバを読み込む
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
@@ -64,17 +61,17 @@ public class ProductListDAO {
 			throw new IllegalStateException("JDBCドライバを読み込めませんでした");
 		}
 		
-		String sql = "UPDATE product SET product_display_flag = 0 WHERE product_id = ?";
+		String sql = "UPDATE topping SET topping_display_flag = 0 WHERE topping_id = ?";
 		
 		try (PreparedStatement ps = conn.prepareStatement(sql)) {
-			ps.setInt(1, productId);
+			ps.setInt(1, toppingId);
 			int rs = ps.executeUpdate();
 		}catch(SQLException e) {
 			throw e;
 		}
 	}
 	
-	public void updateProductDeleteFlag(int productId) throws SQLException{
+	public void updateToppingDeleteFlag(int toppingId) throws SQLException{
 		//JDBCドライバを読み込む
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
@@ -82,10 +79,10 @@ public class ProductListDAO {
 			throw new IllegalStateException("JDBCドライバを読み込めませんでした");
 		}
 		
-		String sql = "UPDATE product SET product_delete_flag = 0 WHERE product_id = ?";
+		String sql = "UPDATE topping SET topping_delete_flag = 0 WHERE topping_id = ?";
 		
 		try (PreparedStatement ps = conn.prepareStatement(sql)) {
-			ps.setInt(1, productId);
+			ps.setInt(1, toppingId);
 			int rs = ps.executeUpdate();
 		}catch(SQLException e) {
 			throw e;

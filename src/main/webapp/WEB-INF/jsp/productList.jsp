@@ -13,6 +13,9 @@
 <form action="HomeServlet" method="get">
 <input type="submit" name="action" value="home">
 </form>
+<form action="ProductEditServlet" method="get">
+<input type="submit" name="action" value="新規作成">
+</form>
 	<category-area>
 	<form action="ProductListServlet" method="get" style="display: inline;">
 		<input type="submit" name="filter" value="全て" class="全て"> <input
