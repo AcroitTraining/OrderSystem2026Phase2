@@ -1,0 +1,106 @@
+/* --- 既存のスタイル（省略せずにそのまま残してください） --- */
+body {
+    background-color: #fafafa;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    margin: 0;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.home-container { width: 100%; max-width: 680px; margin-bottom: 15px; }
+.home-btn { color: #333333; text-decoration: none; display: inline-block; }
+.order-box { width: 100%; max-width: 680px; background-color: #ffffff; border: 1px solid #000000; }
+.box-header { padding: 14px 20px; font-size: 16px; font-weight: 500; border-bottom: 1px solid #000000; }
+.main-product-row { display: flex; align-items: center; padding: 16px 20px; border-bottom: 1px solid #000000; }
+.product-name { font-size: 16px; flex-grow: 1; }
+.quantity-counter { display: flex; align-items: center; gap: 10px; }
+.btn-minus, .btn-plus { width: 30px; height: 30px; border-radius: 50%; border: 1px solid #cccccc; background-color: #ffffff; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.btn-minus:hover, .btn-plus:hover { background-color: #f5f5f5; }
+.qty-num { font-size: 16px; min-width: 15px; text-align: center; }
+.btn-cancel-order { background-color: #e60012; color: #ffffff; border: none; padding: 8px 18px; border-radius: 20px; font-size: 14px; font-weight: bold; cursor: pointer; margin-left: 20px; }
+.toppings-container { display: grid; grid-template-columns: 1fr 1fr; padding: 40px 60px; gap: 30px 80px; }
+.topping-cell { display: flex; align-items: center; justify-content: space-between; }
+.topping-title { font-size: 16px; color: #000000; width: 100px; text-align: right; margin-right: 20px; }
+.box-footer { display: flex; justify-content: flex-end; align-items: center; gap: 20px; padding: 20px 30px 30px 30px; }
+.btn-go-back { background-color: #777777; color: #ffffff; border: none; padding: 10px 24px; border-radius: 20px; font-size: 14px; text-decoration: none; box-shadow: 0 2px 4px rgba(0,0,0,0.15); }
+.btn-save-changes { background-color: #008000; color: #ffffff; border: none; padding: 10px 36px; border-radius: 20px; font-size: 14px; font-weight: bold; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.15); }
+
+/* ==========================================
+   ポップアップ（モーダル）用の追加CSS
+   ========================================== */
+.modal-overlay {
+    display: none; /* 初期状態は非表示 */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4); /* 背景を暗いグレーに透過 */
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ポップアップ中央の白いボックス */
+.modal-content {
+    background-color: #ffffff;
+    padding: 40px 60px;
+    border: 1px solid #000000;
+    text-align: center;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.modal-message-title {
+    font-size: 16px;
+    font-weight: 500;
+    margin: 0 0 10px 0;
+    color: #000000;
+}
+
+.modal-message-sub {
+    font-size: 16px;
+    font-weight: 500;
+    margin: 0 0 30px 0;
+    color: #000000;
+}
+
+/* ボタンの横並び */
+.modal-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+/* いいえ ボタン（白地・黒枠・黒文字） */
+.btn-modal-no {
+    background-color: #ffffff;
+    color: #000000;
+    border: 1px solid #000000;
+    padding: 8px 24px;
+    font-size: 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    min-width: 80px;
+}
+.btn-modal-no:hover {
+    background-color: #f5f5f5;
+}
+
+/* はい ボタン（赤地・丸角・白文字） */
+.btn-modal-yes {
+    background-color: #e60012;
+    color: #ffffff;
+    border: 1px solid #000000;
+    padding: 8px 24px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    min-width: 80px;
+}
+.btn-modal-yes:hover {
+    background-color: #cc0010;
+}

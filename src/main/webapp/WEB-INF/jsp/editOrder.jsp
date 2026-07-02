@@ -1,56 +1,101 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="model.EditOrderInfo" %>
 <!DOCTYPE html>
-<html>
+<html lang="ja">
 <head>
-<meta charset="UTF-8">
-<title>注文変更</title>
-<link rel="stylesheet" href="css/editOrder.css">
+    <meta charset="UTF-8">
+    <title>注文変更</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/editOrder.css">
 </head>
 <body>
 
-<div class="main-container">
-    <form action="EditOrderServlet" method="POST">
-        <input type="hidden" name="orderId" value="${orderInfo.orderId}">
-        <input type="hidden" name="oldProductQty" value="${orderInfo.orderQuantity}">
-        <c:forEach var="t" items="${orderInfo.toppingList}" varStatus="status">
-            <input type="hidden" name="oldToppingQty_${status.index}" value="${t.toppingQuantity}">
-        </c:forEach>
+    <%
+        // 正しい名前（orderManagement / servedHistory）で取得
+        String from = (String) request.getAttribute("from");
+        if (from == null) { from = "orderManagement"; }
 
-        <div class="order-header">
-            <span>${orderInfo.orderId}番</span>
-            <span>${orderInfo.tableNumber}卓</span>
+        // 新しい名前に合わせた戻り先URLの判定
+        String backUrl = "ServedHistoryServlet";
+        if ("orderManagement".equals(from)) {
+            backUrl = "OrderManagementServlet";
+        }
+    %>
+
+    <div class="home-container">
+        <a href="<%= backUrl %>" class="home-btn">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </svg>
+        </a>
+    </div>
+
+    <%
+        EditOrderInfo info = (EditOrderInfo) request.getAttribute("editOrderInfo");
+        if (info != null) {
+    %>
+    <div class="order-box">
+        <div class="box-header">
+            <%= info.getSessionId() %>番 4卓
         </div>
 
-        <div class="product-row">
-            <span class="product-name">${orderInfo.productName}</span>
-            <div class="qty-controller">
-                <button type="submit" name="Button" value="product_minus" class="btn-minus">-</button>
-                <span class="qty-val">${orderInfo.orderQuantity}</span>
-                <button type="submit" name="Button" value="product_plus" class="btn-plus">+</button>
+        <form action="EditOrderServlet" method="post" id="editOrderForm">
+            <input type="hidden" name="oid" value="<%= info.getOrderId() %>">
+            <input type="hidden" name="mode" id="submitMode" value="">
+            <input type="hidden" name="oldProductQty" value="<%= info.getProductQuantity() %>">
+            
+            <input type="hidden" name="from" value="<%= from %>">
+
+            <div class="main-product-row">
+                <span class="product-name"><%= info.getProductName() %></span>
+                <div class="quantity-counter">
+                    <button type="submit" name="Button" value="main_minus" class="btn-minus">−</button>
+                    <span class="qty-num"><%= info.getProductQuantity() %></span>
+                    <button type="submit" name="Button" value="main_plus" class="btn-plus">+</button>
+                </div>
+                <button type="submit" name="Button" value="delete_order" class="btn-cancel-order">注文取り消し</button>
             </div>
-            <button type="submit" name="mode" value="delete" class="btn-cancel" onclick="return confirm('この注文を取り消しますか？');">注文取り消し</button>
-        </div>
 
-        <div class="topping-grid">
-            <c:forEach var="t" items="${orderInfo.toppingList}" varStatus="status">
-                <div class="topping-item">
-                    <span class="topping-name">${t.toppingName}</span>
-                    <div class="qty-controller">
-                        <button type="submit" name="Button" value="-${status.index}" class="btn-minus">-</button>
-                        <span class="qty-val">${t.toppingQuantity}</span>
-                        <button type="submit" name="Button" value="+${status.index}" class="btn-plus">+</button>
+            <div class="toppings-container">
+                <% 
+                    if (info.getToppings() != null) {
+                        for (int i = 0; i < info.getToppings().size(); i++) {
+                            EditOrderInfo.ToppingList topping = info.getToppings().get(i);
+                %>
+                <div class="topping-cell">
+                    <span class="topping-title"><%= topping.getName() %></span>
+                    <div class="quantity-counter">
+                        <input type="hidden" name="oldQty_<%= i %>" value="<%= topping.getQuantity() %>">
+                        <button type="submit" name="Button" value="-<%= i %>" class="btn-minus">−</button>
+                        <span class="qty-num"><%= topping.getQuantity() %></span>
+                        <button type="submit" name="Button" value="+<%= i %>" class="btn-plus">+</button>
                     </div>
                 </div>
-            </c:forEach>
-        </div>
+                <% 
+                        }
+                    }
+                %>
+            </div>
 
-        <div class="footer-actions">
-            <button type="button" class="btn-back" onclick="location.href='OrderManagementServlet'">一覧へ戻る</button>
-            <button type="submit" name="mode" value="update" class="btn-submit">変更</button>
-        </div>
-    </form>
-</div>
+            <div class="box-footer">
+                <a href="<%= backUrl %>" class="btn-go-back">一覧へ戻る</a>
+                <button type="button" class="btn-save-changes" id="triggerUpdate">変更</button>
+            </div>
+        </form>
+    </div>
 
+    <div id="customModal" class="modal-overlay">
+        <div class="modal-content">
+            <p class="modal-message-title">この内容で変更します</p>
+            <p class="modal-message-sub">よろしいですか？</p>
+            <div class="modal-buttons">
+                <button type="button" id="modalNo" class="btn-modal-no">いいえ</button>
+                <button type="button" id="modalYes" class="btn-modal-yes">はい</button>
+            </div>
+        </div>
+    </div>
+    <% } %>
+
+    <script src="${pageContext.request.contextPath}/js/editOrder.js"></script>
 </body>
 </html>

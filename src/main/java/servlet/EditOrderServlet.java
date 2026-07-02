@@ -1,124 +1,190 @@
 package servlet;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 import dao.EditOrderDAO;
-import dao.EditOrderLogic;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.EditOrderInfo;
+import model.EditOrderLogic;
 
 @WebServlet("/EditOrderServlet")
 public class EditOrderServlet extends HttpServlet {
+    private static final long serialVersionUID = 1L;
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        String orderIdStr = request.getParameter("orderId");
-        if (orderIdStr == null || orderIdStr.isEmpty()) {
-            response.sendRedirect("OrderManagementServlet");
+
+        String oid = request.getParameter("oid");
+        // ★ 遷移元パラメータ（"orderManagement" または "servedHistory"）を取得
+        String from = request.getParameter("from"); 
+
+        if (oid == null || oid.isEmpty()) {
+            if ("servedHistory".equals(from)) {
+                response.sendRedirect("ServedHistoryServlet");
+            } else {
+                response.sendRedirect("OrderManagementServlet");
+            }
             return;
         }
-        
-        int orderId = Integer.parseInt(orderIdStr);
+
+        int orderId = Integer.parseInt(oid);
         EditOrderDAO dao = new EditOrderDAO();
-        EditOrderInfo orderInfo = dao.findOrderDetails(orderId);
-        
-        if (orderInfo == null) {
-            response.sendRedirect("OrderManagementServlet");
-            return;
+
+        try {
+            EditOrderInfo info = dao.findOrderDetails(orderId);
+            if (info != null) {
+                List<EditOrderInfo.ToppingList> toppings = dao.findToppingListByProductId(info.getProductId(), orderId);
+                if (toppings != null) {
+                    for (EditOrderInfo.ToppingList t : toppings) {
+                        info.addTopping(t.getToppingId(), t.getName(), t.getQuantity(), 0);
+                    }
+                }
+                request.setAttribute("editOrderInfo", info);
+                // ★ JSPへ渡す
+                request.setAttribute("from", from); 
+
+                request.getRequestDispatcher("WEB-INF/jsp/editOrder.jsp").forward(request, response);
+            } else {
+                if ("servedHistory".equals(from)) {
+                    response.sendRedirect("ServedHistoryServlet");
+                } else {
+                    response.sendRedirect("OrderManagementServlet");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
-        
-        request.setAttribute("orderInfo", orderInfo);
-        request.getRequestDispatcher("/WEB-INF/jsp/editOrder.jsp").forward(request, response);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
         request.setCharacterEncoding("UTF-8");
         
-        int orderId = Integer.parseInt(request.getParameter("orderId"));
+        String oid = request.getParameter("oid");
+        // ★ hiddenから遷移元を回収
+        String from = request.getParameter("from"); 
+
+        if (oid == null || oid.isEmpty()) {
+            if ("servedHistory".equals(from)) {
+                response.sendRedirect("ServedHistoryServlet");
+            } else {
+                response.sendRedirect("OrderManagementServlet");
+            }
+            return;
+        }
+        int orderId = Integer.parseInt(oid);
         String button = request.getParameter("Button");
         String mode = request.getParameter("mode");
-        
+
         EditOrderDAO dao = new EditOrderDAO();
-        EditOrderInfo orderInfo = dao.findOrderDetails(orderId);
-        if (orderInfo == null) {
-            response.sendRedirect("OrderManagementServlet");
-            return;
-        }
-        
-        EditOrderLogic logic = new EditOrderLogic();
-        List<EditOrderInfo.ToppingInfo> toppingList = orderInfo.getToppingList();
 
-        // 1. 画面上の商品数量とトッピング数量の復元
-        int screenProductQty = Integer.parseInt(request.getParameter("oldProductQty"));
-        for (int i = 0; i < toppingList.size(); i++) {
-            String qty = request.getParameter("oldToppingQty_" + i);
-            if (qty != null && !qty.isEmpty()) {
-                toppingList.get(i).setToppingQuantity(Integer.parseInt(qty));
+        try {
+            // 注文削除時のリダイレクト
+            if ("delete_order".equals(button)) {
+                dao.deleteOrderComplete(orderId);
+                if ("servedHistory".equals(from)) {
+                    response.sendRedirect("ServedHistoryServlet");
+                } else {
+                    response.sendRedirect("OrderManagementServlet");
+                }
+                return;
             }
-        }
 
-        // 2. プラス・マイナスボタン処理
-        if (button != null) {
-            if ("product_plus".equals(button)) {
-                screenProductQty = logic.calcProductQuantity(screenProductQty, "plus");
-            } else if ("product_minus".equals(button)) {
-                screenProductQty = logic.calcProductQuantity(screenProductQty, "minus");
-            } else if (button.startsWith("+")) {
-                int index = Integer.parseInt(button.substring(1));
-                logic.calcToppingQuantity(toppingList, index, "plus");
-            } else if (button.startsWith("-")) {
-                int index = Integer.parseInt(button.substring(1));
-                logic.calcToppingQuantity(toppingList, index, "minus");
+            EditOrderInfo info = dao.findOrderDetails(orderId);
+            if (info == null) {
+                if ("servedHistory".equals(from)) {
+                    response.sendRedirect("ServedHistoryServlet");
+                } else {
+                    response.sendRedirect("OrderManagementServlet");
+                }
+                return;
             }
-            
-            // 状態を維持して画面再描画
-            orderInfo.setOrderQuantity(screenProductQty);
-            request.setAttribute("orderInfo", orderInfo);
-            request.getRequestDispatcher("/WEB-INF/jsp/editOrder.jsp").forward(request, response);
-            return;
-        }
 
-        // 3. 注文取り消し、または商品数量0での確定時の削除処理
-        if ("delete".equals(mode) || screenProductQty == 0) {
-            dao.deleteOrder(orderId);
-            response.sendRedirect("OrderManagementServlet");
-            return;
-        }
-
-        // 4. 「変更確定」処理
-        if ("update".equals(mode)) {
-            // 商品数量更新
-            dao.updateProductQuantity(orderId, screenProductQty);
-            
-            // トッピングの変更・削除・追加を一括判定
-            EditOrderInfo dbInfo = dao.findOrderDetails(orderId);
-            List<EditOrderInfo.ToppingInfo> dbList = dbInfo.getToppingList();
-            
-            for (int i = 0; i < toppingList.size(); i++) {
-                EditOrderInfo.ToppingInfo screenTopping = toppingList.get(i);
-                EditOrderInfo.ToppingInfo dbTopping = dbList.get(i);
-                
-                int sQty = screenTopping.getToppingQuantity();
-                int dQty = dbTopping.getToppingQuantity();
-                
-                if (dQty == 0 && sQty > 0) {
-                    dao.insertTopping(orderId, screenTopping.getToppingId(), sQty);
-                } else if (dQty > 0 && sQty == 0) {
-                    dao.deleteTopping(orderId, screenTopping.getToppingId());
-                } else if (dQty > 0 && sQty > 0 && dQty != sQty) {
-                    dao.updateToppingQuantity(orderId, screenTopping.getToppingId(), sQty);
+            List<EditOrderInfo.ToppingList> toppings = dao.findToppingListByProductId(info.getProductId(), orderId);
+            if (toppings != null) {
+                for (EditOrderInfo.ToppingList t : toppings) {
+                    info.addTopping(t.getToppingId(), t.getName(), t.getQuantity(), 0);
                 }
             }
-            response.sendRedirect("OrderManagementServlet");
-            return;
+
+            String oldProductQty = request.getParameter("oldProductQty");
+            if (oldProductQty != null && !oldProductQty.isEmpty()) {
+                info.setProductQuantity(Integer.parseInt(oldProductQty));
+            }
+
+            for (int i = 0; i < info.getToppings().size(); i++) {
+                String qty = request.getParameter("oldQty_" + i);
+                if (qty != null && !qty.isEmpty()) {
+                    info.getToppings().get(i).setQuantity(Integer.parseInt(qty));
+                }
+            }
+
+            EditOrderLogic logic = new EditOrderLogic();
+
+            // 「＋」「－」ボタン処理（計算画面の再表示）
+            if (button != null && ("main_plus".equals(button) || "main_minus".equals(button) || button.startsWith("+") || button.startsWith("-"))) {
+                logic.calcQuantity(info, button);
+                request.setAttribute("editOrderInfo", info);
+                request.setAttribute("from", from); // fromを引き継ぐ
+                request.getRequestDispatcher("WEB-INF/jsp/editOrder.jsp").forward(request, response);
+                return;
+            }
+
+            // 「変更」確定処理
+            if ("update".equals(mode)) {
+                EditOrderInfo dbOriginal = dao.findOrderDetails(orderId);
+                List<EditOrderInfo.ToppingList> dbToppingOriginal = dao.findToppingListByProductId(info.getProductId(), orderId);
+
+                int screenProductQty = info.getProductQuantity(); 
+                int dbProductQty = dbOriginal.getProductQuantity();   
+
+                if (screenProductQty != dbProductQty) {
+                    dao.updateProductQuantity(orderId, screenProductQty);
+                    int productDiff = screenProductQty - dbProductQty;
+                    dao.updateProductStock(info.getProductId(), -productDiff);
+                }
+
+                for (int i = 0; i < info.getToppings().size(); i++) {
+                    EditOrderInfo.ToppingList screen = info.getToppings().get(i);
+                    EditOrderInfo.ToppingList db = dbToppingOriginal.get(i); 
+                    
+                    int screenQty = screen.getQuantity();
+                    int dbQty = db.getQuantity();
+
+                    if (dbQty != screenQty) {
+                        if (dbQty == 0 && screenQty > 0) {
+                            dao.insertTopping(orderId, screen.getToppingId(), screenQty);
+                        } else if (dbQty > 0 && screenQty == 0) {
+                            dao.deleteToppingSingle(orderId, screen.getToppingId());
+                        } else if (dbQty > 0 && screenQty > 0) {
+                            dao.updateToppingQuantity(orderId, screen.getToppingId(), screenQty);
+                        }
+
+                        int toppingDiff = screenQty - dbQty;
+                        dao.updateToppingStock(screen.getToppingId(), -toppingDiff);
+                    }
+                }
+
+                // ★ 正しい名前に合わせた動的リダイレクト切り替え
+                if ("servedHistory".equals(from)) {
+                    response.sendRedirect("ServedHistoryServlet");
+                } else {
+                    response.sendRedirect("OrderManagementServlet");
+                }
+                return;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
-        response.sendRedirect("OrderManagementServlet");
     }
 }

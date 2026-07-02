@@ -1,46 +1,20 @@
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EditOrderInfo {
+public class EditOrderInfo implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private int orderId;
     private int productId;
     private String productName;
-    private int orderQuantity;
+    private int productQuantity;
     private String sessionId;
-    private int tableNumber;
-    // トッピングを複数保持するためのリスト
-    private List<ToppingInfo> toppingList = new ArrayList<>();
+    private List<ToppingList> toppings = new ArrayList<>();
 
-    // 空のコンストラクタ
-    public EditOrderInfo() {}
-
-    /**
-     * トッピング情報を保持するための内部クラス（インナークラス）
-     */
-    public static class ToppingInfo {
-        private int toppingId;
-        private String toppingName;
-        private int toppingQuantity;
-
-        // コンストラクタ
-        public ToppingInfo(int toppingId, String toppingName, int toppingQuantity) {
-            this.toppingId = toppingId;
-            this.toppingName = toppingName;
-            this.toppingQuantity = toppingQuantity;
-        }
-
-        // トッピング用のゲッター・セッター
-        public int getToppingId() { return toppingId; }
-        public void setToppingId(int toppingId) { this.toppingId = toppingId; }
-        public String getToppingName() { return toppingName; }
-        public void setToppingName(String toppingName) { this.toppingName = toppingName; }
-        public int getToppingQuantity() { return toppingQuantity; }
-        public void setToppingQuantity(int toppingQuantity) { this.toppingQuantity = toppingQuantity; }
-    }
-
-    // メイン注文情報のゲッター・セッター
+    // 既存のコンストラクターやゲッター、セッター
     public int getOrderId() { return orderId; }
     public void setOrderId(int orderId) { this.orderId = orderId; }
 
@@ -50,22 +24,48 @@ public class EditOrderInfo {
     public String getProductName() { return productName; }
     public void setProductName(String productName) { this.productName = productName; }
 
-    public int getOrderQuantity() { return orderQuantity; }
-    public void setOrderQuantity(int orderQuantity) { this.orderQuantity = orderQuantity; }
+    public int getProductQuantity() { return productQuantity; }
+    public void setProductQuantity(int productQuantity) { this.productQuantity = productQuantity; }
 
     public String getSessionId() { return sessionId; }
     public void setSessionId(String sessionId) { this.sessionId = sessionId; }
 
-    public int getTableNumber() { return tableNumber; }
-    public void setTableNumber(int tableNumber) { this.tableNumber = tableNumber; }
+    public List<ToppingList> getToppings() { return toppings; }
 
-    public List<ToppingInfo> getToppingList() { return toppingList; }
-    public void setToppingList(List<ToppingInfo> toppingList) { this.toppingList = toppingList; }
+    // トッピングを追加するための既存のメソッド
+    public void addTopping(int toppingId, String name, int quantity, int price) {
+        this.toppings.add(new ToppingList(toppingId, name, quantity, price));
+    }
 
-    /**
-     * DAOなどで取得したトッピングをリストに1件ずつ追加するための便利メソッド
-     */
-    public void addTopping(ToppingInfo topping) {
-        this.toppingList.add(topping);
+    // ==========================================
+    // ★【修正完了】インナークラスに static を追加
+    // ==========================================
+    public static class ToppingList implements Serializable {
+        private static final long serialVersionUID = 1L;
+
+        private int toppingId;
+        private String name;
+        private int quantity;
+        private int price;
+
+        // コンストラクター
+        public ToppingList(int toppingId, String name, int quantity, int price) {
+            this.toppingId = toppingId;
+            this.name = name;
+            this.quantity = quantity;
+            this.price = price;
+        }
+
+        // ゲッター群
+        public int getToppingId() { return toppingId; }
+        public String getName() { return name; }
+        public int getQuantity() { return quantity; }
+        public int getPrice() { return price; }
+
+        // セッター群 (必要に応じて使用)
+        public void setToppingId(int toppingId) { this.toppingId = toppingId; }
+        public void setName(String name) { this.name = name; }
+        public void setQuantity(int quantity) { this.quantity = quantity; }
+        public void setPrice(int price) { this.price = price; }
     }
 }
