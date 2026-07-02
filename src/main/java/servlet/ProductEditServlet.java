@@ -1,40 +1,100 @@
 package servlet;
 
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.List;
+
+import dao.ProductEditDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import model.ProductEditInfo;
 
-/**
- * Servlet implementation class ProductEditServlet
- */
+@WebServlet("/ProductEditServlet")
 public class ProductEditServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public ProductEditServlet() {
-        super();
-        // TODO Auto-generated constructor stub
+    private static final long serialVersionUID = 1L;
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        
+        String pid = request.getParameter("productId");
+        ProductEditDAO dao = null;
+
+        try {
+            dao = new ProductEditDAO();
+            List<ProductEditInfo.ToppingMaster> allToppings = dao.findAllToppings();
+            request.setAttribute("allToppings", allToppings);
+
+            // ★修正: productIdが無い、または空の場合は「新規登録モード」として空のオブジェクトを渡す
+            if (pid == null || pid.isEmpty()) {
+                ProductEditInfo emptyInfo = new ProductEditInfo();
+                emptyInfo.setProductId(0); // 0は新規の印
+                emptyInfo.setProductName("");
+                emptyInfo.setProductPrice(0);
+                emptyInfo.setCategoryName("");
+                
+                request.setAttribute("productEditInfo", emptyInfo);
+                request.getRequestDispatcher("WEB-INF/jsp/productEdit.jsp").forward(request, response);
+                return;
+            }
+
+            // productIdがある場合は従来通り「編集モード」
+            int productId = Integer.parseInt(pid);
+            ProductEditInfo info = dao.findProductDetails(productId);
+
+            if (info != null) {
+                request.setAttribute("productEditInfo", info);
+                request.getRequestDispatcher("WEB-INF/jsp/productEdit.jsp").forward(request, response);
+            } else {
+                response.sendRedirect("ProductListServlet");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        } finally {
+            if (dao != null && dao.getConnection() != null) {
+                try { dao.getConnection().close(); } catch (SQLException e) { e.printStackTrace(); }
+            }
+        }
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
-	}
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        
+        request.setCharacterEncoding("UTF-8");
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
-	}
+        String productIdStr = request.getParameter("productId");
+        String productName = request.getParameter("productName");
+        String productPriceStr = request.getParameter("productPrice");
+        String categoryName = request.getParameter("categoryName");
+        String[] toppingIds = request.getParameterValues("toppingId");
 
+        int productPrice = (productPriceStr != null && !productPriceStr.isEmpty()) ? Integer.parseInt(productPriceStr) : 0;
+        ProductEditDAO dao = null;
+
+        try {
+            dao = new ProductEditDAO();
+            
+            // ★修正: productIdStrが空、または "0" の場合は新規作成を行う
+            if (productIdStr == null || productIdStr.isEmpty() || "0".equals(productIdStr)) {
+                dao.insertProductDetails(productName, productPrice, categoryName, toppingIds);
+            } else {
+                // 既存の商品の更新処理
+                int productId = Integer.parseInt(productIdStr);
+                dao.updateProductDetails(productId, productName, productPrice, categoryName, toppingIds);
+            }
+            
+            response.sendRedirect("ProductListServlet");
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        } finally {
+            if (dao != null && dao.getConnection() != null) {
+                try { dao.getConnection().close(); } catch (SQLException e) { e.printStackTrace(); }
+            }
+        }
+    }
 }
