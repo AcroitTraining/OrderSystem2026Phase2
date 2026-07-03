@@ -13,7 +13,7 @@
 <form action="HomeServlet" method="get">
 <input type="submit" name="action" value="home">
 </form>
-<form action="ProductEditServlet" method="get">
+<form action="ToppingEditServlet" method="get">
 <input type="submit" name="action" value="新規作成">
 </form>
 

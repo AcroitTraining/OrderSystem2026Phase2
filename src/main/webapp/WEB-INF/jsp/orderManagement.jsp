@@ -15,70 +15,81 @@
 		<input type="submit" name="action" value="home">
 	</form>
 
+	<!-- 🟢 カテゴリ選択エリア -->
 	<category-area>
-	<form action="OrderManagementServlet" method="get"
-		style="display: inline;">
-		<!-- カテゴリタブ部分：初期値の0をEL式に変更 -->
+	<form action="OrderManagementServlet" method="get" style="display: inline;">
+		<!-- ★裏で「現在選択されている卓番」を一緒に送信する -->
+		<input type="hidden" name="tableFilter" value="${currentTable}">
+		
 		<div class="category-tabs">
-			<button type="submit" name="tableFilter" value="全て" class="tab-btn"
-				data-category="全て">
-				全て
-				<c:if test="${countAll > 0}">
-					<span class="badge">${countAll}</span>
-				</c:if>
+			<!-- currentCategoryと一致するボタンにだけ 'active' クラスを付与 -->
+			<button type="submit" name="categoryFilter" value="全て" 
+				class="tab-btn ${currentCategory == '全て' ? 'active' : ''}" data-category="全て">
+				全て<span class="badge">${countAll}</span>
 			</button>
-			<button type="submit" name="tableFilter" value="お好み焼き"
-				class="tab-btn" data-category="お好み焼き">
-				お好み焼き
-				<c:if test="${countOkonomi > 0}">
-					<span class="badge">${countOkonomi}</span>
-				</c:if>
+			<button type="submit" name="categoryFilter" value="お好み焼き" 
+				class="tab-btn ${currentCategory == 'お好み焼き' ? 'active' : ''}" data-category="お好み焼き">
+				お好み焼き<span class="badge">${countOkonomi}</span>
 			</button>
-			<button type="submit" name="tableFilter" value="もんじゃ焼き"
-				class="tab-btn" data-category="もんじゃ焼き">
-				もんじゃ焼き
-				<c:if test="${countMonja > 0}">
-					<span class="badge">${countMonja}</span>
-				</c:if>
+			<button type="submit" name="categoryFilter" value="もんじゃ焼き" 
+				class="tab-btn ${currentCategory == 'もんじゃ焼き' ? 'active' : ''}" data-category="もんじゃ焼き">
+				もんじゃ焼き<span class="badge">${countMonja}</span>
 			</button>
-			<button type="submit" name="tableFilter" value="鉄板焼き" class="tab-btn"
-				data-category="鉄板焼き">
-				鉄板焼き
-				<c:if test="${countTeppan > 0}">
-					<span class="badge">${countTeppan}</span>
-				</c:if>
+			<button type="submit" name="categoryFilter" value="鉄板焼き" 
+				class="tab-btn ${currentCategory == '鉄板焼き' ? 'active' : ''}" data-category="鉄板焼き">
+				鉄板焼き<span class="badge">${countTeppan}</span>
 			</button>
-			<button type="submit" name="tableFilter" value="サイドメニュー"
-				class="tab-btn" data-category="サイドメニュー">
-				サイドメニュー
-				<c:if test="${countSide > 0}">
-					<span class="badge">${countSide}</span>
-				</c:if>
+			<button type="submit" name="categoryFilter" value="サイドメニュー" 
+				class="tab-btn ${currentCategory == 'サイドメニュー' ? 'active' : ''}" data-category="サイドメニュー">
+				サイドメニュー<span class="badge">${countSide}</span>
 			</button>
-			<button type="submit" name="tableFilter" value="ソフトドリンク"
-				class="tab-btn" data-category="ソフトドリンク">
-				ソフトドリンク
-				<c:if test="${countSoft > 0}">
-					<span class="badge">${countSoft}</span>
-				</c:if>
+			<button type="submit" name="categoryFilter" value="ソフトドリンク" 
+				class="tab-btn ${currentCategory == 'ソフトドリンク' ? 'active' : ''}" data-category="ソフトドリンク">
+				ソフトドリンク<span class="badge">${countSoft}</span>
 			</button>
-			<button type="submit" name="tableFilter" value="お酒" class="tab-btn"
-				data-category="お酒">
-				お酒
-				<c:if test="${countSake > 0}">
-					<span class="badge">${countSake}</span>
-				</c:if>
+			<button type="submit" name="categoryFilter" value="お酒" 
+				class="tab-btn ${currentCategory == 'お酒' ? 'active' : ''}" data-category="お酒">
+				お酒<span class="badge">${countSake}</span>
 			</button>
-			<button type="submit" name="tableFilter" value="ボトル" class="tab-btn"
-				data-category="ボトル">
-				ボトル
-				<c:if test="${countBottle > 0}">
-					<span class="badge">${countBottle}</span>
-				</c:if>
+			<button type="submit" name="categoryFilter" value="ボトル" 
+				class="tab-btn ${currentCategory == 'ボトル' ? 'active' : ''}" data-category="ボトル">
+				ボトル<span class="badge">${countBottle}</span>
 			</button>
 		</div>
 	</form>
 	</category-area>
+
+	<!-- 🟢 🆕 卓番選択エリア -->
+	<table-area>
+	<form action="OrderManagementServlet" method="get" style="display: inline;">
+		<!-- ★裏で「現在選択されているカテゴリ」を一緒に送信する -->
+		<input type="hidden" name="categoryFilter" value="${currentCategory}">
+		
+		<div class="category-tabs" style="margin-top: 10px;"> <!-- スタイル流用 -->
+			<!-- currentTableと一致するボタンにだけ 'active' クラスを付与 -->
+			<button type="submit" name="tableFilter" value="全ての卓" 
+				class="tab-btn ${currentTable == '全ての卓' ? 'active' : ''}" data-table="全ての卓">
+				全ての卓<span class="badge">${countTableAll}</span>
+			</button>
+			<button type="submit" name="tableFilter" value="1卓" 
+				class="tab-btn ${currentTable == '1卓' ? 'active' : ''}" data-table="1卓">
+				1卓<span class="badge">${countTable1}</span>
+			</button>
+			<button type="submit" name="tableFilter" value="2卓" 
+				class="tab-btn ${currentTable == '2卓' ? 'active' : ''}" data-table="2卓">
+				2卓<span class="badge">${countTable2}</span>
+			</button>
+			<button type="submit" name="tableFilter" value="3卓" 
+				class="tab-btn ${currentTable == '3卓' ? 'active' : ''}" data-table="3卓">
+				3卓<span class="badge">${countTable3}</span>
+			</button>
+			<button type="submit" name="tableFilter" value="4卓" 
+				class="tab-btn ${currentTable == '4卓' ? 'active' : ''}" data-table="4卓">
+				4卓<span class="badge">${countTable4}</span>
+			</button>
+		</div>
+	</form>
+	</table-area>
 
 
 	<h1>注文管理画面</h1>
