@@ -18,17 +18,41 @@ body {
     color: #000000;
 }
 
-/* ログインフォームを囲むメインのカード容器 */
 .login-container {
     background-color: #ffffff;
-    border: 1.5px solid #000000; /* くっきりした黒い外枠 */
-    border-radius: 24px;         /* 画像のような滑らかな大きめの角丸 */
-    padding: 35px 30px;
-    width: 320px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08); /* 柔らかい影の演出 */
-    text-align: center;
+    border: 2px solid #000000;
+    border-radius: 28px;
+    
+    /* ==========================================
+       ★ここが縦横比（アスペクト比）固定のコア設定
+       ========================================== */
+    width: 380px;               /* ← ここの数値を変えるだけで、縦横比を保ったまま全体が拡大縮小します */
+    aspect-ratio: 1 / 0.9;     /* 横1に対して縦1.05の黄金比（画像のすっきりした縦横比） */
+    height: auto;               /* 高さを固定せず、アスペクト比に従って自動計算させる */
+    
+    /* 内側の余白を上下左右でバランスよく配置（%やflexで中身を収める） */
+    padding: 35px 30px;         
     box-sizing: border-box;
+    
+    /* Flexboxを使って、中の要素を縦に綺麗に均等配置する（高さが連動したときにはみ出さない対策） */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* 縦長になっても中のパーツが綺麗に分散する */
+    
+    flex-shrink: 0;             /* 画面が狭くなっても絶対に縮まない固定 */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    text-align: center;
 }
+
+/* display: flex にしたため、フォーム内の各要素をしっかり制御するために
+   formタグ自体もコンテナいっぱいに広げる設定を足します
+*/
+.login-container form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%; /* コンテナの高さ（自動計算された値）を100%使う */
+    margin: 0;
 
 /* 各入力ブロックの間隔 */
 .form-group {

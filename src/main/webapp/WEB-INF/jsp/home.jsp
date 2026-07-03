@@ -2,40 +2,60 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="UTF-8">
-<title>ホーム画面 - I am the lightning!</title>
+<title>ホーム画面</title>
+<link rel="stylesheet" type="text/css" href="css/home.css">
 </head>
 <body>
-    <p>this is menu</p>
 
-    <div class="menu-group">
-        <form action="OrderManagementServlet" method="doGet">
-            <button type="submit" name="orderManagementButton">注文管理</button>
-        </form>
-    </div>
+    <div class="container">
+        <div class="logout-section">
+            <form action="index.jsp" method="get">
+                <button type="submit" name="logoutButton" class="btn-img">
+                    <img src="image/logoutButton.png" alt="ログアウト">
+                </button>
+            </form>
+        </div>
 
-    <div class="menu-group">
-        <form action="ProductListServlet" method="doget">
-            <button type="submit" name="productButton">商品一覧</button>
-        </form>
-    </div>
+        <h1 class="main-title">ホームメニュー</h1>
+        <hr class="separator">
 
-    <div class="menu-group">
-        <form action="ToppingListServlet" method="doGet">
-            <button type="submit" name="toppingButton">トッピング一覧</button>
-        </form>
-    </div>
+        <section class="menu-section">
+            <h2 class="section-title">注文管理</h2>
+            <div class="button-group">
+                <form action="OrderManagementServlet" method="get">
+                    <button type="submit" name="orderManagementButton" class="btn-img">
+                        <img src="image/orderListButton.png" alt="注文一覧">
+                    </button>
+                </form>
+            </div>
+        </section>
 
-    <div class="menu-group">
-        <form action="CategoryListServlet" method="doGet">
-            <button type="submit" name="categoryButton">カテゴリ一覧</button>
-        </form>
-    </div>
+        <hr class="separator">
 
-    <div class="logout-section">
-        <form action="index.jsp" method="doGet">
-            <button type="submit" name="logoutButton">ログアウト</button>
-        </form>
+        <section class="menu-section">
+            <h2 class="section-title">メニュー管理</h2>
+            <div class="button-group horizontal">
+                <form action="ProductListServlet" method="get">
+                    <button type="submit" name="productButton" class="btn-img">
+                        <img src="image/productButton.png" alt="商品">
+                    </button>
+                </form>
+
+                <form action="ToppingListServlet" method="get">
+                    <button type="submit" name="toppingButton" class="btn-img">
+                        <img src="image/toppingButton.png" alt="トッピング">
+                    </button>
+                </form>
+
+                <form action="CategoryListServlet" method="get">
+                    <button type="submit" name="categoryButton" class="btn-img">
+                        <img src="image/categoryButton.png" alt="カテゴリ">
+                    </button>
+                </form>
+            </div>
+        </section>
     </div>
 
 </body>

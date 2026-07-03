@@ -8,7 +8,24 @@ body {
     flex-direction: column;
     align-items: center;
 }
+.home-container {
+    max-width: 900px;
+    margin: 0 auto 10px auto;
+}
 
+.home-btn {
+    text-decoration: none; /* 下線を消す */
+    display: inline-block; /* クリックエリアを確保 */
+    padding: 10px; /* 余白を持たせる */
+}
+
+/* 画像自体のサイズなどを調整 */
+.home-icon {
+    width: 24px;   /* アイコンの横幅 */
+    height: 24px;  /* アイコンの縦幅 */
+    vertical-align: middle; /* テキストと並べる場合の調整 */
+    filter: invert(100%); /* 必要であれば、色を白っぽく反転させるなど */
+}
 /* ==========================================
    ポップアップ（モーダル）用の追加CSS
    ========================================== */

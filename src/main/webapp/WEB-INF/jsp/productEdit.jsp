@@ -11,7 +11,8 @@
 <body>
 
     <div class="home-container">
-        <a href="HomeServlet" class="home-btn">🏠</a>
+        <a href="HomeServlet" class="home-btn">
+        	<img src="${pageContext.request.contextPath}/image/homeButton.png" class="home-icon" alt="ホーム">
     </div>
 
     <%
@@ -21,7 +22,7 @@
             boolean isNew = (info.getProductId() == 0); // 新規追加モードかどうかのフラグ
     %>
     
-    <div class="page-title"><%= isNew ? "商品追加" : "商品変更" %></div>
+    <div class="page-title"><%= isNew ? "商品追加" : "商品変更" %></div> 
 
     <div class="main-card">
         <form action="ProductEditServlet" method="post">

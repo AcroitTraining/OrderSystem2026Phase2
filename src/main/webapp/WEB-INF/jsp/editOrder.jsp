@@ -10,11 +10,8 @@
 <body>
 
     <%
-        // 正しい名前（orderManagement / servedHistory）で取得
         String from = (String) request.getAttribute("from");
         if (from == null) { from = "orderManagement"; }
-
-        // 新しい名前に合わせた戻り先URLの判定
         String backUrl = "ServedHistoryServlet";
         if ("orderManagement".equals(from)) {
             backUrl = "OrderManagementServlet";
@@ -22,13 +19,10 @@
     %>
 
     <div class="home-container">
-        <a href="<%= backUrl %>" class="home-btn">
-            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                <polyline points="9 22 9 12 15 12 15 22"></polyline>
-            </svg>
-        </a>
+        <a href="HomeServlet" class="home-btn">
+        	<img src="${pageContext.request.contextPath}/image/homeButton.png" class="home-icon" alt="ホーム">
     </div>
+
 
     <%
         EditOrderInfo info = (EditOrderInfo) request.getAttribute("editOrderInfo");
@@ -83,6 +77,7 @@
             </div>
         </form>
     </div>
+
 
     <div id="customModal" class="modal-overlay">
         <div class="modal-content">

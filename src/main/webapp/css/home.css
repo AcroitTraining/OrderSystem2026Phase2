@@ -1,0 +1,128 @@
+@charset "UTF-8";
+
+/* 全体のリセットとフォント設定 */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+    background-color: #ffffff;
+    color: #000000;
+}
+
+/* 全体を囲むコンテナ（画面幅に合わせて縮小、最大900px） */
+.container {
+    max-width: 900px;
+    width: 50%;
+    box-sizing: border-box;
+    margin: 0 auto;
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ログアウトボタンの配置（標準は右上固定） */
+.logout-section {
+    position: relative;
+    top: 20px;
+    left: 650px;
+}
+
+/* メインタイトル */
+.main-title {
+    text-align: center;
+    font-size: 24px; /* PC・スマホ共通で固定 */
+    font-weight: normal;
+    margin-top: 40px;
+    margin-bottom: 15px;
+}
+
+/* 区切り線 */
+.separator {
+    border: none;
+    border-top: 1px solid #e0e0e0;
+    margin: 20px 0;
+    width: 100%;
+}
+
+/* 各セクションのスタイル */
+.menu-section {
+    padding: 10px 40px;
+    box-sizing: border-box;
+}
+
+.section-title {
+    font-size: 18px; /* PC・スマホ共通で固定 */
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+/* 画像ボタン共通：サイズを保ちつつ、枠線を消す */
+.btn-img {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    outline: none;
+    display: inline-block;
+    transition: transform 0.1s ease, opacity 0.2s;
+}
+
+.btn-img:hover {
+    opacity: 0.9;
+}
+
+.btn-img:active {
+    transform: scale(0.98);
+}
+
+/* 画像の大きさが勝手に縮みすぎないように調整 */
+.btn-img img {
+    display: block;
+    width: 150px; /* 元のボタン画像に近い適正サイズで固定 */
+    height: auto;
+}
+
+/* メニュー管理用の横並びグループ（画面が狭くなると自動で折り返し） */
+.button-group.horizontal {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; 
+}
+
+/* ===================================================
+   スマートフォン・タブレット用のレスポンシブ調整 (幅600px以下)
+   =================================================== */
+@media screen and (max-width: 600px) {
+    .container {
+        padding: 20px 10px;
+        position: relative;
+    }
+
+    /* スマホ時は右上固定を解除し、一番上に配置してタイトルとの被りを防止 */
+    .logout-section {
+        position: static;
+        display: flex;
+        justify-content: flex-end;
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .main-title {
+        margin-top: 10px;
+    }
+
+    /* 左右の余白を少し狭めてボタンを押しやすく */
+    .menu-section {
+        padding: 10px 15px;
+    }
+    
+    /* スマホでボタンがはみ出さないよう、画面幅が極端に狭い時だけ100%にする */
+    .btn-img img {
+        max-width: 100%;
+    }
+    
+    /* スマホではメニュー管理ボタンを中央寄せに並べる */
+    .button-group.horizontal {
+        justify-content: center;
+    }
+}

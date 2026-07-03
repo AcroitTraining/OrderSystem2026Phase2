@@ -1,0 +1,117 @@
+@charset "UTF-8";
+body {
+    background-color: #ffffff;
+    font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+    margin: 0;
+    padding: 40px 20px;
+    color: #000000;
+}
+
+.home-container {
+    max-width: 900px;
+    margin: 0 auto 10px auto;
+}
+
+.home-btn {
+    text-decoration: none; /* 下線を消す */
+    display: inline-block; /* クリックエリアを確保 */
+    padding: 10px; /* 余白を持たせる */
+}
+
+/* ★修正: 画像自体のサイズを調整し、白反転(invert)を削除しました */
+.home-icon {
+    width: 32px;   /* 画像のイメージに合わせて少し大きめに調整 */
+    height: 32px;
+    vertical-align: middle;
+}
+
+.page-title {
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 25px;
+}
+
+.main-card {
+    background: #ffffff;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 35px 45px;
+    border-radius: 15px;
+    border: 1.5px solid #000000;
+}
+
+.form-group {
+    margin-bottom: 35px;
+}
+
+.label-title {
+    display: block;
+    font-weight: bold;
+    font-size: 15px;
+    margin-bottom: 10px;
+}
+
+.label-sub {
+    font-size: 11px;
+    color: #888;
+    font-weight: normal;
+    margin-left: 5px;
+}
+
+.input-topping-name {
+    width: 240px;
+    padding: 8px 10px;
+    border: 1px solid #cccccc;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.input-price {
+    width: 80px;
+    padding: 8px 10px;
+    border: 1px solid #cccccc;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.currency-unit {
+    margin-left: 8px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.footer-actions {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-top: 20px;
+}
+
+.btn-back {
+    display: inline-block;
+    background-color: #7a7a7a;
+    color: #ffffff;
+    padding: 12px 25px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+}
+
+.btn-submit {
+    display: inline-block;
+    background-color: #008a00;
+    color: #ffffff;
+    padding: 12px 50px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+}
