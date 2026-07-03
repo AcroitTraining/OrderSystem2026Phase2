@@ -27,7 +27,7 @@ public class OrderManagementServlet extends HttpServlet {
 			throws ServletException, IOException {
 		OrderManagementLogic logic = new OrderManagementLogic();
 		
-		// 🟢 1. 2つのパラメータを別々に受け取る（名前を明快に分けました）
+		//1. 2つのパラメータを別々に受け取る（名前を明快に分けました）
 		String categoryFilter = request.getParameter("categoryFilter");
 		String tableFilter = request.getParameter("tableFilter");
 		
@@ -43,7 +43,7 @@ public class OrderManagementServlet extends HttpServlet {
 			// 全件データを取得
 			List<OrderManagementInfo> allList = dao.findorderDetails();
 			
-			// 🟢 2. カテゴリごとの件数を集計（既存の処理）
+			//2. カテゴリごとの件数を集計（既存の処理）
 			int countAll = allList.size();
 			int countOkonomi = 0;
 			int countMonja = 0;
@@ -53,7 +53,7 @@ public class OrderManagementServlet extends HttpServlet {
 			int countSake = 0;
 			int countBottle = 0;
 
-			// 🆕 卓番ごとの件数を集計する変数を追加
+			//卓番ごとの件数を集計
 			int countTableAll = allList.size();
 			int countTable1 = 0;
 			int countTable2 = 0;

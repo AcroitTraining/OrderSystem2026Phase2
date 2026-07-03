@@ -41,6 +41,7 @@ public class ProductListServlet extends HttpServlet {
 			pList = logic.fillterProducts(pList, filter);
 			
 			request.setAttribute("pList", pList);
+			request.setAttribute("currentCategory", filter);
 			
 		} catch (SQLException e) {
 			e.printStackTrace();

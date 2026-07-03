@@ -29,7 +29,7 @@ public class OrderManagementDAO {
 		}
 
 		String sql = 
-				"SELECT od.order_id, od.product_quantity, od.session_id, od.order_flag, "
+				"SELECT od.order_id, od.product_quantity, od.session_id, od.order_flag, ts.table_id, "
 						+ "p.product_name, p.product_price, od.order_price, p.category_name, od.order_time, "
 						+ "t.topping_name, t.topping_price, t.topping_stock, p.product_stock, "
 						+ "mt.topping_quantity, (od.product_quantity * od.order_price) AS sub_total "
@@ -42,6 +42,8 @@ public class OrderManagementDAO {
 						+ "ON od.order_id = mt.order_id "
 						+ "LEFT JOIN topping AS t "
 						+ "ON mt.topping_id = t.topping_id "
+						+ "LEFT JOIN table_sessions AS ts "
+						+ "ON ts.session_id = od.session_id "
 						+ "WHERE od.order_flag = 1 "
 						+ "AND od.served_flag = 0 "
 						+ "AND od.accounting_flag = 0 "
@@ -56,6 +58,7 @@ public class OrderManagementDAO {
 					if (info == null) {
 						info = new OrderManagementInfo();
 						info.setOrderId(orderId);
+						info.setTableId(rs.getInt("table_id"));
 						info.setOrderTime(rs.getString("order_time")); 
 						info.setCategoryName(rs.getString("category_name"));
 						info.setProductName(rs.getString("product_name"));
