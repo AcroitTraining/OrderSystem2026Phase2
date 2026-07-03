@@ -29,7 +29,7 @@ public class ToppingListServlet extends HttpServlet {
 				// TODO 自動生成された catch ブロック
 				e.printStackTrace();
 			}
-			
+			request.setCharacterEncoding("UTF-8");
 			try (Connection conn = DriverManager.getConnection(URL, USER, PASS)) {
 				ToppingListDAO dao = new ToppingListDAO(conn);	
 				List<ToppingListInfo> tList = dao.findAllTopping();

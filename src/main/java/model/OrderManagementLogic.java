@@ -13,7 +13,6 @@ public class OrderManagementLogic {
 
         // 現在の時刻を取得
         long nowMillis = System.currentTimeMillis();
-        System.out.println(nowMillis);
         
         // 💡 お使いのDBのorder_timeの形式に合わせてフォーマットを指定してください
         // もし日付も入っているなら "yyyy-MM-dd HH:mm:ss" に変更してください
@@ -61,36 +60,49 @@ public class OrderManagementLogic {
      * @param filterStr JSPから届いた文字列（例: "お好み焼き", "1卓", "全て"）
      * @return 絞り込み後のリスト
      */
-    public List<OrderManagementInfo> filterOrders(List<OrderManagementInfo> omList, String filterStr) {
-        // リストが空、または「全て」が選ばれた、あるいはまだボタンが押されていない（null）の場合は全件返す
-        if (omList == null || filterStr == null || filterStr.equals("全て") || filterStr.isEmpty()) {
-            return omList;
+    public List<OrderManagementInfo> filterOrders(List<OrderManagementInfo> omList, String categoryFilter, String tableFilter) {
+        if (omList == null) {
+            return new ArrayList<>();
         }
 
         List<OrderManagementInfo> filteredList = new ArrayList<>();
 
-        //  判定：末尾に「卓」がついているかどうかで、卓番絞り込みかカテゴリー絞り込みかを自動で判別する
-        if (filterStr.endsWith("卓")) {
-            // 【卓番号での絞り込み】
-            String numericStr = filterStr.replaceAll("[^0-9]", "");
-            if (numericStr.isEmpty()) return omList;
-            
-            int targetTableId = Integer.parseInt(numericStr);
-            
-            for (OrderManagementInfo item : omList) {
-                if (item.getTableId() == targetTableId) {
-                    filteredList.add(item);
+        for (OrderManagementInfo item : omList) {
+            // 1. カテゴリのチェック
+            boolean matchCategory = false;
+            // フィルターが未指定、または「全て」の場合は無条件でマッチ
+            if (categoryFilter == null || categoryFilter.isEmpty() || categoryFilter.equals("全て")) {
+                matchCategory = true;
+            } else if (item.getCategoryName() != null && item.getCategoryName().equals(categoryFilter)) {
+                matchCategory = true;
+            }
+
+            // 2. 卓番のチェック
+            boolean matchTable = false;
+            // フィルターが未指定、または「全ての卓」の場合は無条件でマッチ
+            if (tableFilter == null || tableFilter.isEmpty() || tableFilter.equals("全ての卓")) {
+                matchTable = true;
+            } else {
+                // 現在のロジックを活かし、末尾の「卓」を除去して数値にする（例: "1卓" -> 1）
+                String numericStr = tableFilter.replaceAll("[^0-9]", "");
+                if (!numericStr.isEmpty()) {
+                    int targetTableId = Integer.parseInt(numericStr);
+                    if (item.getTableId() == targetTableId) {
+                        matchTable = true;
+                    }
+                } else {
+                    // 数値に変換できなかった場合はチェックをスルー
+                    matchTable = true;
                 }
             }
-        } else {
-            // 【カテゴリー名での絞り込み】
-            for (OrderManagementInfo item : omList) {
-                if (item.getCategoryName() != null && item.getCategoryName().equals(filterStr)) {
-                    filteredList.add(item);
-                }
+
+            // 3. 両方の条件を満たした注文だけをリストに加える（掛け合わせ）
+            if (matchCategory && matchTable) {
+                filteredList.add(item);
             }
         }
 
         return filteredList;
     }
+
 }

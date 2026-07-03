@@ -37,16 +37,47 @@ public class OrderManagementServlet extends HttpServlet {
 			OrderManagementDAO dao = new OrderManagementDAO(conn);
 
 
-			List<OrderManagementInfo> omList = dao.findorderDetails();
-			logic.calculateOrderTimes(omList);
+			// 1. 全件データを取得
+		    List<OrderManagementInfo> allList = dao.findorderDetails();
+		    
+		    // 2. 全件データからカテゴリごとの件数を集計する
+		    int countAll = allList.size();
+		    int countOkonomi = 0;
+		    int countMonja = 0;
+		    int countTeppan = 0;
+		    int countSide = 0;
+		    int countSoft = 0;
+		    int countSake = 0;
+		    int countBottle = 0;
 
-			// 受け取った値を使って、カテゴリーまたは卓番で絞り込む
-			omList = logic.filterOrders(omList, tableFilter);
+		    for (OrderManagementInfo item : allList) {
+		        String cat = item.getCategoryName();
+		        if ("お好み焼き".equals(cat)) countOkonomi++;
+		        else if ("もんじゃ焼き".equals(cat)) countMonja++;
+		        else if ("鉄板焼き".equals(cat)) countTeppan++;
+		        else if ("サイドメニュー".equals(cat)) countSide++;
+		        else if ("ソフトドリンク".equals(cat)) countSoft++;
+		        else if ("お酒".equals(cat)) countSake++;
+		        else if ("ボトル".equals(cat)) countBottle++;
+		    }
 
-			//  絞り込まれたデータに対して時間の計算をして色を決定する
-			logic.calculateOrderTimes(omList);
-			// 4. リクエストスコープに保存してJSPへ渡す
-			request.setAttribute("omList", omList);
+		    // 3. バッジの件数をリクエストスコープに保存
+		    request.setAttribute("countAll", countAll);
+		    request.setAttribute("countOkonomi", countOkonomi);
+		    request.setAttribute("countMonja", countMonja);
+		    request.setAttribute("countTeppan", countTeppan);
+		    request.setAttribute("countSide", countSide);
+		    request.setAttribute("countSoft", countSoft);
+		    request.setAttribute("countSake", countSake);
+		    request.setAttribute("countBottle", countBottle);
+
+		    // 4. 既存の絞り込み処理を行う
+		    logic.calculateOrderTimes(allList);
+		    List<OrderManagementInfo> omList = logic.filterOrders(allList, tableFilter);
+		    logic.calculateOrderTimes(omList);
+
+		    // 5. 絞り込まれたリストをJSPへ渡す
+		    request.setAttribute("omList", omList);
 
 		} catch (SQLException e) {
 			e.printStackTrace();

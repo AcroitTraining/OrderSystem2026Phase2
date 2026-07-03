@@ -64,7 +64,7 @@ public class ProductListDAO {
 			throw new IllegalStateException("JDBCドライバを読み込めませんでした");
 		}
 		
-		String sql = "UPDATE product SET product_display_flag = 0 WHERE product_id = ?";
+		String sql = "UPDATE product SET product_display_flag = product_display_flag ^ 1 WHERE product_id = ?";
 		
 		try (PreparedStatement ps = conn.prepareStatement(sql)) {
 			ps.setInt(1, productId);
