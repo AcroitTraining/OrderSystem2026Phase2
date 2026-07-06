@@ -23,6 +23,7 @@ table td {
 }
 
 /* タブを囲む親要素：横並びにして、溢れたら横スクロールできるようにする */
+
 .category-tabs {
     display: flex;
     gap: 20px;                 /* タブとタブの間隔 */

@@ -12,20 +12,31 @@ body {
 /* ==========================================
   ホームボタン用CSS
    ========================================== */
+/* 🟢 ホームボタンを内包する親コンテナ（テーブルの外）
+   中央寄せを完全に打ち消し、画面左側から30pxの位置に配置します */
+.home-container {
+    display: flex !important;       /* フレックスボックスで配置を制御 */
+    justify-content: flex-start !important; /* 強制的に左寄せ */
+    text-align: left !important;    /* テキストの中央寄せ設定を完全無効化 */
+    margin-top: 20px;               /* 画面上部からの余白 */
+    margin-bottom: 15px;            /* 下のカテゴリタブとの間の余白 */
+}
+
 /* ボタン自体のグレーの背景や枠線を完全に消す */
 .img-submit-btn {
     background: transparent; /* 背景を透明に */
     border: none;            /* 枠線を消す */
     padding: 0;              /* 余白をリセット */
-    margin: 0;
     cursor: pointer;         /* マウスを乗せたら指マークにする */
     outline: none;           /* クリック時の青い枠線を消す */
     vertical-align: middle;
     display: inline-block;   
-    margin: 0 0 0 30px;        /* 左側に30pxの余白を作る */
+    
+    /* 🟢 左側の30px余白は親コンテナと2重にならないようここで綺麗に管理します */
+    margin: 0 0 0 30px;      
 }
 
-/* 画像のサイズ調整（現場のテーブル幅に合わせて変更してください） */
+/* 画像のサイズ調整 */
 .btn-icon {
     width: 36px;  /* 横幅 */
     height: 36px; /* 縦幅 */
