@@ -15,32 +15,17 @@
     align-items: center;
     padding: 10px 0;
     box-sizing: border-box;
+    justify-content: flex-start !important; /* 強制的に左詰め */
 }
 
-/* ホームボタンを左寄せした状態から、新規作成ボタンへ近づける余白 */
+/* ホームボタンの左マージン */
 .home-container {
     margin: 0 10px 0 30px !important;
 }
 
-/* 🟢 新規作成ボタン ＆ カテゴリタブの親 wrapper */
-.category-wrapper {
-    display: flex;
-    align-items: center;
-    flex-grow: 1;
-    position: relative;
-    padding-bottom: 0;
-    margin-bottom: 0;
-    /* 💡 新規作成ボタンが真ん中に飛び出さないよう、強制的に「左詰め」にします */
-    justify-content: flex-start !important; 
-}
-
-/* 新規作成ボタンの粘着設定（スクロールで文字をくぐらせる） */
-.create-form-sticky {
-    position: sticky;
-    left: 0;
-    z-index: 10;
-    background-color: #ffffff;
-    padding-right: 15px;
+/* 新規作成ボタンの配置調整（ホームのすぐ右隣に綺麗に並びます） */
+.create-container {
+    margin: 0 !important;
     display: flex;
     align-items: center;
 }
@@ -64,51 +49,7 @@
 }
 
 /* ==========================================
-   2. カテゴリタブ内の詳細デザイン
-   ========================================== */
-.category-tabs {
-    display: flex;
-    gap: 20px;
-    overflow-x: auto;
-    white-space: nowrap;
-    width: 100%;
-}
-
-.category-tabs::-webkit-scrollbar { height: 4px; }
-.category-tabs::-webkit-scrollbar-thumb { background: #ccc; border-radius: 2px; }
-
-.tab-btn {
-    position: relative;
-    background: none;
-    border: none;
-    padding: 10px 5px;
-    font-size: 15px;
-    color: #888888;
-    cursor: pointer;
-    font-family: inherit;
-    display: inline-flex;
-    align-items: center;
-    transition: all 0.2s ease;
-}
-
-.tab-btn.active {
-    color: #27ae60;
-    font-weight: bold;
-}
-
-.tab-btn.active::after {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    width: 100%;
-    height: 3px;
-    background-color: #27ae60;
-    border-radius: 2px;
-}
-
-/* ==========================================
-   3. 商品一覧テーブル専用設定
+   2. トッピング一覧テーブルの設定
    ========================================== */
 body {
     /* 固定ヘッダーにテーブルが被らないように上部余白を作成 */
@@ -119,7 +60,7 @@ body {
     align-items: center !important;
 }
 
-.product-table {
+.topping-table {
     table-layout: fixed;
     width: 90%;
     max-width: 900px;
@@ -127,6 +68,7 @@ body {
     margin-top: 20px;
 }
 
+/* カラムごとの幅比率設定（商品一覧に合わせると画面全体の統一感が出ます） */
 .col-name   { width: 35%; text-align: left; }
 .col-price  { width: 15%; }
 .col-edit   { width: 15%; }
@@ -134,12 +76,20 @@ body {
 .col-delete { width: 15%; }
 
 /* ==========================================
-   4. 表示切り替えトグルボタン ＆ 削除
+   3. 表示切り替えトグルボタン ＆ 削除
    ========================================== */
 .status-text { font-size: 14px; font-weight: bold; margin-right: 8px; user-select: none; }
 .text-show { color: #27ae60; }
 .text-hide { color: #7f8c8d; }
 
+.col-toggle.display form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: nowrap;
+}
+
+/* トグルボタンの土台サイズ */
 .toggle-button-4 {
     display: flex;
     align-items: center;
@@ -179,6 +129,7 @@ body {
 .toggle-button-4:has(:checked)::after { left: 18px; color: #ffb900; content: 'Yes'; }
 .toggle-button-4 input { display: none; }
 
+/* 削除画像ボタン */
 .img-delete-btn {
     background: transparent !important;
     border: none !important;

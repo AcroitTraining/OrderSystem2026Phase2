@@ -61,7 +61,8 @@ public class ToppingListDAO {
 			throw new IllegalStateException("JDBCドライバを読み込めませんでした");
 		}
 		
-		String sql = "UPDATE topping SET topping_display_flag = 0 WHERE topping_id = ?";
+		String sql = "UPDATE topping SET topping_display_flag = 1 - topping_display_flag WHERE topping_id = ?\n"
+				+ "";
 		
 		try (PreparedStatement ps = conn.prepareStatement(sql)) {
 			ps.setInt(1, toppingId);

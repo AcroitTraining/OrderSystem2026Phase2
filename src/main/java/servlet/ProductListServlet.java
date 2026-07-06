@@ -33,6 +33,9 @@ public class ProductListServlet extends HttpServlet {
 		
 		ProductListLogic logic = new ProductListLogic();
 		String filter = request.getParameter("filter");
+		if (filter == null || filter.isEmpty()) {
+	        filter = "全て";
+	    }
 		
 		try (Connection conn = DriverManager.getConnection(URL, USER, PASS)) {
 			ProductListDAO dao = new ProductListDAO(conn);

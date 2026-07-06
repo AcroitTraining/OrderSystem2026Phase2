@@ -52,6 +52,7 @@ public class ToppingListServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 		
+		request.setCharacterEncoding("UTF-8");
 		String tid = request.getParameter("toppingId");
 		int toppingId = Integer.parseInt(tid);
 		String action = request.getParameter("action");
@@ -60,9 +61,9 @@ public class ToppingListServlet extends HttpServlet {
 			ToppingListDAO dao = new ToppingListDAO(conn);
 
 
-			if(action.equals("表示")) {
+			if("表示切り替え".equals(action)) { 
 				dao.updateToppingDisplayFlag(toppingId);
-			}else if(action.equals("削除")) {
+			} else if("削除".equals(action)) {
 				dao.updateToppingDeleteFlag(toppingId);
 			}
 		} catch (SQLException e) {

@@ -13,54 +13,55 @@
 <title>商品一覧画面</title>
 </head>
 <body>
-	<div class="home-container">
-		<form action="HomeServlet" method="get">
-			<button type="submit" class="home-btn">
-				<img src="./image/homeButton.png" alt="ホーム" class="home-img">
-			</button>
-		</form>
-	</div>
-	<!-- 🟢 カテゴリ・新規作成エリア -->
-	<category-area class="category-wrapper"> 
-
-	<form action="ProductEditServlet" method="get"
-		class="create-form-sticky">
-		<button type="submit" class="create-btn">
-			<img src="./image/create_button-removebg-preview.png" alt="新規作成" class="create-img">
-		</button>
-	</form>
-
-	<form action="ProductListServlet" method="get"
-		style="display: inline; width: 100%;">
-		<div class="category-tabs">
-			<!-- currentCategoryと一致するボタンにだけ 'active' クラスを付与 -->
-			<button type="submit" name="filter" value="全て"
-				class="tab-btn ${currentCategory == '全て' ? 'active' : ''}"
-				data-category="全て">全て</button>
-			<button type="submit" name="filter" value="お好み焼き"
-				class="tab-btn ${currentCategory == 'お好み焼き' ? 'active' : ''}"
-				data-category="お好み焼き">お好み焼き</button>
-			<button type="submit" name="filter" value="もんじゃ焼き"
-				class="tab-btn ${currentCategory == 'もんじゃ焼き' ? 'active' : ''}"
-				data-category="もんじゃ焼き">もんじゃ焼き</button>
-			<button type="submit" name="filter" value="鉄板焼き"
-				class="tab-btn ${currentCategory == '鉄板焼き' ? 'active' : ''}"
-				data-category="鉄板焼き">鉄板焼き</button>
-			<button type="submit" name="filter" value="サイドメニュー"
-				class="tab-btn ${currentCategory == 'サイドメニュー' ? 'active' : ''}"
-				data-category="サイドメニュー">サイドメニュー</button>
-			<button type="submit" name="filter" value="ソフトドリンク"
-				class="tab-btn ${currentCategory == 'ソフトドリンク' ? 'active' : ''}"
-				data-category="ソフトドリンク">ソフトドリンク</button>
-			<button type="submit" name="filter" value="お酒"
-				class="tab-btn ${currentCategory == 'お酒' ? 'active' : ''}"
-				data-category="お酒">お酒</button>
-			<button type="submit" name="filter" value="ボトル"
-				class="tab-btn ${currentCategory == 'ボトル' ? 'active' : ''}"
-				data-category="ボトル">ボトル</button>
+<header class="fixed-header">
+		<!-- ① ホームボタン -->
+		<div class="home-container">
+			<form action="HomeServlet" method="get">
+				<button type="submit" class="home-btn">
+					<img src="./image/homeButton.png" alt="ホーム" class="home-img">
+				</button>
+			</form>
 		</div>
-	</form>
-	</category-area>
+		
+		<!-- ② 新規作成ボタン ＆ ③ カテゴリタブエリア -->
+		<category-area class="category-wrapper"> 
+			<form action="ProductEditServlet" method="get" class="create-form-sticky">
+				<button type="submit" class="create-btn">
+					<img src="./image/create_button-removebg-preview.png" alt="新規作成" class="create-img">
+				</button>
+			</form>
+		
+			<form action="ProductListServlet" method="get" style="display: inline; width: 100%;">
+				<div class="category-tabs">
+					<!-- currentCategoryと一致するボタンにだけ 'active' クラスを付与 -->
+					<button type="submit" name="filter" value="全て"
+						class="tab-btn ${currentCategory == '全て' ? 'active' : ''}"
+						data-category="全て">全て</button>
+					<button type="submit" name="filter" value="お好み焼き"
+						class="tab-btn ${currentCategory == 'お好み焼き' ? 'active' : ''}"
+						data-category="お好み焼き">お好み焼き</button>
+					<button type="submit" name="filter" value="もんじゃ焼き"
+						class="tab-btn ${currentCategory == 'もんじゃ焼き' ? 'active' : ''}"
+						data-category="もんじゃ焼き">もんじゃ焼き</button>
+					<button type="submit" name="filter" value="鉄板焼き"
+						class="tab-btn ${currentCategory == '鉄板焼き' ? 'active' : ''}"
+						data-category="鉄板焼き">鉄板焼き</button>
+					<button type="submit" name="filter" value="サイドメニュー"
+						class="tab-btn ${currentCategory == 'サイドメニュー' ? 'active' : ''}"
+						data-category="サイドメニュー">サイドメニュー</button>
+					<button type="submit" name="filter" value="ソフトドリンク"
+						class="tab-btn ${currentCategory == 'ソフトドリンク' ? 'active' : ''}"
+						data-category="ソフトドリンク">ソフトドリンク</button>
+					<button type="submit" name="filter" value="お酒"
+						class="tab-btn ${currentCategory == 'お酒' ? 'active' : ''}"
+						data-category="お酒">お酒</button>
+					<button type="submit" name="filter" value="ボトル"
+						class="tab-btn ${currentCategory == 'ボトル' ? 'active' : ''}"
+						data-category="ボトル">ボトル</button>
+				</div>
+			</form>
+		</category-area>
+	</header>
 
 	<table class="product-table">
 		<tr>

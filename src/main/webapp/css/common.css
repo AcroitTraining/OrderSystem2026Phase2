@@ -1,151 +1,64 @@
 @charset "UTF-8";
+
+/* アプリ全体の基本設定 */
 body {
     background-color: #fafafa;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     margin: 0;
-    padding: 30px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    padding: 0; /* productList側で一括制御するため初期化 */
+}
+
+/* テーブル全体の共通基本デザイン */
+table {
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+table th {
+    background-color: aquamarine;
+    border: solid 1px #330000;
+    padding: 10px;
+}
+
+table td {
+    border: solid 1px #330000;
+    background-color: #ffffff; 
+    padding: 10px;
+    text-align: center; 
 }
 
 /* ==========================================
-   カテゴリタブ設定
-   ========================================== */
-/* タブを囲む親要素：横並びにして、溢れたら横スクロールできるようにする */
-.category-tabs {
-    display: flex;
-    gap: 20px;               /* タブとタブの間隔 */
-    overflow-x: auto;         /* 画面幅に収まらない場合は横スクロール */
-    white-space: nowrap;      /* タブを途中で改行させない */
-    border-bottom: 1px solid #e0e0e0; /* 全体の下境界線 */
-    padding-bottom: 5px;
-}
-
-/* スクロールバーのデザインを非表示、または綺麗にする（お好みで） */
-.category-tabs::-webkit-scrollbar {
-    height: 4px;
-}
-.category-tabs::-webkit-scrollbar-thumb {
-    background: #ccc;
-    border-radius: 2px;
-}
-
-/* 基本のタブボタンのスタイル（未選択時） */
-.tab-btn {
-    position: relative;
-    background: none;
-    border: none;
-    padding: 10px 5px;
-    font-size: 15px;
-    color: #888888;            /* 選択されていない文字はグレー */
-    cursor: pointer;
-    font-family: inherit;
-    display: inline-flex;
-    align-items: center;
-    transition: all 0.2s ease;
-}
-
-/* 選択されているタブ（緑の下線と文字色） */
-.tab-btn.active {
-    color: #27ae60;            /* イメージ画像の鮮やかな緑色 */
-    font-weight: bold;
-}
-
-/* 選択中の下線を要素の底ぴったりにつける */
-.tab-btn.active::after {
-    content: '';
-    position: absolute;
-    bottom: -6px;/* 親のborder-bottomと重ねる調整 */
-    left: 0;
-    width: 100%;
-    height: 3px;              
-    background-color: #27ae60; 
-    border-radius: 2px;
-}
-
-/* ==========================================
-   商品テーブルのカラム幅・レイアウト調整
-   ========================================== */
-
-/* テーブル全体のレイアウト方式を固定（幅の計算をズレにくくします） */
-.product-table {
-    table-layout: fixed;
-    width: 100%;
-    min-width:800px;
-}
-
-/* 商品名カラム（文字が長くなる可能性があるため広めに確保） */
-.col-name {
-    width: 20%;
-    text-align: left; /* 商品名だけ左寄せにしたい場合はここを有効に */
-}
-
-/* 価格カラム */
-.col-price {
-    width: 7%;
-}
-
-/* 編集ボタンカラム */
-.col-edit {
-    width: 7%;
-}
-
-/* 表示切り替えトグルボタンカラム */
-.col-toggle {
-    width: 15%;
-}
-
-/* 削除ボタンカラム */
-.col-delete {
-    width: 7%;
-}
-
-/* トグルボタンをセル内できれいに中央配置するための調整 */
-.col-toggle.display {
-    display: table-cell; /* 元のフレックス等のバグを防ぐため */
-}
-.col-toggle.display form {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-
-/* ==========================================
-  ホームボタン用CSS
+  ホームボタン用の共通パーツ設定
    ========================================== */
 .home-container {
-    width: 100%;
-    margin-bottom: 10px;
     display: flex;
-    justify-content: flex-start; /* 左寄せ */
+    align-items: center;
 }
 
 .home-btn {
-    background: none;      /* ボタンのデフォルト背景を消す */
-    border: none;          /* ボタンの枠線を消す */
-    padding: 0;            /* 余計な余白を消す */
-    cursor: pointer;       /* カーソルをポインターにする */
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    cursor: pointer;
     display: flex;
     align-items: center;
 }
 
 .home-img {
-    width: 32px;           /* 画像のサイズ（好みに合わせて調整してください） */
-    height: auto;
+    width: 32px !important;
+    height: 32px !important;
+    object-fit: contain;
     transition: opacity 0.2s ease;
 }
 
-/* ホバー時に少し薄くしてクリックできる感を出します */
 .home-btn:hover .home-img {
     opacity: 0.7;
 }
 
-
-
 /* ==========================================
-   ポップアップ（モーダル）用の追加CSS
+   ポップアップ（モーダル）用の共通追加CSS
    ========================================== */
 .modal-overlay {
     display: none; 
@@ -154,13 +67,12 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.4); /* 背景を暗いグレーに透過 */
+    background-color: rgba(0, 0, 0, 0.4);
     z-index: 1000;
     justify-content: center;
     align-items: center;
 }
 
-/* ポップアップ中央の白いボックス */
 .modal-content {
     background-color: #ffffff;
     padding: 40px 60px;
@@ -185,14 +97,12 @@ body {
     color: #000000;
 }
 
-/* ボタンの横並び */
 .modal-buttons {
     display: flex;
     justify-content: center;
     gap: 15px;
 }
 
-/* いいえ ボタン（白地・黒枠・黒文字） */
 .btn-modal-no {
     background-color: #ffffff;
     color: #000000;
@@ -207,7 +117,6 @@ body {
     background-color: #f5f5f5;
 }
 
-/* はい ボタン（赤地・丸角・白文字） */
 .btn-modal-yes {
     background-color: #e60012;
     color: #ffffff;
@@ -223,7 +132,6 @@ body {
     background-color: #cc0010;
 }
 
-/* はい ボタン（赤地・丸角・白文字） */
 .btn-modal-yes2 {
     background-color: rgb(0, 128, 0);
     color: #ffffff;
@@ -235,6 +143,6 @@ body {
     cursor: pointer;
     min-width: 80px;
 }
-.btn-modal-yes:hover2 {
+.btn-modal-yes2:hover {
     background-color: rgb(0, 64, 0);
 }
