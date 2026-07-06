@@ -1,9 +1,7 @@
 document.addEventListener("DOMContentLoaded", function() {
     const editOrderForm = document.getElementById("editOrderForm");
-    
-    // ==========================================
-    // 1. 【変更】ボタン用ポップアップの制御
-    // ==========================================
+
+    // 変更ボタン用ポップアップの制御
     const triggerUpdate = document.getElementById("triggerUpdate");
     const submitMode = document.getElementById("submitMode");
     const customModal = document.getElementById("customModal");
@@ -28,9 +26,8 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    // ==========================================
-    // 2. 【注文取り消し】ボタン用ポップアップの制御
-    // ==========================================
+
+    // 注文取り消しボタン用ポップアップの制御
     const triggerDelete = document.getElementById("triggerDelete");
     const deleteModal = document.getElementById("deleteModal");
     const deleteNo = document.getElementById("deleteNo");

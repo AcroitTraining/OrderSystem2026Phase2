@@ -14,20 +14,20 @@ body {
     max-width: 800px;
     margin-bottom: 10px;
     display: flex;
-    justify-content: flex-start; /* 左寄せ */
+    justify-content: flex-start; 
 }
 
 .home-btn {
-    background: none;      /* ボタンのデフォルト背景を消す */
-    border: none;          /* ボタンの枠線を消す */
-    padding: 0;            /* 余計な余白を消す */
-    cursor: pointer;       /* カーソルをポインターにする */
+    background: none;      
+    border: none;         
+    padding: 0;           
+    cursor: pointer;       
     display: flex;
     align-items: center;
 }
 
 .home-img {
-    width: 32px;           /* 画像のサイズ（好みに合わせて調整してください） */
+    width: 32px;           
     height: auto;
     transition: opacity 0.2s ease;
 }

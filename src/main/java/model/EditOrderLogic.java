@@ -31,7 +31,6 @@ public class EditOrderLogic implements Serializable {
                     for (EditOrderInfo.ToppingList t : info.getToppings()) {
                         totalToppingQty += t.getQuantity();
                     }
-                    // 全体合計が4未満、かつそのトッピング単体が4未満のみ加算を許可
                     if (totalToppingQty < 4 && currentTQty < 4) {
                         topping.setQuantity(currentTQty + 1);
                     }

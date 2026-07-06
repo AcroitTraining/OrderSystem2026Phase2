@@ -56,8 +56,7 @@ public class EditOrderDAO {
         return info;
     }
 
-    /**
-     * 2. マスタと現在選択されているトッピング情報を結合してリスト取得
+    /*マスタと現在選択されているトッピング情報を結合してリスト取得
      */
     public List<EditOrderInfo.ToppingList> findToppingListByProductId(int productId, int orderId) {
         List<EditOrderInfo.ToppingList> list = new ArrayList<>();
@@ -90,7 +89,7 @@ public class EditOrderDAO {
     }
 
     /**
-     * 3. 商品注文数量の更新
+    商品注文数量の更新
      */
     public void updateProductQuantity(int orderId, int productQty) throws SQLException {
         String sql = "UPDATE order_details SET product_quantity = ? WHERE order_id = ?";
@@ -103,7 +102,7 @@ public class EditOrderDAO {
     }
 
     /**
-     * 4. トッピングの新規挿入
+    トッピングの新規挿入
      */
     public void insertTopping(int orderId, int toppingId, int quantity) throws SQLException {
         String sql = "INSERT INTO multiple_toppings (order_id, topping_id, topping_quantity) VALUES (?, ?, ?)";
@@ -117,7 +116,7 @@ public class EditOrderDAO {
     }
 
     /**
-     * 5. トッピングの単体削除
+     トッピングの単体削除
      */
     public void deleteToppingSingle(int orderId, int toppingId) throws SQLException {
         String sql = "DELETE FROM multiple_toppings WHERE order_id = ? AND topping_id = ?";
@@ -129,9 +128,7 @@ public class EditOrderDAO {
         }
     }
 
-    /**
-     * 6. トッピングの数量更新
-     */
+    /*トッピングの数量更新  */
     public void updateToppingQuantity(int orderId, int toppingId, int quantity) throws SQLException {
         String sql = "UPDATE multiple_toppings SET topping_quantity = ? WHERE order_id = ? AND topping_id = ?";
         try (Connection conn = getConnection();
@@ -143,9 +140,7 @@ public class EditOrderDAO {
         }
     }
 
-    /**
-     * 7. 商品マスタの在庫（product_stock）を更新
-     */
+    /* 商品マスタの在庫（product_stock）を更新 */
     public void updateProductStock(int productId, int diff) throws SQLException {
         String sql = "UPDATE product SET product_stock = product_stock + ? WHERE product_id = ?";
         try (Connection conn = getConnection();
@@ -157,7 +152,7 @@ public class EditOrderDAO {
     }
 
     /**
-     * 8. トッピングマスタの在庫（topping_stock）を更新
+     トッピングマスタの在庫（topping_stock）を更新
      */
     public void updateToppingStock(int toppingId, int diff) throws SQLException {
         String sql = "UPDATE topping SET topping_stock = topping_stock + ? WHERE topping_id = ?";

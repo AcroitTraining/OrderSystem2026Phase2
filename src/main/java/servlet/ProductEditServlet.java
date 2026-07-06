@@ -26,8 +26,6 @@ public class ProductEditServlet extends HttpServlet {
             dao = new ProductEditDAO();
             List<ProductEditInfo.ToppingMaster> allToppings = dao.findAllToppings();
             request.setAttribute("allToppings", allToppings);
-
-            // ★修正: productIdが無い、または空の場合は「新規登録モード」として空のオブジェクトを渡す
             if (pid == null || pid.isEmpty()) {
                 ProductEditInfo emptyInfo = new ProductEditInfo();
                 emptyInfo.setProductId(0); // 0は新規の印
@@ -40,7 +38,6 @@ public class ProductEditServlet extends HttpServlet {
                 return;
             }
 
-            // productIdがある場合は従来通り「編集モード」
             int productId = Integer.parseInt(pid);
             ProductEditInfo info = dao.findProductDetails(productId);
 
@@ -77,7 +74,7 @@ public class ProductEditServlet extends HttpServlet {
         try {
             dao = new ProductEditDAO();
             
-            // ★修正: productIdStrが空、または "0" の場合は新規作成を行う
+            // productIdStrが空、または "0" の場合は新規作成を行う
             if (productIdStr == null || productIdStr.isEmpty() || "0".equals(productIdStr)) {
                 dao.insertProductDetails(productName, productPrice, categoryName, toppingIds);
             } else {

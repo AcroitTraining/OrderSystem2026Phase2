@@ -121,7 +121,7 @@ public class EditOrderServlet extends HttpServlet {
 
             EditOrderLogic logic = new EditOrderLogic();
 
-            // 「＋」「－」ボタン処理（画面をリロードさせて状態維持）
+            // 「＋」「－」ボタン処理（
             if (button != null && ("main_plus".equals(button) || "main_minus".equals(button) || button.startsWith("+") || button.startsWith("-"))) {
                 logic.calcQuantity(info, button);
                 request.setAttribute("editOrderInfo", info);
@@ -137,22 +137,21 @@ public class EditOrderServlet extends HttpServlet {
                 int screenProductQty = info.getProductQuantity(); 
                 int dbProductQty = dbOriginal.getProductQuantity();   
 
-                // 1. 商品メインの注文数量変更
+                // 商品メインの注文数量変更
                 if (screenProductQty != dbProductQty) {
                     dao.updateProductQuantity(orderId, screenProductQty);
                     int productDiff = screenProductQty - dbProductQty;
                     dao.updateProductStock(info.getProductId(), -productDiff);
                 }
 
-                // 2. 各トッピングの注文状態の更新、および「裏側での掛け算在庫調整」
+                //  各トッピングの注文状態の更新、および「裏側での掛け算在庫調整」
                 for (int i = 0; i < info.getToppings().size(); i++) {
                     EditOrderInfo.ToppingList screen = info.getToppings().get(i);
                     EditOrderInfo.ToppingList db = dbToppingOriginal.get(i); 
                     
-                    int screenQty = screen.getQuantity(); // 画面に表示されている選択個数（例: 1）
-                    int dbQty = db.getQuantity();         // 元々DBに入っていた個数（例: 1）
+                    int screenQty = screen.getQuantity(); 
+                    int dbQty = db.getQuantity();         
 
-                    // 2-a. multiple_toppings（現在の注文内容）の更新
                     if (dbQty != screenQty) {
                         if (dbQty == 0 && screenQty > 0) {
                             dao.insertTopping(orderId, screen.getToppingId(), screenQty);
@@ -168,7 +167,6 @@ public class EditOrderServlet extends HttpServlet {
                     int oldTotalToppingCount = dbQty * dbProductQty;
                     int toppingStockDiff = newTotalToppingCount - oldTotalToppingCount;
                     if (toppingStockDiff != 0) {
-                        // 在庫から差し引く（減少させる）ため、マイナスをかけて渡す
                         dao.updateToppingStock(screen.getToppingId(), -toppingStockDiff);
                     }
                 }
