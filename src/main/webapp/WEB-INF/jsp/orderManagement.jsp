@@ -11,48 +11,60 @@
 <title>注文管理画面</title>
 </head>
 <body>
-	<form action="HomeServlet" method="get">
-		<input type="submit" name="action" value="home">
-	</form>
+	<div class="home-container">
+        <form action="HomeServlet" method="get">
+        	<button type="submit" class="img-submit-btn">
+			<img src="./image/homeButton.png" alt="注文編集" class="btn-icon">
+		</button>
+    </div>
 
 	<!-- 🟢 カテゴリ選択エリア -->
 	<category-area>
-	<form action="OrderManagementServlet" method="get" style="display: inline;">
+	<form action="OrderManagementServlet" method="get"
+		style="display: inline;">
 		<!-- ★裏で「現在選択されている卓番」を一緒に送信する -->
 		<input type="hidden" name="tableFilter" value="${currentTable}">
-		
+
 		<div class="category-tabs">
 			<!-- currentCategoryと一致するボタンにだけ 'active' クラスを付与 -->
-			<button type="submit" name="categoryFilter" value="全て" 
-				class="tab-btn ${currentCategory == '全て' ? 'active' : ''}" data-category="全て">
+			<button type="submit" name="categoryFilter" value="全て"
+				class="tab-btn ${currentCategory == '全て' ? 'active' : ''}"
+				data-category="全て">
 				全て<span class="badge">${countAll}</span>
 			</button>
-			<button type="submit" name="categoryFilter" value="お好み焼き" 
-				class="tab-btn ${currentCategory == 'お好み焼き' ? 'active' : ''}" data-category="お好み焼き">
+			<button type="submit" name="categoryFilter" value="お好み焼き"
+				class="tab-btn ${currentCategory == 'お好み焼き' ? 'active' : ''}"
+				data-category="お好み焼き">
 				お好み焼き<span class="badge">${countOkonomi}</span>
 			</button>
-			<button type="submit" name="categoryFilter" value="もんじゃ焼き" 
-				class="tab-btn ${currentCategory == 'もんじゃ焼き' ? 'active' : ''}" data-category="もんじゃ焼き">
+			<button type="submit" name="categoryFilter" value="もんじゃ焼き"
+				class="tab-btn ${currentCategory == 'もんじゃ焼き' ? 'active' : ''}"
+				data-category="もんじゃ焼き">
 				もんじゃ焼き<span class="badge">${countMonja}</span>
 			</button>
-			<button type="submit" name="categoryFilter" value="鉄板焼き" 
-				class="tab-btn ${currentCategory == '鉄板焼き' ? 'active' : ''}" data-category="鉄板焼き">
+			<button type="submit" name="categoryFilter" value="鉄板焼き"
+				class="tab-btn ${currentCategory == '鉄板焼き' ? 'active' : ''}"
+				data-category="鉄板焼き">
 				鉄板焼き<span class="badge">${countTeppan}</span>
 			</button>
-			<button type="submit" name="categoryFilter" value="サイドメニュー" 
-				class="tab-btn ${currentCategory == 'サイドメニュー' ? 'active' : ''}" data-category="サイドメニュー">
+			<button type="submit" name="categoryFilter" value="サイドメニュー"
+				class="tab-btn ${currentCategory == 'サイドメニュー' ? 'active' : ''}"
+				data-category="サイドメニュー">
 				サイドメニュー<span class="badge">${countSide}</span>
 			</button>
-			<button type="submit" name="categoryFilter" value="ソフトドリンク" 
-				class="tab-btn ${currentCategory == 'ソフトドリンク' ? 'active' : ''}" data-category="ソフトドリンク">
+			<button type="submit" name="categoryFilter" value="ソフトドリンク"
+				class="tab-btn ${currentCategory == 'ソフトドリンク' ? 'active' : ''}"
+				data-category="ソフトドリンク">
 				ソフトドリンク<span class="badge">${countSoft}</span>
 			</button>
-			<button type="submit" name="categoryFilter" value="お酒" 
-				class="tab-btn ${currentCategory == 'お酒' ? 'active' : ''}" data-category="お酒">
+			<button type="submit" name="categoryFilter" value="お酒"
+				class="tab-btn ${currentCategory == 'お酒' ? 'active' : ''}"
+				data-category="お酒">
 				お酒<span class="badge">${countSake}</span>
 			</button>
-			<button type="submit" name="categoryFilter" value="ボトル" 
-				class="tab-btn ${currentCategory == 'ボトル' ? 'active' : ''}" data-category="ボトル">
+			<button type="submit" name="categoryFilter" value="ボトル"
+				class="tab-btn ${currentCategory == 'ボトル' ? 'active' : ''}"
+				data-category="ボトル">
 				ボトル<span class="badge">${countBottle}</span>
 			</button>
 		</div>
@@ -61,30 +73,37 @@
 
 	<!-- 🟢 🆕 卓番選択エリア -->
 	<table-area>
-	<form action="OrderManagementServlet" method="get" style="display: inline;">
+	<form action="OrderManagementServlet" method="get"
+		style="display: inline;">
 		<!-- ★裏で「現在選択されているカテゴリ」を一緒に送信する -->
 		<input type="hidden" name="categoryFilter" value="${currentCategory}">
-		
-		<div class="category-tabs" style="margin-top: 10px;"> <!-- スタイル流用 -->
+
+		<div class="category-tabs" style="margin-top: 10px;">
+			<!-- スタイル流用 -->
 			<!-- currentTableと一致するボタンにだけ 'active' クラスを付与 -->
-			<button type="submit" name="tableFilter" value="全ての卓" 
-				class="tab-btn ${currentTable == '全ての卓' ? 'active' : ''}" data-table="全ての卓">
+			<button type="submit" name="tableFilter" value="全ての卓"
+				class="tab-btn ${currentTable == '全ての卓' ? 'active' : ''}"
+				data-table="全ての卓">
 				全ての卓<span class="badge">${countTableAll}</span>
 			</button>
-			<button type="submit" name="tableFilter" value="1卓" 
-				class="tab-btn ${currentTable == '1卓' ? 'active' : ''}" data-table="1卓">
+			<button type="submit" name="tableFilter" value="1卓"
+				class="tab-btn ${currentTable == '1卓' ? 'active' : ''}"
+				data-table="1卓">
 				1卓<span class="badge">${countTable1}</span>
 			</button>
-			<button type="submit" name="tableFilter" value="2卓" 
-				class="tab-btn ${currentTable == '2卓' ? 'active' : ''}" data-table="2卓">
+			<button type="submit" name="tableFilter" value="2卓"
+				class="tab-btn ${currentTable == '2卓' ? 'active' : ''}"
+				data-table="2卓">
 				2卓<span class="badge">${countTable2}</span>
 			</button>
-			<button type="submit" name="tableFilter" value="3卓" 
-				class="tab-btn ${currentTable == '3卓' ? 'active' : ''}" data-table="3卓">
+			<button type="submit" name="tableFilter" value="3卓"
+				class="tab-btn ${currentTable == '3卓' ? 'active' : ''}"
+				data-table="3卓">
 				3卓<span class="badge">${countTable3}</span>
 			</button>
-			<button type="submit" name="tableFilter" value="4卓" 
-				class="tab-btn ${currentTable == '4卓' ? 'active' : ''}" data-table="4卓">
+			<button type="submit" name="tableFilter" value="4卓"
+				class="tab-btn ${currentTable == '4卓' ? 'active' : ''}"
+				data-table="4卓">
 				4卓<span class="badge">${countTable4}</span>
 			</button>
 		</div>
@@ -116,16 +135,24 @@
 					</c:if></td>
 				<td>
 					<form action="EditOrderServlet" method="get">
-						<input type="submit" name="action" value="注文編集"> <input
-							type="hidden" name="oid" value="${item.orderId}"> <input
+						<button type="submit" name="action" value="注文編集"
+							class="edit-img-btn">
+							<img src="./image/edit_icon.png" alt="注文編集"
+								class="edit-icon-img">
+						</button>
+
+						<input type="hidden" name="oid" value="${item.orderId}"> <input
 							type="hidden" name="from" value="orderManagement">
 					</form>
 				</td>
 				<td>
-					<form action="OrderManagementServlet" method="post">
-						<input type="submit" name="action" value="提供"
+					<form action="OrderManagementServlet" method="post"
+						class="served-form">
+						<input type="submit" name="action" value="${item.tableId}卓
+提供"
 							class="${item.timeColorClass}"> <input type="hidden"
-							name="oid" value="${item.orderId}">
+							name="oid" value="${item.orderId}"> <input type="hidden"
+							name="action" value="提供">
 					</form>
 				</td>
 			</tr>
@@ -146,6 +173,22 @@
 			</td>
 		</tr>
 	</table>
-	
+
+
+	<div id="customModal" class="modal-overlay" style="display: none;">
+		<div class="modal-content">
+			<p class="modal-message-title">確認</p>
+			<p class="modal-message-sub">本当に提供しますか？</p>
+			<div class="modal-buttons">
+				<button type="button" id="modalNoBtn" class="btn-modal-no">いいえ</button>
+				<button type="button" id="modalYesBtn" class="btn-modal-yes">はい</button>
+			</div>
+		</div>
+	</div>
+
+
+	<script src="./js/orderManagement.js" defer></script>
+
+
 </body>
 </html>

@@ -8,24 +8,38 @@ body {
     flex-direction: column;
     align-items: center;
 }
-.home-container {
-    max-width: 900px;
-    margin: 0 auto 10px auto;
+
+/* ==========================================
+  ホームボタン用CSS
+   ========================================== */
+/* ボタン自体のグレーの背景や枠線を完全に消す */
+.img-submit-btn {
+    background: transparent; /* 背景を透明に */
+    border: none;            /* 枠線を消す */
+    padding: 0;              /* 余白をリセット */
+    margin: 0;
+    cursor: pointer;         /* マウスを乗せたら指マークにする */
+    outline: none;           /* クリック時の青い枠線を消す */
+    vertical-align: middle;
+    display: inline-block;   
+    margin: 0 0 0 30px;        /* 左側に30pxの余白を作る */
 }
 
-.home-btn {
-    text-decoration: none; /* 下線を消す */
-    display: inline-block; /* クリックエリアを確保 */
-    padding: 10px; /* 余白を持たせる */
+/* 画像のサイズ調整（現場のテーブル幅に合わせて変更してください） */
+.btn-icon {
+    width: 36px;  /* 横幅 */
+    height: 36px; /* 縦幅 */
+    object-fit: contain;
 }
 
-/* 画像自体のサイズなどを調整 */
-.home-icon {
-    width: 24px;   /* アイコンの横幅 */
-    height: 24px;  /* アイコンの縦幅 */
-    vertical-align: middle; /* テキストと並べる場合の調整 */
-    filter: invert(100%); /* 必要であれば、色を白っぽく反転させるなど */
+/* マウスホバー時に少し薄くして「クリックできる感」を出す */
+.img-submit-btn:hover {
+    opacity: 0.7;
 }
+
+
+
+
 /* ==========================================
    ポップアップ（モーダル）用の追加CSS
    ========================================== */

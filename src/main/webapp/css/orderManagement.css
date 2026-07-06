@@ -99,10 +99,32 @@ table td {
     box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* 軽い影をつけてボタンらしく */
 }
 
+/* 画像ボタンの背景と枠線を透明にする */
+.edit-img-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+/* 画像のサイズ調整（お好みの大きさに変更してください） */
+.edit-icon-img {
+    width: 36px;
+    height: 36px;
+    vertical-align: middle;
+}
+
+/* マウスを乗せたときに少し透明にする（クリックできる感が出ます） */
+.edit-img-btn:hover {
+    opacity: 0.7;
+}
+
+
 /* 🟢 5分未満（鮮やかな緑・文字は白） */
 .bg-green {
     background-color: #2ecc71;
     color: #ffffff;
+    border-radius: 1px;
 }
 
 /* 🟡 5分〜10分未満（警告の黄色・文字は黒の方が見やすい） */
