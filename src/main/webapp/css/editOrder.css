@@ -1,106 +1,254 @@
-/* --- 既存のスタイル（省略せずにそのまま残してください） --- */
+@charset "UTF-8";
+
+/* 全体基本スタイル */
 body {
-    background-color: #fafafa;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+    background-color: #ffffff;
     margin: 0;
-    padding: 30px;
+    padding: 20px;
     display: flex;
-    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 90vh;
+}
+
+/* ホームアイコン */
+.home-container {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+}
+.home-icon {
+    width: 40px;
+    height: auto;
+    cursor: pointer;
+}
+
+/* 注文全体のメインボックス（外枠） */
+.order-box {
+    width: 750px;
+    border: 1px solid #333333;
+    background-color: #ffffff;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* ヘッダーエリア（卓番号など） */
+.box-header {
+    background-color: #f7f7f7;
+    padding: 12px 20px;
+    font-size: 18px;
+    font-weight: bold;
+    border-bottom: 1px solid #333333;
+}
+
+/* メイン商品行（豚玉もんじゃなど） */
+.main-product-row {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid #333333;
+}
+.product-name {
+    font-size: 18px;
+    font-weight: bold;
+    flex-grow: 1;
+}
+
+/* 数量カウンター共通スタイル */
+.quantity-counter {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-right: 30px;
+}
+.qty-num {
+    font-size: 18px;
+    font-weight: bold;
+    min-width: 20px;
+    text-align: center;
+}
+
+/* 丸ボタン（＋ / ー） */
+.btn-minus, .btn-plus {
+    width: 32px;
+    height: 32px;
+    border: 1px solid #999999;
+    background-color: #ffffff;
+    border-radius: 50%;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #555555;
+    transition: background 0.2s;
+}
+.btn-minus:hover, .btn-plus:hover {
+    background-color: #f0f0f0;
+}
+
+/* 注文取り消しボタン（赤） */
+.btn-cancel-order {
+    background-color: #e60012;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+.btn-cancel-order:hover {
+    background-color: #b8000e;
+}
+
+/* トッピングコンテナ（2列の並びにするグリッド構造） */
+.toppings-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 30px 40px;
+    row-gap: 25px;
+    column-gap: 50px;
+    border-bottom: 1px solid #333333;
+}
+
+/* 各トッピングのセル構造 */
+.topping-cell {
+    display: flex;
+    justify-content: space-between;
     align-items: center;
 }
-.home-container { width: 100%; max-width: 680px; margin-bottom: 15px; }
-.home-btn { color: #333333; text-decoration: none; display: inline-block; }
-.order-box { width: 100%; max-width: 680px; background-color: #ffffff; border: 1px solid #000000; }
-.box-header { padding: 14px 20px; font-size: 16px; font-weight: 500; border-bottom: 1px solid #000000; }
-.main-product-row { display: flex; align-items: center; padding: 16px 20px; border-bottom: 1px solid #000000; }
-.product-name { font-size: 16px; flex-grow: 1; }
-.quantity-counter { display: flex; align-items: center; gap: 10px; }
-.btn-minus, .btn-plus { width: 30px; height: 30px; border-radius: 50%; border: 1px solid #cccccc; background-color: #ffffff; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-.btn-minus:hover, .btn-plus:hover { background-color: #f5f5f5; }
-.qty-num { font-size: 16px; min-width: 15px; text-align: center; }
-.btn-cancel-order { background-color: #e60012; color: #ffffff; border: none; padding: 8px 18px; border-radius: 20px; font-size: 14px; font-weight: bold; cursor: pointer; margin-left: 20px; }
-.toppings-container { display: grid; grid-template-columns: 1fr 1fr; padding: 40px 60px; gap: 30px 80px; }
-.topping-cell { display: flex; align-items: center; justify-content: space-between; }
-.topping-title { font-size: 16px; color: #000000; width: 100px; text-align: right; margin-right: 20px; }
-.box-footer { display: flex; justify-content: flex-end; align-items: center; gap: 20px; padding: 20px 30px 30px 30px; }
-.btn-go-back { background-color: #777777; color: #ffffff; border: none; padding: 10px 24px; border-radius: 20px; font-size: 14px; text-decoration: none; box-shadow: 0 2px 4px rgba(0,0,0,0.15); }
-.btn-save-changes { background-color: #008000; color: #ffffff; border: none; padding: 10px 36px; border-radius: 20px; font-size: 14px; font-weight: bold; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.15); }
+.topping-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333333;
+}
 
-/* ==========================================
-   ポップアップ（モーダル）用の追加CSS
-   ========================================== */
+/* ボックス下部（フッターボタン配置） */
+.box-footer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 20px;
+    background-color: #ffffff;
+    gap: 20px;
+}
+
+/* 一覧へ戻るボタン */
+.btn-go-back {
+    background-color: #888888;
+    color: #ffffff;
+    text-decoration: none;
+    padding: 10px 25px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+.btn-go-back:hover {
+    background-color: #666666;
+}
+
+/* 変更保存ボタン（緑） */
+.btn-save-changes {
+    background-color: #008000;
+    color: #ffffff;
+    border: none;
+    padding: 10px 35px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+.btn-save-changes:hover {
+    background-color: #005f00;
+}
+
+/* ========================================== */
+/* ポップアップ（モーダル）共通画面オーバーレイ */
+/* ========================================== */
 .modal-overlay {
-    display: none; /* 初期状態は非表示 */
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.4); /* 背景を暗いグレーに透過 */
-    z-index: 1000;
+    background-color: rgba(0, 0, 0, 0.4); /* 背景のグレーアウト */
+    display: none; /* JSの「flex」切り替えで表示される */
     justify-content: center;
     align-items: center;
+    z-index: 1000;
 }
 
-/* ポップアップ中央の白いボックス */
+/* モーダルコンテンツ（白ボックス） */
 .modal-content {
     background-color: #ffffff;
     padding: 40px 60px;
-    border: 1px solid #000000;
+    border-radius: 4px;
     text-align: center;
-    width: 100%;
-    max-width: 400px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    min-width: 320px;
 }
 
 .modal-message-title {
-    font-size: 16px;
-    font-weight: 500;
+    font-size: 18px;
+    font-weight: bold;
     margin: 0 0 10px 0;
-    color: #000000;
+    color: #333333;
 }
-
 .modal-message-sub {
     font-size: 16px;
-    font-weight: 500;
     margin: 0 0 30px 0;
-    color: #000000;
+    color: #333333;
 }
 
-/* ボタンの横並び */
+/* ポップアップ内ボタンエリア */
 .modal-buttons {
     display: flex;
     justify-content: center;
-    gap: 15px;
+    gap: 20px;
 }
 
-/* いいえ ボタン（白地・黒枠・黒文字） */
+/* 「いいえ」ボタン共通スタイル */
 .btn-modal-no {
     background-color: #ffffff;
-    color: #000000;
-    border: 1px solid #000000;
-    padding: 8px 24px;
-    font-size: 14px;
-    border-radius: 6px;
+    color: #333333;
+    border: 2px solid #333333;
+    padding: 10px 30px;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: bold;
     cursor: pointer;
-    min-width: 80px;
 }
 .btn-modal-no:hover {
-    background-color: #f5f5f5;
+    background-color: #f0f0f0;
 }
 
-/* はい ボタン（赤地・丸角・白文字） */
+/* 変更用の「はい」ボタン（緑想定、またはお好みの色） */
 .btn-modal-yes {
-    background-color: #e60012;
+    background-color: #008000;
     color: #ffffff;
-    border: 1px solid #000000;
-    padding: 8px 24px;
-    font-size: 14px;
+    border: none;
+    padding: 12px 32px;
+    border-radius: 4px;
+    font-size: 16px;
     font-weight: bold;
-    border-radius: 6px;
     cursor: pointer;
-    min-width: 80px;
 }
-.btn-modal-yes:hover {
-    background-color: #cc0010;
+
+/* 削除ポップアップ用の「はい」赤色ボタン（画像2枚目の再現） */
+.btn-modal-yes-red {
+    background-color: #ff0000;
+    color: #ffffff;
+    border: none;
+    padding: 12px 32px;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.btn-modal-yes-red:hover {
+    background-color: #cc0000;
 }
