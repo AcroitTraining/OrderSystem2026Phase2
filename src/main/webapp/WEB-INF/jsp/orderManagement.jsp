@@ -16,6 +16,7 @@
 			<button type="submit" class="home-btn">
 				<img src="./image/homeButton.png" alt="注文編集" class="home-img">
 			</button>
+		</form>
 	</div>
 
 	<!-- 🟢 カテゴリ選択エリア -->

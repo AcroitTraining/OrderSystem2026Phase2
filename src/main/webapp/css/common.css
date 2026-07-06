@@ -148,7 +148,7 @@ body {
    ポップアップ（モーダル）用の追加CSS
    ========================================== */
 .modal-overlay {
-    display: none; /* 初期状態は非表示 */
+    display: none; 
     position: fixed;
     top: 0;
     left: 0;

@@ -21,12 +21,12 @@
 		</form>
 	</div>
 	<!-- 🟢 カテゴリ・新規作成エリア -->
-	<category-area class="category-wrapper">
+	<category-area class="category-wrapper"> 
 
 	<form action="ProductEditServlet" method="get"
 		class="create-form-sticky">
 		<button type="submit" class="create-btn">
-			<img src="./image/createNew.png" alt="新規作成" class="create-img">
+			<img src="./image/create_button-removebg-preview.png" alt="新規作成" class="create-img">
 		</button>
 	</form>
 
