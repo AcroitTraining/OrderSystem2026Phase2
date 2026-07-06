@@ -20,67 +20,13 @@ table td {
     text-align: center; 
 }
 
-
-/* タブを囲む親要素：横並びにして、溢れたら横スクロールできるようにする */
-.category-tabs {
-    display: flex;
-    gap: 20px;                 /* タブとタブの間隔 */
-    overflow-x: auto;          /* 画面幅に収まらない場合は横スクロール */
-    white-space: nowrap;       /* タブを途中で改行させない */
-    border-bottom: 1px solid #e0e0e0; /* 全体の下境界線 */
-    padding-bottom: 5px;
-}
-
-/* スクロールバーのデザインを非表示、または綺麗にする（お好みで） */
-.category-tabs::-webkit-scrollbar {
-    height: 4px;
-}
-.category-tabs::-webkit-scrollbar-thumb {
-    background: #ccc;
-    border-radius: 2px;
-}
-
-/* 基本のタブボタンのスタイル（未選択時） */
-.tab-btn {
-    position: relative;
-    background: none;
-    border: none;
-    padding: 10px 5px;
-    font-size: 15px;
-    color: #888888;            /* 選択されていない文字はグレー */
-    cursor: pointer;
-    font-family: inherit;
-    display: inline-flex;
-    align-items: center;
-    transition: all 0.2s ease;
-}
-
-/* 選択されているタブ（緑の下線と文字色） */
-.tab-btn.active {
-    color: #27ae60;            /* イメージ画像の鮮やかな緑色 */
-    font-weight: bold;
-}
-
-/* 選択中の下線を要素の底ぴったりにつける */
-.tab-btn.active::after {
-    content: '';
-    position: absolute;
-    bottom: -6px;/* 親のborder-bottomと重ねる調整 */
-    left: 0;
-    width: 100%;
-    height: 3px;              
-    background-color: #27ae60; 
-    border-radius: 2px;
-}
-
-/*表示切り替えのトグルボタン*/
 .toggle-button-4 {
     display: flex;
     align-items: center;
     position: relative;
-    width: 100px;
-    height: 50px;
-    border-radius: 50px;
+    width: 66px;
+    height: 30px;
+    border-radius: 40px;
     box-sizing: content-box;
     background-color: #b3b3b333;
     cursor: pointer;
@@ -93,9 +39,8 @@ table td {
 
 .toggle-button-4::before {
     position: absolute;
-    left: 5px;
-    width: 42px;
-    height: 42px;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
     background-color: #b3b3b3;
     content: '';
@@ -103,13 +48,13 @@ table td {
 }
 
 .toggle-button-4:has(:checked)::before {
-    left: 50px;
+    left: 36px;
     background-color: #ffb900;
 }
 
 .toggle-button-4::after {
     position: absolute;
-    left: 26px;
+    left: 14px;
     transform: translateX(-50%);
     color: #fff;
     font-weight: 600;
@@ -119,11 +64,91 @@ table td {
 }
 
 .toggle-button-4:has(:checked)::after {
-    left: 71px;
+    left: 50px;
     content: 'Yes';
 }
 
 .toggle-button-4 input {
     display: none;
 }
+
+/* ==========================================
+   カテゴリタブと新規作成ボタンの連動レイアウト
+   ========================================== */
+
+/* 親要素を横並びにし、位置関係を固定する土台にする */
+.category-wrapper {
+    display: flex;
+    align-items: center;
+    position: relative;
+    border-bottom: 1px solid #e0e0e0; /* 全体の下境界線をここに移動 */
+    margin-bottom: 20px;
+    padding-bottom: 5px;
+}
+
+/* 新規作成ボタンの配置設定（左端に固定し、スクロール時に上に乗る） */
+.create-form-sticky {
+    position: sticky;
+    left: 0;
+    z-index: 10;                     /* タブの文字より上に重ねる設定 */
+    background-color: #ffffff;       /* 後ろのタブ文字が透けないように背景を白にする */
+    padding-right: 15px;             /* 「全て」タブとくっつかないための右余白（重要） */
+}
+
+/* 新規作成ボタン自体の透明化設定 */
+.create-btn {
+    background: transparent;
+    border: none;        
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    outline: none;
+    vertical-align: middle;
+}
+
+/* 新規作成画像のサイズ（現場に合わせて微調整してください） */
+.create-img {
+    width: 70px;
+    height: 35px;
+    object-fit: contain;
+}
+
+.create-btn:hover {
+    opacity: 0.7;
+}
+
+/* 🟢 既存の .category-tabs を以下のように少しだけ調整 */
+.category-tabs {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    white-space: nowrap;
+    width: 100%;
+    /* border-bottom は親要素に移したため削除、または background を透過に */
+}
+
+/* 削除画像ボタン自体の枠線や背景を消す */
+.img-delete-btn {
+    background: transparent; /* 背景を透明に */
+    border: none;            /* 枠線を消す */
+    padding: 0;              /* 余白をリセット */
+    margin: 0;
+    cursor: pointer;         /* マウスを乗せたら指マークにする */
+    outline: none;           /* クリック時の青い枠線を消す */
+    vertical-align: middle;
+    display: inline-block;
+}
+
+/* 削除アイコンのサイズ調整（編集ボタンの36pxに合わせると統一感が出ます） */
+.delete-icon-img {
+    width: 70px;  /* 横幅 */
+    height: 35px; /* 縦幅 */
+    object-fit: contain;
+}
+
+/* マウスホバー時に少し薄くする演出 */
+.img-delete-btn:hover {
+    opacity: 0.7;
+}
+
 

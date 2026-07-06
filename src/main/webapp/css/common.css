@@ -10,14 +10,113 @@ body {
 }
 
 /* ==========================================
+   カテゴリタブ設定
+   ========================================== */
+/* タブを囲む親要素：横並びにして、溢れたら横スクロールできるようにする */
+.category-tabs {
+    display: flex;
+    gap: 20px;               /* タブとタブの間隔 */
+    overflow-x: auto;         /* 画面幅に収まらない場合は横スクロール */
+    white-space: nowrap;      /* タブを途中で改行させない */
+    border-bottom: 1px solid #e0e0e0; /* 全体の下境界線 */
+    padding-bottom: 5px;
+}
+
+/* スクロールバーのデザインを非表示、または綺麗にする（お好みで） */
+.category-tabs::-webkit-scrollbar {
+    height: 4px;
+}
+.category-tabs::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 2px;
+}
+
+/* 基本のタブボタンのスタイル（未選択時） */
+.tab-btn {
+    position: relative;
+    background: none;
+    border: none;
+    padding: 10px 5px;
+    font-size: 15px;
+    color: #888888;            /* 選択されていない文字はグレー */
+    cursor: pointer;
+    font-family: inherit;
+    display: inline-flex;
+    align-items: center;
+    transition: all 0.2s ease;
+}
+
+/* 選択されているタブ（緑の下線と文字色） */
+.tab-btn.active {
+    color: #27ae60;            /* イメージ画像の鮮やかな緑色 */
+    font-weight: bold;
+}
+
+/* 選択中の下線を要素の底ぴったりにつける */
+.tab-btn.active::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;/* 親のborder-bottomと重ねる調整 */
+    left: 0;
+    width: 100%;
+    height: 3px;              
+    background-color: #27ae60; 
+    border-radius: 2px;
+}
+
+/* ==========================================
+   商品テーブルのカラム幅・レイアウト調整
+   ========================================== */
+
+/* テーブル全体のレイアウト方式を固定（幅の計算をズレにくくします） */
+.product-table {
+    table-layout: fixed;
+    width: 100%;
+    min-width:800px;
+}
+
+/* 商品名カラム（文字が長くなる可能性があるため広めに確保） */
+.col-name {
+    width: 20%;
+    text-align: left; /* 商品名だけ左寄せにしたい場合はここを有効に */
+}
+
+/* 価格カラム */
+.col-price {
+    width: 7%;
+}
+
+/* 編集ボタンカラム */
+.col-edit {
+    width: 7%;
+}
+
+/* 表示切り替えトグルボタンカラム */
+.col-toggle {
+    width: 15%;
+}
+
+/* 削除ボタンカラム */
+.col-delete {
+    width: 7%;
+}
+
+/* トグルボタンをセル内できれいに中央配置するための調整 */
+.col-toggle.display {
+    display: table-cell; /* 元のフレックス等のバグを防ぐため */
+}
+.col-toggle.display form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+/* ==========================================
   ホームボタン用CSS
    ========================================== */
-/* 🟢 ホームボタンを内包する親コンテナ（テーブルの外）
-   中央寄せを完全に打ち消し、画面左側から30pxの位置に配置します */
-/* --- ホームアイコン周辺のスタイル --- */
 .home-container {
     width: 100%;
-    max-width: 800px;
     margin-bottom: 10px;
     display: flex;
     justify-content: flex-start; /* 左寄せ */
