@@ -30,7 +30,7 @@
     %>
     <div class="order-box">
         <div class="box-header">
-            <%= info.getSessionId() %>番 4卓
+            <%= info.getSessionId() %>卓
         </div>
 
         <form action="EditOrderServlet" method="post" id="editOrderForm">
@@ -78,7 +78,7 @@
         </form>
     </div>
 
-
+<!-- POPUP表示 -->
     <div id="customModal" class="modal-overlay">
         <div class="modal-content">
             <p class="modal-message-title">この内容で変更します</p>

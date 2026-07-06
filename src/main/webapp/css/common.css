@@ -14,40 +14,34 @@ body {
    ========================================== */
 /* 🟢 ホームボタンを内包する親コンテナ（テーブルの外）
    中央寄せを完全に打ち消し、画面左側から30pxの位置に配置します */
+/* --- ホームアイコン周辺のスタイル --- */
 .home-container {
-    display: flex !important;       /* フレックスボックスで配置を制御 */
-    justify-content: flex-start !important; /* 強制的に左寄せ */
-    text-align: left !important;    /* テキストの中央寄せ設定を完全無効化 */
-    margin-top: 20px;               /* 画面上部からの余白 */
-    margin-bottom: 15px;            /* 下のカテゴリタブとの間の余白 */
+    width: 100%;
+    max-width: 800px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: flex-start; /* 左寄せ */
 }
 
-/* ボタン自体のグレーの背景や枠線を完全に消す */
-.img-submit-btn {
-    background: transparent; /* 背景を透明に */
-    border: none;            /* 枠線を消す */
-    padding: 0;              /* 余白をリセット */
-    cursor: pointer;         /* マウスを乗せたら指マークにする */
-    outline: none;           /* クリック時の青い枠線を消す */
-    vertical-align: middle;
-    display: inline-block;   
-    
-    /* 🟢 左側の30px余白は親コンテナと2重にならないようここで綺麗に管理します */
-    margin: 0 0 0 30px;      
+.home-btn {
+    background: none;      /* ボタンのデフォルト背景を消す */
+    border: none;          /* ボタンの枠線を消す */
+    padding: 0;            /* 余計な余白を消す */
+    cursor: pointer;       /* カーソルをポインターにする */
+    display: flex;
+    align-items: center;
 }
 
-/* 画像のサイズ調整 */
-.btn-icon {
-    width: 36px;  /* 横幅 */
-    height: 36px; /* 縦幅 */
-    object-fit: contain;
+.home-img {
+    width: 32px;           /* 画像のサイズ（好みに合わせて調整してください） */
+    height: auto;
+    transition: opacity 0.2s ease;
 }
 
-/* マウスホバー時に少し薄くして「クリックできる感」を出す */
-.img-submit-btn:hover {
+/* ホバー時に少し薄くしてクリックできる感を出します */
+.home-btn:hover .home-img {
     opacity: 0.7;
 }
-
 
 
 

@@ -21,9 +21,7 @@ public class EditOrderServlet extends HttpServlet {
             throws ServletException, IOException {
 
         String oid = request.getParameter("oid");
-        // ★ 遷移元パラメータ（"orderManagement" または "servedHistory"）を取得
         String from = request.getParameter("from"); 
-
         if (oid == null || oid.isEmpty()) {
             if ("servedHistory".equals(from)) {
                 response.sendRedirect("ServedHistoryServlet");
@@ -42,13 +40,11 @@ public class EditOrderServlet extends HttpServlet {
                 List<EditOrderInfo.ToppingList> toppings = dao.findToppingListByProductId(info.getProductId(), orderId);
                 if (toppings != null) {
                     for (EditOrderInfo.ToppingList t : toppings) {
-                        info.addTopping(t.getToppingId(), t.getName(), t.getQuantity(), 0);
+                        info.addTopping(t.getToppingId(), t.getName(), t.getQuantity(), t.getPrice());
                     }
                 }
                 request.setAttribute("editOrderInfo", info);
-                // ★ JSPへ渡す
                 request.setAttribute("from", from); 
-
                 request.getRequestDispatcher("WEB-INF/jsp/editOrder.jsp").forward(request, response);
             } else {
                 if ("servedHistory".equals(from)) {
@@ -67,11 +63,8 @@ public class EditOrderServlet extends HttpServlet {
             throws ServletException, IOException {
 
         request.setCharacterEncoding("UTF-8");
-        
         String oid = request.getParameter("oid");
-        // ★ hiddenから遷移元を回収
         String from = request.getParameter("from"); 
-
         if (oid == null || oid.isEmpty()) {
             if ("servedHistory".equals(from)) {
                 response.sendRedirect("ServedHistoryServlet");
@@ -83,9 +76,8 @@ public class EditOrderServlet extends HttpServlet {
         int orderId = Integer.parseInt(oid);
         String button = request.getParameter("Button");
         String mode = request.getParameter("mode");
-
         EditOrderDAO dao = new EditOrderDAO();
-
+        
         try {
             // 注文削除時のリダイレクト
             if ("delete_order".equals(button)) {
@@ -111,7 +103,7 @@ public class EditOrderServlet extends HttpServlet {
             List<EditOrderInfo.ToppingList> toppings = dao.findToppingListByProductId(info.getProductId(), orderId);
             if (toppings != null) {
                 for (EditOrderInfo.ToppingList t : toppings) {
-                    info.addTopping(t.getToppingId(), t.getName(), t.getQuantity(), 0);
+                    info.addTopping(t.getToppingId(), t.getName(), t.getQuantity(), t.getPrice());
                 }
             }
 
@@ -129,16 +121,15 @@ public class EditOrderServlet extends HttpServlet {
 
             EditOrderLogic logic = new EditOrderLogic();
 
-            // 「＋」「－」ボタン処理（計算画面の再表示）
+            // 「＋」「－」ボタン処理（画面をリロードさせて状態維持）
             if (button != null && ("main_plus".equals(button) || "main_minus".equals(button) || button.startsWith("+") || button.startsWith("-"))) {
                 logic.calcQuantity(info, button);
                 request.setAttribute("editOrderInfo", info);
-                request.setAttribute("from", from); // fromを引き継ぐ
+                request.setAttribute("from", from);
                 request.getRequestDispatcher("WEB-INF/jsp/editOrder.jsp").forward(request, response);
                 return;
             }
 
-            // 「変更」確定処理
             if ("update".equals(mode)) {
                 EditOrderInfo dbOriginal = dao.findOrderDetails(orderId);
                 List<EditOrderInfo.ToppingList> dbToppingOriginal = dao.findToppingListByProductId(info.getProductId(), orderId);
@@ -146,19 +137,22 @@ public class EditOrderServlet extends HttpServlet {
                 int screenProductQty = info.getProductQuantity(); 
                 int dbProductQty = dbOriginal.getProductQuantity();   
 
+                // 1. 商品メインの注文数量変更
                 if (screenProductQty != dbProductQty) {
                     dao.updateProductQuantity(orderId, screenProductQty);
                     int productDiff = screenProductQty - dbProductQty;
                     dao.updateProductStock(info.getProductId(), -productDiff);
                 }
 
+                // 2. 各トッピングの注文状態の更新、および「裏側での掛け算在庫調整」
                 for (int i = 0; i < info.getToppings().size(); i++) {
                     EditOrderInfo.ToppingList screen = info.getToppings().get(i);
                     EditOrderInfo.ToppingList db = dbToppingOriginal.get(i); 
                     
-                    int screenQty = screen.getQuantity();
-                    int dbQty = db.getQuantity();
+                    int screenQty = screen.getQuantity(); // 画面に表示されている選択個数（例: 1）
+                    int dbQty = db.getQuantity();         // 元々DBに入っていた個数（例: 1）
 
+                    // 2-a. multiple_toppings（現在の注文内容）の更新
                     if (dbQty != screenQty) {
                         if (dbQty == 0 && screenQty > 0) {
                             dao.insertTopping(orderId, screen.getToppingId(), screenQty);
@@ -167,13 +161,18 @@ public class EditOrderServlet extends HttpServlet {
                         } else if (dbQty > 0 && screenQty > 0) {
                             dao.updateToppingQuantity(orderId, screen.getToppingId(), screenQty);
                         }
+                    }
 
-                        int toppingDiff = screenQty - dbQty;
-                        dao.updateToppingStock(screen.getToppingId(), -toppingDiff);
+                    // 総消費量 ＝ 各トッピングの選択個数 × 商品数
+                    int newTotalToppingCount = screenQty * screenProductQty;
+                    int oldTotalToppingCount = dbQty * dbProductQty;
+                    int toppingStockDiff = newTotalToppingCount - oldTotalToppingCount;
+                    if (toppingStockDiff != 0) {
+                        // 在庫から差し引く（減少させる）ため、マイナスをかけて渡す
+                        dao.updateToppingStock(screen.getToppingId(), -toppingStockDiff);
                     }
                 }
 
-                // ★ 正しい名前に合わせた動的リダイレクト切り替え
                 if ("servedHistory".equals(from)) {
                     response.sendRedirect("ServedHistoryServlet");
                 } else {

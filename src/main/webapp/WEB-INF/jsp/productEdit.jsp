@@ -10,10 +10,13 @@
 </head>
 <body>
 
-    <div class="home-container">
-        <a href="HomeServlet" class="home-btn">
-        	<img src="${pageContext.request.contextPath}/image/homeButton.png" class="home-icon" alt="ホーム">
-    </div>
+<div class="home-container">
+    <form action="HomeServlet" method="get">
+        <button type="submit" class="home-btn">
+            <img src="./image/homeButton.png" alt="ホーム" class="home-img">
+        </button>
+    </form>
+</div>
 
     <%
         ProductEditInfo info = (ProductEditInfo) request.getAttribute("productEditInfo");

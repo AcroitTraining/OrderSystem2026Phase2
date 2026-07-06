@@ -20,7 +20,7 @@ public class EditOrderDAO {
         return DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS);
     }
 
-    // 1. 注文情報・商品情報の基本データを取得
+    // 1. 注文情報・商品情報のデータを取得
     public EditOrderInfo findOrderDetails(int orderId) throws SQLException {
         EditOrderInfo info = null;
         String sql = "SELECT od.order_id, od.product_quantity, od.session_id, pd.product_id, p.product_name "
@@ -46,7 +46,6 @@ public class EditOrderDAO {
         return info;
     }
 
-    // 2. ★【完全解消版】商品IDに設定されているトッピングだけを表示・取得するメソッド
     public List<EditOrderInfo.ToppingList> findToppingListByProductId(int productId, int orderId) {
         List<EditOrderInfo.ToppingList> list = new ArrayList<>();
         String sql =
@@ -63,7 +62,6 @@ public class EditOrderDAO {
             ps.setInt(2, productId);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    // ★ staticにしたことで、普通にnewできるようになり、エラーが完全に消えます！
                     EditOrderInfo.ToppingList t = new EditOrderInfo.ToppingList(
                         rs.getInt("topping_id"),
                         rs.getString("topping_name"),
