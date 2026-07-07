@@ -80,7 +80,11 @@
 				<td class="col-edit">
 					<form action="ProductEditServlet" method="get">
 						<input type="hidden" name="productId" value="${item.productId}">
-						<input type="submit" name="action" value="編集">
+						<button type="submit" name="action" value="商品編集"
+								class="edit-img-btn">
+								<img src="./image/edit_icon.png" alt="商品編集"
+									class="edit-icon-img">
+							</button>
 					</form>
 				</td>
 				<td class="col-toggle display">
@@ -95,8 +99,8 @@
 								<span class="status-text text-hide">非表示：</span>
 							</c:otherwise>
 						</c:choose>
-						<label class="toggle-button-4"> <input type="checkbox"
-							name="displayStatus" value="true" onclick="this.form.submit()"
+						<label class="toggle-button-4">
+						<input type="checkbox"	name="displayStatus" value="true" onclick="this.form.submit()"
 							${item.productDisplayFlag == 1 ? 'checked' : ''} />
 						</label>
 					</form>

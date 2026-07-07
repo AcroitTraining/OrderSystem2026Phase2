@@ -52,7 +52,11 @@
 				<td class="col-edit">
 					<form action="ToppingEditServlet" method="get">
 						<input type="hidden" name="toppingId" value="${item.toppingId}">
-						<input type="submit" name="action" value="編集" class="btn-submit-old">
+						<button type="submit" name="action" value="トッピング編集"
+								class="edit-img-btn">
+								<img src="./image/edit_icon.png" alt="トッピング編集"
+									class="edit-icon-img">
+							</button>
 					</form>
 				</td>
 				<td class="col-toggle display">

@@ -68,7 +68,7 @@ body {
     margin-top: 20px;
 }
 
-/* カラムごとの幅比率設定（商品一覧に合わせると画面全体の統一感が出ます） */
+/* カラムごとの幅比率設定（商品一覧と揃えて統一感を出します） */
 .col-name   { width: 35%; text-align: left; }
 .col-price  { width: 15%; }
 .col-edit   { width: 15%; }
@@ -76,20 +76,44 @@ body {
 .col-delete { width: 15%; }
 
 /* ==========================================
-   3. 表示切り替えトグルボタン ＆ 削除
+   3. トッピング編集ボタン
+   ========================================== */
+.edit-img-btn {
+    background: transparent !important; /* 背景を完全に透明化 */
+    border: none !important;            /* 枠線を確実に消す */
+    box-shadow: none !important;        /* 影を確実に消す */
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    outline: none;
+    vertical-align: middle;
+    display: inline-block;
+}
+
+.edit-icon-img {
+    width: 70px;                        /* 新規・削除画像とサイズを合わせて統一 */
+    height: 35px;
+    object-fit: contain;
+}
+
+.edit-img-btn:hover {
+    opacity: 0.7;                       /* マウスホバー時に少し薄くする演出 */
+}
+
+* ==========================================
+   5. 表示切り替えトグルボタン ＆ 削除
    ========================================== */
 .status-text { font-size: 14px; font-weight: bold; margin-right: 8px; user-select: none; }
 .text-show { color: #27ae60; }
 .text-hide { color: #7f8c8d; }
 
 .col-toggle.display form {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: nowrap;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    flex-direction: row !important; /* 🟢 強制的に横並び */
+    flex-wrap: nowrap !important;   /* 🟢 絶対に縦に折り返さない */
 }
-
-/* トグルボタンの土台サイズ */
 .toggle-button-4 {
     display: flex;
     align-items: center;
@@ -129,7 +153,9 @@ body {
 .toggle-button-4:has(:checked)::after { left: 18px; color: #ffb900; content: 'Yes'; }
 .toggle-button-4 input { display: none; }
 
-/* 削除画像ボタン */
+/* ==========================================
+   5. 削除画像ボタン
+   ========================================== */
 .img-delete-btn {
     background: transparent !important;
     border: none !important;

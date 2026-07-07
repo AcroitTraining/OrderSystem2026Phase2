@@ -120,6 +120,26 @@ table td {
     opacity: 0.7;
 }
 
+/*フッターの設定*/
+.footer-table {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    margin-bottom: 0; /* 固定するため下マージンは0にする */
+    z-index: 1000;     /* 他の要素（テーブルなど）より必ず手前に表示 */
+    box-shadow: 0 -3px 10px rgba(0,0,0,0.15); /* 境界が分かりやすいように軽い影をつける */
+    table-layout: fixed; /* 3つのセルの幅を均等にする */
+}
+
+/* フッター内のセル設定（インラインスタイルを移行） */
+.footer-table td {
+    border: solid 1px #330000;
+    padding: 12px 10px;
+    text-align: center;
+    vertical-align: middle;
+    font-weight: bold;
+}
 
 /* 🟢 5分未満（鮮やかな緑・文字は白） */
 .bg-green {

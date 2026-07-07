@@ -4,21 +4,25 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>カテゴリ一覧画面</title>
-<link rel="stylesheet" href="css/common.css">
-<link rel="stylesheet" href="css/productList.css">
+<link rel="stylesheet" href="./css/common.css">
+<link rel="stylesheet" href="./css/categoryList.css"> 
 </head>
 <body>
 
-	<div class="home-container">
-		<form action="HomeServlet" method="get">
-			<button type="submit" name="action" value="home" class="home-btn">
-				<img src="./image/homeButton.png" alt="ホーム" class="home-img">
-			</button>
-		</form>
-	</div>
-
-	<table class="product-table">
+	<!-- 🟢 変更：最上部に固定するヘッダーでホームボタンを囲みます -->
+	<header class="fixed-header">
+		<div class="home-container">
+			<form action="HomeServlet" method="get">
+				<button type="submit" name="action" value="home" class="home-btn">
+					<img src="./image/homeButton.png" alt="ホーム" class="home-img">
+				</button>
+			</form>
+		</div>
+	</header>
+	
+	<table class="category-table">
 		<thead>
 			<tr>
 				<th>カテゴリ名</th>

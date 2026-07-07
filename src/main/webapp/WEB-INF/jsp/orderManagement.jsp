@@ -19,11 +19,11 @@
 		</form>
 	</div>
 
-	<!-- 🟢 カテゴリ選択エリア -->
+	<!-- カテゴリ選択エリア -->
 	<category-area>
 	<form action="OrderManagementServlet" method="get"
 		style="display: inline;">
-		<!-- ★裏で「現在選択されている卓番」を一緒に送信する -->
+		<!-- 裏で「現在選択されている卓番」を一緒に送信する -->
 		<input type="hidden" name="tableFilter" value="${currentTable}">
 
 		<div class="category-tabs">
@@ -72,11 +72,11 @@
 	</form>
 	</category-area>
 
-	<!-- 🟢 🆕 卓番選択エリア -->
+	<!--  卓番選択エリア -->
 	<table-area>
 	<form action="OrderManagementServlet" method="get"
 		style="display: inline;">
-		<!-- ★裏で「現在選択されているカテゴリ」を一緒に送信する -->
+		<!-- 現在選択されているカテゴリを一緒に送信する -->
 		<input type="hidden" name="categoryFilter" value="${currentCategory}">
 
 		<div class="category-tabs" style="margin-top: 10px;">
@@ -111,7 +111,7 @@
 	</form>
 	</table-area>
 
-	<form action="HomeServlet" method="get">
+
 		<table class="order-table">
 			<tr class="order-row" data-category="${item.categoryName}">
 				<th>No.</th>

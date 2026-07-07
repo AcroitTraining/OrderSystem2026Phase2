@@ -1,0 +1,55 @@
+@charset "UTF-8";
+
+/* ==========================================
+   1. 固定ヘッダー（最上部に完全固定）
+   ========================================== */
+.fixed-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+    background-color: #ffffff;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1); /* 下側に軽い影 */
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    box-sizing: border-box;
+    justify-content: flex-start !important; /* ホームボタンを確実に左詰めに固定 */
+}
+
+/* ホームボタンを左寄せした状態からの画面内の指定マージン */
+.home-container {
+    margin: 0 10px 0 30px !important;
+}
+
+/* ==========================================
+   2. 画面全体のレイアウトとカテゴリテーブルの設定
+   ========================================== */
+body {
+    /* 固定ヘッダーにコンテンツが潜り込んで隠れないように上部を押し下げる */
+    padding-top: 80px !important;
+    
+    /* 画面全体を中央揃えにするためのレイアウト設定 */
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+}
+
+/* 🟢 カテゴリ一覧用の専用テーブル幅調整（ご指定の数値に最適化） */
+.category-table {
+    table-layout: fixed;
+    width: 80%;           /* 画面に対して80%の幅 */
+    max-width: 800px;     /* 最高横幅 800px */
+    min-width: 400px;     /* 最低横幅 400px */
+    
+    margin-top: 20px;
+    margin-left: auto;    /* 左右マージン auto で確実に中央揃え */
+    margin-right: auto;
+}
+
+/* セル内のテキスト調整（中央寄せで見やすくします） */
+.category-table th,
+.category-table td {
+    text-align: center !important;
+}
