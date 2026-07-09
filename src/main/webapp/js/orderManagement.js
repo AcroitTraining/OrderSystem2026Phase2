@@ -94,3 +94,70 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 });
+
+document.addEventListener("DOMContentLoaded",()=>{
+
+    const categoryTabs = document.getElementById("categoryTabs");
+    const rightBtn = document.querySelector(".scroll-btn.right");
+    const leftBtn = document.querySelector(".scroll-btn.left");
+
+
+    rightBtn.addEventListener("click",()=>{
+        categoryTabs.scrollBy({
+            left:200,
+            behavior:"smooth"
+        });
+    });
+
+
+    leftBtn.addEventListener("click",()=>{
+        categoryTabs.scrollBy({
+            left:-200,
+            behavior:"smooth"
+        });
+    });
+
+});
+
+document.addEventListener("DOMContentLoaded",()=>{
+
+    const tabs = document.getElementById("categoryTabs");
+
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+
+
+    tabs.addEventListener("mousedown",(e)=>{
+        isDown = true;
+        tabs.classList.add("dragging");
+
+        startX = e.pageX - tabs.offsetLeft;
+        scrollLeft = tabs.scrollLeft;
+    });
+
+
+    tabs.addEventListener("mouseleave",()=>{
+        isDown = false;
+        tabs.classList.remove("dragging");
+    });
+
+
+    tabs.addEventListener("mouseup",()=>{
+        isDown = false;
+        tabs.classList.remove("dragging");
+    });
+
+
+    tabs.addEventListener("mousemove",(e)=>{
+        if(!isDown) return;
+
+        e.preventDefault();
+
+        const x = e.pageX - tabs.offsetLeft;
+        const walk = (x - startX) * 1.5;
+
+        tabs.scrollLeft = scrollLeft - walk;
+    });
+
+});

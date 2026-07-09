@@ -1,45 +1,169 @@
 @charset "UTF-8";
 
-/* テーブル全体の共通設定 */
-table {
-    border-collapse: collapse;
-    width: 100%; /* 画面幅いっぱいに広げる場合（お好みで調整してください） */
-    margin-bottom: 20px;
+/* ================================
+   カテゴリタブ全体
+================================ */
+
+.category-wrapper{
+    position:relative;
+    display:flex;
+    align-items:center;
 }
 
-/* ヘッダー部分（aquamarine） */
-table th {
-    background-color: aquamarine;
-    border: solid 1px #330000;
-    padding: 10px;
+
+/* 左右スクロールボタン */
+.scroll-btn{
+    position:fixed;
+    top:30px;
+
+    width:40px;
+    height:40px;
+
+    border-radius:50%;
+    border:none;
+
+    background:rgba(255,255,255,0.6);
+
+    color:#555;
+    font-size:28px;
+    font-weight:bold;
+
+    z-index:2000;
+
+    cursor:pointer;
+
+    box-shadow:0 2px 6px rgba(0,0,0,.15);
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    transition:.2s;
 }
 
-/* データ部分（th以外はすべて背景を白に固定） */
-table td {
-    border: solid 1px #330000;
-    background-color: #ffffff; 
-    padding: 10px;
-    text-align: center; 
+
+/* ホバー時 */
+.scroll-btn:hover{
+    background:rgba(255,255,255,0.85);
 }
 
-/* タブを囲む親要素：横並びにして、溢れたら横スクロールできるようにする */
 
-.category-tabs {
-    display: flex;
-    gap: 20px;                 /* タブとタブの間隔 */
-    overflow-x: auto;          /* 画面幅に収まらない場合は横スクロール */
-    white-space: nowrap;       /* タブを途中で改行させない */
-    border-bottom: 1px solid #e0e0e0; /* 全体の下境界線 */
-    padding-bottom: 5px;
+/* 左矢印 */
+.scroll-btn.left{
+    left:10px;
 }
 
-/* スクロールバーのデザインを非表示、または綺麗にする（お好みで） */
-.category-tabs::-webkit-scrollbar {
-    height: 4px;
+
+/* 右矢印 */
+.scroll-btn.right{
+    right:10px;
 }
-.category-tabs::-webkit-scrollbar-thumb {
-    background: #ccc;
-    border-radius: 2px;
+
+
+/* ================================
+   カテゴリタブ全体
+================================ */
+
+.category-wrapper{
+    position:relative;
+    display:flex;
+    align-items:center;
+}
+
+
+/* 左右スクロールボタン */
+.scroll-btn{
+    position:fixed;
+    top:30px;
+
+    width:40px;
+    height:40px;
+
+    border-radius:50%;
+    border:none;
+
+    background:rgba(255,255,255,0.6);
+
+    color:#555;
+    font-size:28px;
+    font-weight:bold;
+
+    z-index:2000;
+
+    cursor:pointer;
+
+    box-shadow:0 2px 6px rgba(0,0,0,.15);
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    transition:.2s;
+}
+
+
+/* ホバー時 */
+.scroll-btn:hover{
+    background:rgba(255,255,255,0.85);
+}
+
+
+/* 左矢印 */
+.scroll-btn.left{
+    left:10px;
+}
+
+
+/* 右矢印 */
+.scroll-btn.right{
+    right:10px;
+}
+
+
+
+/* ================================
+   タブスクロール部分
+================================ */
+
+.category-tabs{
+
+    display:flex;
+
+    gap:20px;
+
+    overflow-x:auto;
+
+    white-space:nowrap;
+
+    border-bottom:1px solid #e0e0e0;
+
+    padding-bottom:5px;
+
+    flex:1;
+
+    cursor:grab;
+
+}
+
+
+/* ドラッグ中 */
+.category-tabs.dragging{
+    cursor:grabbing;
+}
+
+
+/* スクロールバー */
+.category-tabs::-webkit-scrollbar{
+    height:4px;
+}
+
+
+.category-tabs::-webkit-scrollbar-thumb{
+
+    background:#ccc;
+
+    border-radius:2px;
+
 }
 
 /* 基本のタブボタンのスタイル（未選択時） */
@@ -120,25 +244,103 @@ table td {
     opacity: 0.7;
 }
 
-/*フッターの設定*/
-.footer-table {
+/* フッター */
+.footer-legend{
     position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
-    margin-bottom: 0; /* 固定するため下マージンは0にする */
-    z-index: 1000;     /* 他の要素（テーブルなど）より必ず手前に表示 */
-    box-shadow: 0 -3px 10px rgba(0,0,0,0.15); /* 境界が分かりやすいように軽い影をつける */
-    table-layout: fixed; /* 3つのセルの幅を均等にする */
+    background: #fff;
+    padding: 15px 30px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 -3px 10px rgba(0,0,0,.15);
 }
 
-/* フッター内のセル設定（インラインスタイルを移行） */
-.footer-table td {
-    border: solid 1px #330000;
-    padding: 12px 10px;
-    text-align: center;
-    vertical-align: middle;
-    font-weight: bold;
+.legend-group{
+    display: flex;
+    align-items: center;
+    margin-left: 200px;
+   
+}
+
+.legend-title{
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    margin-right: 40px;
+    white-space: nowrap;
+}
+
+.served-btn{
+    border:none;
+    padding:6px 15px;
+    border-radius:4px;
+    font-weight:bold;
+    cursor:pointer;
+    box-shadow:0 2px 4px rgba(0,0,0,.1);
+}
+
+/* 色と文字を横並び */
+.legend-item{
+    display: flex;
+    align-items: center;
+    margin-right: 150px;
+}
+
+/* 四角 */
+.legend-box{
+    width: 18px;
+    height: 18px;
+    margin-right: 8px;
+    border: 1px solid #333;
+    flex-shrink: 0;
+}
+
+/* 色だけ設定 */
+.legend-box.bg-green{
+    background:#2ecc71;
+}
+
+.legend-box.bg-yellow{
+    background:#f1c40f;
+}
+
+.legend-box.bg-red{
+    background:#e74c3c;
+}
+
+/* 履歴フォームを右端から100px内側へ */
+.history-form{
+    margin-left: auto;
+    margin-right: 100px;
+}
+
+/* 履歴ボタン */
+.history-form input[type="submit"]{
+    background-color: #fafafa;
+    color: #000;
+    border: 1px solid #d0d0d0;
+    border-radius: 8px;
+    padding: 10px 22px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease,
+                box-shadow 0.2s ease,
+                transform 0.1s ease;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+/* マウスを乗せたとき */
+.history-form input[type="submit"]:hover{
+    background-color: #1f6fd1;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+/* 押したとき */
+.history-form input[type="submit"]:active{
+    transform: translateY(1px);
 }
 
 /* 🟢 5分未満（鮮やかな緑・文字は白） */
@@ -160,7 +362,14 @@ table td {
     color: #ffffff;
 }
 
-/* ボタンにマウスが乗ったときに、少しだけ暗くして「押せる感」を出す演出 */
-.bg-green:hover { background-color: #27ae60; }
-.bg-yellow:hover { background-color: #d4ac0d; }
-.bg-red:hover { background-color: #c0392b; }
+.served-btn.bg-green:hover{
+    background-color: #27ae60;
+}
+
+.served-btn.bg-yellow:hover{
+    background-color: #d4ac0d;
+}
+
+.served-btn.bg-red:hover{
+    background-color: #c0392b;
+}

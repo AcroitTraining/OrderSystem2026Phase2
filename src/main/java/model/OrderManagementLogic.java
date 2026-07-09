@@ -104,5 +104,77 @@ public class OrderManagementLogic {
 
         return filteredList;
     }
+    
+    /**
+     * 【新規機能】注文リストから、各カテゴリおよび各卓の「注文個数(Quantity)」の合計を集計する
+     * @param allList 全注文リスト
+     * @return 集計結果を格納したMap
+     */
+    public java.util.Map<String, Integer> calculateBadgeCounts(List<OrderManagementInfo> allList) {
+        java.util.Map<String, Integer> counts = new java.util.HashMap<>();
+        
+        // 各カウントの初期値を0でセット
+        int countAll = 0;
+        int countOkonomi = 0;
+        int countMonja = 0;
+        int countTeppan = 0;
+        int countSide = 0;
+        int countSoft = 0;
+        int countSake = 0;
+        int countBottle = 0;
+
+        int countTableAll = 0;
+        int countTable1 = 0;
+        int countTable2 = 0;
+        int countTable3 = 0;
+        int countTable4 = 0;
+
+        if (allList != null) {
+            for (OrderManagementInfo item : allList) {
+                // 注文個数(Quantity)を取得
+                int q = item.getOrderQuantity(); 
+                
+                // 全体個数に加算
+                countAll += q;
+                countTableAll += q;
+
+                // カテゴリの個数加算
+                String cat = item.getCategoryName();
+                if ("お好み焼き".equals(cat)) countOkonomi += q;
+                else if ("もんじゃ焼き".equals(cat)) countMonja += q;
+                else if ("鉄板焼き".equals(cat)) countTeppan += q;
+                else if ("サイドメニュー".equals(cat)) countSide += q;
+                else if ("ソフトドリンク".equals(cat)) countSoft += q;
+                else if ("お酒".equals(cat)) countSake += q;
+                else if ("ボトル".equals(cat)) countBottle += q;
+                
+                // 卓番の個数加算
+                int tid = item.getTableId();
+                if (tid == 1) countTable1 += q;
+                else if (tid == 2) countTable2 += q;
+                else if (tid == 3) countTable3 += q;
+                else if (tid == 4) countTable4 += q;
+            }
+        }
+
+        // 集計結果をMapに詰め込む
+        counts.put("countAll", countAll);
+        counts.put("countOkonomi", countOkonomi);
+        counts.put("countMonja", countMonja);
+        counts.put("countTeppan", countTeppan);
+        counts.put("countSide", countSide);
+        counts.put("countSoft", countSoft);
+        counts.put("countSake", countSake);
+        counts.put("countBottle", countBottle);
+
+        counts.put("countTableAll", countTableAll);
+        counts.put("countTable1", countTable1);
+        counts.put("countTable2", countTable2);
+        counts.put("countTable3", countTable3);
+        counts.put("countTable4", countTable4);
+
+        return counts;
+    }
+
 
 }
