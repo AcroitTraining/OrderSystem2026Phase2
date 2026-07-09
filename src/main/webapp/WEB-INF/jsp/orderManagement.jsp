@@ -21,72 +21,72 @@
 		</form>
 	</div>
 
-<!-- カテゴリ選択エリア -->
-<div class="category-wrapper">
+	<!-- カテゴリ選択エリア -->
+	<div class="category-wrapper">
 
-	<button type="button" class="scroll-btn left">‹</button>
+		<button type="button" class="scroll-btn left">‹</button>
 
-	<form action="OrderManagementServlet" method="get">
+		<form action="OrderManagementServlet" method="get">
 
-		<input type="hidden" name="tableFilter" value="${currentTable}">
+			<input type="hidden" name="tableFilter" value="${currentTable}">
 
-		<div class="category-tabs" id="categoryTabs">
+			<div class="category-tabs" id="categoryTabs">
 
-			<button type="submit" name="categoryFilter" value="全て"
-				class="tab-btn ${currentCategory == '全て' ? 'active' : ''}"
-				data-category="全て">
-				全て<span class="badge">${countAll}</span>
-			</button>
+				<button type="submit" name="categoryFilter" value="全て"
+					class="tab-btn ${currentCategory == '全て' ? 'active' : ''}"
+					data-category="全て">
+					全て<span class="badge">${countAll}</span>
+				</button>
 
-			<button type="submit" name="categoryFilter" value="お好み焼き"
-				class="tab-btn ${currentCategory == 'お好み焼き' ? 'active' : ''}"
-				data-category="お好み焼き">
-				お好み焼き<span class="badge">${countOkonomi}</span>
-			</button>
+				<button type="submit" name="categoryFilter" value="お好み焼き"
+					class="tab-btn ${currentCategory == 'お好み焼き' ? 'active' : ''}"
+					data-category="お好み焼き">
+					お好み焼き<span class="badge">${countOkonomi}</span>
+				</button>
 
-			<button type="submit" name="categoryFilter" value="もんじゃ焼き"
-				class="tab-btn ${currentCategory == 'もんじゃ焼き' ? 'active' : ''}"
-				data-category="もんじゃ焼き">
-				もんじゃ焼き<span class="badge">${countMonja}</span>
-			</button>
+				<button type="submit" name="categoryFilter" value="もんじゃ焼き"
+					class="tab-btn ${currentCategory == 'もんじゃ焼き' ? 'active' : ''}"
+					data-category="もんじゃ焼き">
+					もんじゃ焼き<span class="badge">${countMonja}</span>
+				</button>
 
-			<button type="submit" name="categoryFilter" value="鉄板焼き"
-				class="tab-btn ${currentCategory == '鉄板焼き' ? 'active' : ''}"
-				data-category="鉄板焼き">
-				鉄板焼き<span class="badge">${countTeppan}</span>
-			</button>
+				<button type="submit" name="categoryFilter" value="鉄板焼き"
+					class="tab-btn ${currentCategory == '鉄板焼き' ? 'active' : ''}"
+					data-category="鉄板焼き">
+					鉄板焼き<span class="badge">${countTeppan}</span>
+				</button>
 
-			<button type="submit" name="categoryFilter" value="サイドメニュー"
-				class="tab-btn ${currentCategory == 'サイドメニュー' ? 'active' : ''}"
-				data-category="サイドメニュー">
-				サイドメニュー<span class="badge">${countSide}</span>
-			</button>
+				<button type="submit" name="categoryFilter" value="サイドメニュー"
+					class="tab-btn ${currentCategory == 'サイドメニュー' ? 'active' : ''}"
+					data-category="サイドメニュー">
+					サイドメニュー<span class="badge">${countSide}</span>
+				</button>
 
-			<button type="submit" name="categoryFilter" value="ソフトドリンク"
-				class="tab-btn ${currentCategory == 'ソフトドリンク' ? 'active' : ''}"
-				data-category="ソフトドリンク">
-				ソフトドリンク<span class="badge">${countSoft}</span>
-			</button>
+				<button type="submit" name="categoryFilter" value="ソフトドリンク"
+					class="tab-btn ${currentCategory == 'ソフトドリンク' ? 'active' : ''}"
+					data-category="ソフトドリンク">
+					ソフトドリンク<span class="badge">${countSoft}</span>
+				</button>
 
-			<button type="submit" name="categoryFilter" value="お酒"
-				class="tab-btn ${currentCategory == 'お酒' ? 'active' : ''}"
-				data-category="お酒">
-				お酒<span class="badge">${countSake}</span>
-			</button>
+				<button type="submit" name="categoryFilter" value="お酒"
+					class="tab-btn ${currentCategory == 'お酒' ? 'active' : ''}"
+					data-category="お酒">
+					お酒<span class="badge">${countSake}</span>
+				</button>
 
-			<button type="submit" name="categoryFilter" value="ボトル"
-				class="tab-btn ${currentCategory == 'ボトル' ? 'active' : ''}"
-				data-category="ボトル">
-				ボトル<span class="badge">${countBottle}</span>
-			</button>
+				<button type="submit" name="categoryFilter" value="ボトル"
+					class="tab-btn ${currentCategory == 'ボトル' ? 'active' : ''}"
+					data-category="ボトル">
+					ボトル<span class="badge">${countBottle}</span>
+				</button>
 
-		</div>
+			</div>
 
-	</form>
+		</form>
 
-	<button type="button" class="scroll-btn right">›</button>
+		<button type="button" class="scroll-btn right">›</button>
 
-</div>
+	</div>
 
 	<!--  卓番選択エリア -->
 	<table-area>
