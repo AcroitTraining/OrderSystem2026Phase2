@@ -79,9 +79,37 @@ public class EditOrderServlet extends HttpServlet {
         EditOrderDAO dao = new EditOrderDAO();
         
         try {
-            // 注文削除時のリダイレクト
+            // ==========================================
+            // 【注文取り消し】時のストック一括返却＆削除ロジック
+            // ==========================================
             if ("delete_order".equals(button)) {
+                EditOrderInfo dbOriginal = dao.findOrderDetails(orderId);
+                if (dbOriginal != null) {
+                    int dbProductQty = dbOriginal.getProductQuantity(); // 注文されていた商品数
+                    
+                    // 1. メイン商品の在庫を戻す（消去されるので、注文個数分をそのままプラスする）
+                    dao.updateProductStock(dbOriginal.getProductId(), dbProductQty);
+
+                    // 2. 紐づいていたトッピングの在庫を「掛け算」で計算してすべて戻す
+                    List<EditOrderInfo.ToppingList> dbToppingOriginal = dao.findToppingListByProductId(dbOriginal.getProductId(), orderId);
+                    if (dbToppingOriginal != null) {
+                        for (EditOrderInfo.ToppingList topping : dbToppingOriginal) {
+                            int dbToppingQty = topping.getQuantity(); // 1商品あたりのトッピング選択数
+                            
+                            if (dbToppingQty > 0) {
+                                // 総消費量 ＝ トッピング選択数 × 商品注文数
+                                int totalToppingCount = dbToppingQty * dbProductQty;
+                                // 在庫に戻す（加算する）ため、そのままプラスで渡す
+                                dao.updateToppingStock(topping.getToppingId(), totalToppingCount);
+                            }
+                        }
+                    }
+                }
+
+                // 3. 在庫をすべて戻し終えた後、安全にデータを物理削除
                 dao.deleteOrderComplete(orderId);
+
+                // 画面リダイレクト
                 if ("servedHistory".equals(from)) {
                     response.sendRedirect("ServedHistoryServlet");
                 } else {
@@ -90,6 +118,7 @@ public class EditOrderServlet extends HttpServlet {
                 return;
             }
 
+            // --- 通常の読み込み＆「変更」確定処理 ---
             EditOrderInfo info = dao.findOrderDetails(orderId);
             if (info == null) {
                 if ("servedHistory".equals(from)) {
@@ -121,7 +150,7 @@ public class EditOrderServlet extends HttpServlet {
 
             EditOrderLogic logic = new EditOrderLogic();
 
-            // 「＋」「－」ボタン処理（
+            // 「＋」「－」ボタンの一時計算処理
             if (button != null && ("main_plus".equals(button) || "main_minus".equals(button) || button.startsWith("+") || button.startsWith("-"))) {
                 logic.calcQuantity(info, button);
                 request.setAttribute("editOrderInfo", info);
@@ -130,6 +159,7 @@ public class EditOrderServlet extends HttpServlet {
                 return;
             }
 
+            // 「変更」ボタン確定時の裏在庫掛け算連動
             if ("update".equals(mode)) {
                 EditOrderInfo dbOriginal = dao.findOrderDetails(orderId);
                 List<EditOrderInfo.ToppingList> dbToppingOriginal = dao.findToppingListByProductId(info.getProductId(), orderId);
@@ -137,14 +167,12 @@ public class EditOrderServlet extends HttpServlet {
                 int screenProductQty = info.getProductQuantity(); 
                 int dbProductQty = dbOriginal.getProductQuantity();   
 
-                // 商品メインの注文数量変更
                 if (screenProductQty != dbProductQty) {
                     dao.updateProductQuantity(orderId, screenProductQty);
                     int productDiff = screenProductQty - dbProductQty;
                     dao.updateProductStock(info.getProductId(), -productDiff);
                 }
 
-                //  各トッピングの注文状態の更新、および「裏側での掛け算在庫調整」
                 for (int i = 0; i < info.getToppings().size(); i++) {
                     EditOrderInfo.ToppingList screen = info.getToppings().get(i);
                     EditOrderInfo.ToppingList db = dbToppingOriginal.get(i); 
@@ -162,10 +190,10 @@ public class EditOrderServlet extends HttpServlet {
                         }
                     }
 
-                    // 総消費量 ＝ 各トッピングの選択個数 × 商品数
                     int newTotalToppingCount = screenQty * screenProductQty;
                     int oldTotalToppingCount = dbQty * dbProductQty;
                     int toppingStockDiff = newTotalToppingCount - oldTotalToppingCount;
+
                     if (toppingStockDiff != 0) {
                         dao.updateToppingStock(screen.getToppingId(), -toppingStockDiff);
                     }

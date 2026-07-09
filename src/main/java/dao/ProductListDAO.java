@@ -41,8 +41,8 @@ public class ProductListDAO {
 					pInfo.setCategoryName(rs.getString("category_name"));
 					pInfo.setProductPrice(rs.getInt("product_price"));
 					pInfo.setProductStock(rs.getInt("product_stock"));
-					pInfo.setProductDisplayFlag(rs.getInt("product_display_flag")); 
-					pInfo.setProductDeleteFlag(rs.getInt("product_delete_flag"));   
+					pInfo.setProductDisplayFlag(rs.getInt("product_display_flag"));
+					pInfo.setProductDeleteFlag(rs.getInt("product_delete_flag"));
 
 					// リストに追加
 					pList.add(pInfo);

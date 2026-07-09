@@ -7,12 +7,13 @@ body {
     font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
     background-color: #ffffff;
     color: #000000;
+    overflow-x: hidden; /* 横スクロールバーの発生を防ぐ */
 }
 
-/* 全体を囲むコンテナ（画面幅に合わせて縮小、最大900px） */
+/* 全体を囲むコンテナ：画面の拡大縮小に滑らかに追従 */
 .container {
-    max-width: 900px;
-    width: 50%;
+    max-width: 1000px;
+    width: 90%;
     box-sizing: border-box;
     margin: 0 auto;
     padding: 40px 20px;
@@ -20,109 +21,191 @@ body {
     flex-direction: column;
 }
 
-/* ログアウトボタンの配置（標準は右上固定） */
+/* ログアウトボタン：常に画面の右上に綺麗に配置 */
 .logout-section {
-    position: relative;
-    top: 20px;
-    left: 650px;
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    margin-bottom: 20px;
 }
 
 /* メインタイトル */
 .main-title {
     text-align: center;
-    font-size: 24px; /* PC・スマホ共通で固定 */
-    font-weight: normal;
-    margin-top: 40px;
-    margin-bottom: 15px;
+    font-size: clamp(24px, 4vw, 36px);
+    font-weight: bold;
+    margin-top: 10px;
+    margin-bottom: 20px;
 }
 
 /* 区切り線 */
 .separator {
     border: none;
-    border-top: 1px solid #e0e0e0;
-    margin: 20px 0;
+    border-top: 2px solid #e0e0e0;
+    margin: 25px 0;
     width: 100%;
 }
 
 /* 各セクションのスタイル */
 .menu-section {
-    padding: 10px 40px;
+    padding: 0 10px;
     box-sizing: border-box;
 }
 
+/* セクションタイトル */
 .section-title {
-    font-size: 18px; /* PC・スマホ共通で固定 */
+    font-size: clamp(18px, 3vw, 24px);
     font-weight: bold;
     margin-bottom: 20px;
 }
 
-/* 画像ボタン共通：サイズを保ちつつ、枠線を消す */
+/* 画像ボタン共通設定 */
 .btn-img {
     background: none;
     border: none;
     padding: 0;
     cursor: pointer;
     outline: none;
-    display: inline-block;
+    display: block;
+    width: 100%;
     transition: transform 0.1s ease, opacity 0.2s;
 }
 
-.btn-img:hover {
-    opacity: 0.9;
-}
+.btn-img:hover { opacity: 0.9; }
+.btn-img:active { transform: scale(0.96); }
 
-.btn-img:active {
-    transform: scale(0.98);
-}
-
-/* 画像の大きさが勝手に縮みすぎないように調整 */
+/* 画像自体のサイズ制御 */
 .btn-img img {
     display: block;
-    width: 150px; /* 元のボタン画像に近い適正サイズで固定 */
+    width: 100%;
     height: auto;
+    max-width: 240px;
+    margin: 0 auto;
 }
 
-/* メニュー管理用の横並びグループ（画面が狭くなると自動で折り返し） */
+/* ログアウトボタンのサイズ */
+.logout-section .btn-img img {
+    max-width: 150px;
+}
+
+/* 注文管理ボタン用のグループ */
+.button-group {
+    display: flex;
+    justify-content: flex-start;
+}
+.button-group form {
+    width: 100%;
+    max-width: 240px;
+}
+
+/* メニュー管理（3つ並び）のグループ */
 .button-group.horizontal {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px; 
+    gap: 20px;
+    justify-content: flex-start;
+}
+
+.button-group.horizontal form {
+    flex: 1;
+    min-width: 160px;
+    max-width: 240px;
 }
 
 /* ===================================================
-   スマートフォン・タブレット用のレスポンシブ調整 (幅600px以下)
+   タブレット縦向き〜スマホ向けの微調整
    =================================================== */
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 768px) {
     .container {
         padding: 20px 10px;
-        position: relative;
     }
-
-    /* スマホ時は右上固定を解除し、一番上に配置してタイトルとの被りを防止 */
-    .logout-section {
-        position: static;
-        display: flex;
-        justify-content: flex-end;
-        width: 100%;
-        margin-bottom: 10px;
+    .button-group {
+        justify-content: center;
     }
-
-    .main-title {
-        margin-top: 10px;
-    }
-
-    /* 左右の余白を少し狭めてボタンを押しやすく */
-    .menu-section {
-        padding: 10px 15px;
-    }
-    
-    /* スマホでボタンがはみ出さないよう、画面幅が極端に狭い時だけ100%にする */
-    .btn-img img {
-        max-width: 100%;
-    }
-    
-    /* スマホではメニュー管理ボタンを中央寄せに並べる */
     .button-group.horizontal {
         justify-content: center;
     }
+}
+
+/* ===================================================
+   ポップアップ（モーダル）のレスポンシブ・固定対応
+   =================================================== */
+.modal-overlay {
+    display: none;
+    position: fixed;    /* 画面に対して完全に固定 */
+    top: 0;
+    left: 0;
+    width: 100vw;       /* スクロールに影響されない横幅 */
+    height: 100vh;      /* スクロールに影響されない高さ */
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.modal-overlay.is-active {
+    display: flex;
+}
+
+/* ポップアップの白い箱 */
+.modal-content {
+    background-color: #ffffff;
+    padding: clamp(30px, 5vw, 50px) clamp(20px, 5vw, 60px);
+    border-radius: 8px;
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    width: 90%;
+    max-width: 400px;
+    box-sizing: border-box;
+}
+
+.modal-title {
+    font-size: clamp(18px, 3vw, 22px);
+    font-weight: bold;
+    margin: 0 0 10px 0;
+    color: #000000;
+}
+
+.modal-subtitle {
+    font-size: clamp(14px, 2.5vw, 16px);
+    margin: 0 0 30px 0;
+    color: #333333;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.modal-buttons button {
+    font-size: clamp(14px, 2.5vw, 16px);
+    padding: 10px 0;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    outline: none;
+    width: 40%;
+    max-width: 120px;
+    box-sizing: border-box;
+}
+
+.btn-cancel {
+    background-color: #ffffff;
+    border: 2px solid #000000;
+    color: #000000;
+}
+
+.btn-confirm {
+    background-color: #ff0000;
+    border: 2px solid #000000;
+    color: #ffffff;
+}
+
+.modal-buttons button:hover { opacity: 0.8; }
+
+@media screen and (max-width: 650px) {
+    .modal-buttons button { font-size: 15px; width: 90px; } /* エラーを修正済み */
 }

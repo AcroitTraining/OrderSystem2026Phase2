@@ -6,13 +6,14 @@
 <meta charset="UTF-8">
 <title>ホーム画面</title>
 <link rel="stylesheet" type="text/css" href="css/home.css">
+<script src="js/home.js" defer></script>
 </head>
 <body>
 
     <div class="container">
         <div class="logout-section">
-            <form action="index.jsp" method="get">
-                <button type="submit" name="logoutButton" class="btn-img">
+            <form id="logoutForm" action="index.jsp" method="get">
+                <button type="button" id="logoutTrigger" class="btn-img">
                     <img src="image/logoutButton.png" alt="ログアウト">
                 </button>
             </form>
@@ -56,6 +57,17 @@
                 </form>
             </div>
         </section>
+    </div>
+
+    <div id="logoutModal" class="modal-overlay">
+        <div class="modal-content">
+            <p class="modal-title">ログアウトします</p>
+            <p class="modal-subtitle">よろしいですか？</p>
+            <div class="modal-buttons">
+                <button type="button" id="modalCancel" class="btn-cancel">いいえ</button>
+                <button type="button" id="modalConfirm" class="btn-confirm">はい</button>
+            </div>
+        </div>
     </div>
 
 </body>

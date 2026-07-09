@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <title><%= ((ToppingEditInfo)request.getAttribute("toppingEditInfo")).getToppingId() == 0 ? "新規トッピング作成" : "トッピング変更" %></title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/toppingEdit.css">
+    <script src="${pageContext.request.contextPath}/js/toppingEdit.js" defer></script>
 </head>
 <body>
 
@@ -29,12 +30,12 @@
 
             <div class="form-group">
                 <label class="label-title">トッピング名 <span class="label-sub">※最大18文字</span></label>
-                <input type="text" name="toppingName" class="input-topping-name" maxlength="18" value="<%= info.getToppingName() %>" required>
+                <input type="text" name="toppingName" class="input-topping-name" value="<%= info.getToppingName() %>">
             </div>
 
             <div class="form-group">
                 <label class="label-title">金額 <span class="label-sub">※最大5桁</span></label>
-                <input type="number" name="toppingPrice" class="input-price" min="0" max="99999" value="<%= isNew ? "" : info.getToppingPrice() %>" required>
+                <input type="number" name="toppingPrice" class="input-price" value="<%= isNew ? "" : info.getToppingPrice() %>" placeholder="0">
                 <span class="currency-unit">円</span>
             </div>
 
