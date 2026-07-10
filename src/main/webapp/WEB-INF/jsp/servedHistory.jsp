@@ -7,21 +7,49 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<link rel="stylesheet" href="./css/common.css">
 <link rel="stylesheet" href="./css/servedHistory.css">
+
 <title>注文済み履歴画面</title>
 </head>
 <body>
-<body>
-	<category-area>
-	<form action="ServedHistoryServlet" method="get" style="display: inline;">
-	<input type="submit" name="tableFilter" value="全て">
-	<input type="submit" name="tableFilter" value="1卓" class="1卓">
-	<input type="submit" name="tableFilter" value="2卓" class="2卓">
-	<input type="submit" name="tableFilter" value="3卓" class="3卓">
-	<input type="submit" name="tableFilter" value="4卓" class="4卓">
-	</form>
-	</category-area>
+<!-- 卓番選択エリア -->
+<table-area>
 
+<form action="ServedHistoryServlet" method="get">
+
+	<div class="table-tabs">
+
+		<button type="submit" name="tableFilter" value="全ての卓"
+			class="table-tab-btn ${currentTable == '全ての卓' ? 'active' : ''}">
+			全ての卓
+		</button>
+
+		<button type="submit" name="tableFilter" value="1卓"
+			class="table-tab-btn ${currentTable == '1卓' ? 'active' : ''}">
+			1卓
+		</button>
+
+		<button type="submit" name="tableFilter" value="2卓"
+			class="table-tab-btn ${currentTable == '2卓' ? 'active' : ''}">
+			2卓
+		</button>
+
+		<button type="submit" name="tableFilter" value="3卓"
+			class="table-tab-btn ${currentTable == '3卓' ? 'active' : ''}">
+			3卓
+		</button>
+
+		<button type="submit" name="tableFilter" value="4卓"
+			class="table-tab-btn ${currentTable == '4卓' ? 'active' : ''}">
+			4卓
+		</button>
+
+	</div>
+
+</form>
+
+</table-area>
 
 	<table class="history-table">
 		<tr>
@@ -46,16 +74,16 @@
 					</c:if></td>
 				<td>
 					<form action="EditOrderServlet" method="get">
-						<input type="submit" name="action" value="履歴編集"> 
-						<input	type="hidden" name="oid" value="${item.orderId}">
-						<input type="hidden" name="from" value="servedHistory">
+						<input type="submit" name="action" value="履歴編集"> <input
+							type="hidden" name="oid" value="${item.orderId}"> <input
+							type="hidden" name="from" value="servedHistory">
 					</form>
 				</td>
 				<td>
 					<form action="ServedHistoryServlet" method="post">
 
-						<input type="submit" name="action" value="戻す">
-						<input type="hidden" name="oid" value="${item.orderId}">
+						<input type="submit" name="action" value="戻す"> <input
+							type="hidden" name="oid" value="${item.orderId}">
 					</form>
 				</td>
 			</tr>
