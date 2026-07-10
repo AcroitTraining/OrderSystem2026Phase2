@@ -10,6 +10,7 @@
                         
         
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/java"/>
                         
         
         <property name="java-output-path" value="/OrderSystem2026Phase2/build/classes"/>
