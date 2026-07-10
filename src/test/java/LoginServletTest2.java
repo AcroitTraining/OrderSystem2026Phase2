@@ -3,12 +3,14 @@ import static org.mockito.Mockito.*;
 
 import java.io.IOException;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import dao.LoginDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -28,8 +30,16 @@ class LoginServletTest2 {
     @Mock
     private HttpSession session;
 
+    @Mock
+    private LoginDAO dao;
+
     @InjectMocks
     private LoginServlet servlet;
+
+    @BeforeEach
+    void setUp() {
+        servlet.setLoginDAO(dao);
+    }
 
     @Test
     void testLoginServlet() throws ServletException, IOException {
@@ -38,21 +48,35 @@ class LoginServletTest2 {
         String userId = "order";
         String password = "1234";
 
+        LoginInfo testInfo = new LoginInfo(userId, password);
+
+        // モックの設定
         when(request.getParameter("userId")).thenReturn(userId);
         when(request.getParameter("password")).thenReturn(password);
         when(request.getSession()).thenReturn(session);
 
+        // DAOの戻り値を設定
+        when(dao.loginCheck(userId, password)).thenReturn(testInfo);
+
         // Servlet実行
         servlet.doPost(request, response);
 
-        // LoginInfoの確認
+        // Servlet内に保持されたLoginInfoを確認
         LoginInfo info = servlet.getLoginInfo();
 
+        assertNotNull(info);
         assertEquals(userId, info.getLoginId());
         assertEquals(password, info.getLoginPassword());
 
-        // パラメータ取得確認
+        // 動作確認
         verify(request).getParameter("userId");
         verify(request).getParameter("password");
+        verify(request).getSession();
+
+        verify(dao).loginCheck(userId, password);
+
+        verify(session).setAttribute("loginUser", testInfo);
+
+        verify(response).sendRedirect("HomeServlet");
     }
 }
