@@ -27,7 +27,6 @@ class LoginServletTest2 {
 	@Mock private RequestDispatcher dispatcher;
 	@InjectMocks private LoginServlet servlet;
 
-
 	@Test
 	void testLoginServlet() throws ServletException, IOException, SQLException, ClassNotFoundException {
 
