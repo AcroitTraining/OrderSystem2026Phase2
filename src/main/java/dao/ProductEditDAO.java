@@ -55,8 +55,7 @@ public class ProductEditDAO {
     }
 
     /**
-     * 2. 全てのトッピング情報を取得するメソッド
-     * ★実際のテーブル名「topping」に合わせてSQLを修正しました
+     * 2. 全てのトッピング情報を取得するメソッド1
      */
     public List<ProductEditInfo.ToppingMaster> findAllToppings() throws SQLException {
         // 画像を基に、テーブル名を topping_master から topping へ修正

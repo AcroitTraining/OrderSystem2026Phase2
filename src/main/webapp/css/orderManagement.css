@@ -1,129 +1,197 @@
 @charset "UTF-8";
 
-/* ==========================================================================
-   1. アプリ全体の基本設定
-   ========================================================================== */
-body {
-    background-color: #fafafa;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    overflow-x: hidden;
-    -webkit-text-size-adjust: 100%;
+/* ================================
+   カテゴリタブ全体
+================================ */
+
+.category-wrapper{
+    position:relative;
+    display:flex;
+    align-items:center;
 }
 
-/* ==========================================================================
-   2. ヘッダーナビゲーション（グリッド完全同期・横スクロール対応）
-   ========================================================================== */
-.header-nav-area {
-    display: flex;
-    flex-direction: column;   
-    gap: 12px;                /* 1段目と2段目の上下の間隔 */
-    padding: 14px 16px;
-    background-color: #ffffff;
-    border-bottom: 1px solid #cccccc;
-    width: 100%;
-    box-sizing: border-box;
+
+/* 左右スクロールボタン */
+.scroll-btn{
+    position:fixed;
+    top:30px;
+
+    width:40px;
+    height:40px;
+
+    border-radius:50%;
+    border:none;
+
+    background:rgba(255,255,255,0.6);
+
+    color:#555;
+    font-size:28px;
+    font-weight:bold;
+
+    z-index:2000;
+
+    cursor:pointer;
+
+    box-shadow:0 2px 6px rgba(0,0,0,.15);
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    transition:.2s;
 }
 
-/* 1段目・2段目それぞれの横一列 */
-.header-nav-row {
-    display: flex;
-    align-items: center;
-    width: 100%;
+
+/* ホバー時 */
+.scroll-btn:hover{
+    background:rgba(255,255,255,0.85);
 }
 
-/* 🟢 タブがあふれたら自動で横スクロールさせるラッパー */
-.scrollable-tabs-wrapper {
-    flex: 1;
-    overflow-x: auto;          /* 画面からはみ出したら横スクロール可能にする */
-    white-space: nowrap;       /* 絶対に下に折り返さない */
-    -webkit-overflow-scrolling: touch; /* スマホ・タブレットで滑らかにスクロール */
+
+/* 左矢印 */
+.scroll-btn.left{
+    left:10px;
 }
 
-/* スクロールバーの見栄えをスッキリさせる（ブラウザ標準） */
-.scrollable-tabs-wrapper::-webkit-scrollbar {
-    height: 4px;               /* スクロールバーの太さを細く */
-}
-.scrollable-tabs-wrapper::-webkit-scrollbar-thumb {
-    background: #dddddd;       /* スクロールバーのつまみの色 */
-    border-radius: 2px;
+
+/* 右矢印 */
+.scroll-btn.right{
+    right:10px;
 }
 
-/* フォームのインライン化 */
-.nav-tab-form {
-    display: inline-flex;
-    align-items: center;
+
+/* ================================
+   カテゴリタブ全体
+================================ */
+
+.category-wrapper{
+    position:relative;
+    display:flex;
+    align-items:center;
 }
 
-/* 1段目：左側ホームボタンの枠（横幅を52pxに固定して近くに！） */
-.header-left-box {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    width: 52px;              
-    flex-shrink: 0;
+
+/* 左右スクロールボタン */
+.scroll-btn{
+    position:fixed;
+    top:30px;
+
+    width:40px;
+    height:40px;
+
+    border-radius:50%;
+    border:none;
+
+    background:rgba(255,255,255,0.6);
+
+    color:#555;
+    font-size:28px;
+    font-weight:bold;
+
+    z-index:2000;
+
+    cursor:pointer;
+
+    box-shadow:0 2px 6px rgba(0,0,0,.15);
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    transition:.2s;
 }
 
-.home-img-btn {
-    background: none !important;
-    border: none !important;
-    box-shadow: none !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
+
+/* ホバー時 */
+.scroll-btn:hover{
+    background:rgba(255,255,255,0.85);
 }
 
-.home-icon {
-    width: 32px !important;   
-    height: 32px !important;
-    object-fit: contain;
+
+/* 左矢印 */
+.scroll-btn.left{
+    left:10px;
 }
 
-/* 2段目：左側の空白の枠（上のボタン枠と全く同じ52pxにして右側の開始位置を同期） */
-.header-left-space {
-    width: 52px;              
-    flex-shrink: 0;
+
+/* 右矢印 */
+.scroll-btn.right{
+    right:10px;
 }
 
-/* ==========================================================================
-   3. タブボタン関連設定（文字幅ぴったりで並ぶ）
-   ========================================================================== */
-.tab-items-container {
-    display: flex;
-    gap: 20px;                /* 各タブ同士の横のすき間 */
-    align-items: center;
-    flex-wrap: nowrap;        /* 🟢 絶対に折り返さない */
+
+
+/* ================================
+   タブスクロール部分
+================================ */
+
+.category-tabs{
+
+    display:flex;
+
+    gap:20px;
+
+    overflow-x:auto;
+
+    white-space:nowrap;
+
+    border-bottom:1px solid #e0e0e0;
+
+    padding-bottom:5px;
+
+    flex:1;
+
+    cursor:grab;
+
 }
 
-/* 各タブボタンの文字装飾 */
-.tab-item-link {
+
+/* ドラッグ中 */
+.category-tabs.dragging{
+    cursor:grabbing;
+}
+
+
+/* スクロールバー */
+.category-tabs::-webkit-scrollbar{
+    height:4px;
+}
+
+
+.category-tabs::-webkit-scrollbar-thumb{
+
+    background:#ccc;
+
+    border-radius:2px;
+
+}
+
+/* 基本のタブボタンのスタイル（未選択時） */
+.tab-btn {
     position: relative;
     background: none;
     border: none;
-    padding: 4px 2px 8px 2px;
+    padding: 10px 5px;
     font-size: 15px;
-    color: #777777;
+    color: #888888;            /* 選択されていない文字はグレー */
     cursor: pointer;
     font-family: inherit;
     display: inline-flex;
     align-items: center;
-    flex-shrink: 0;           /* ボタン自体が潰れないように固定 */
+    transition: all 0.2s ease;
 }
 
-/* アクティブ（選択中）の緑文字・緑アンダーライン */
-.tab-item-link.active {
-    color: #27ae60;
+/* 選択されているタブ（緑の下線と文字色） */
+.tab-btn.active {
+    color: #27ae60;            /* イメージ画像の鮮やかな緑色 */
     font-weight: bold;
 }
 
-.tab-item-link.active::after {
+/* 選択中の下線を要素の底ぴったりにつける */
+.tab-btn.active::after {
     content: '';
     position: absolute;
-    bottom: 0;
+    bottom: -6px;/* 親のborder-bottomと重ねる調整 */
     left: 0;
     width: 100%;
     height: 3px;              
@@ -131,53 +199,32 @@ body {
     border-radius: 2px;
 }
 
-/* 丸い件数バッジ */
-.tab-badge {
+/* 右上の件数バッジ */
+.badge {
     display: inline-block;
     background-color: #ff7675; 
     color: white;
     font-size: 10px;
-    font-weight: 500;
-    padding: 1px 5px;
+    font-weight: normal;
+    padding: 2px 5px;
     border-radius: 10px;       
     margin-left: 4px;
     vertical-align: super;     
-    line-height: 1.1;
+    line-height: 1;
 }
 
-/* ==========================================================================
-   4. メインテーブル（元の仕様を完全に維持）
-   ========================================================================== */
-.table-wrapper {
-    width: 98%;
-    margin: 10px auto;
-    overflow-x: auto;
+
+/* ボタン共通の基本デザイン */
+.bg-green, .bg-yellow, .bg-red {
+    border: none;
+    padding: 6px 15px;
+    border-radius: 4px;
+    font-weight: bold;       
+    cursor: pointer;         /* マウスを乗せたときに指マークにする */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* 軽い影をつけてボタンらしく */
 }
 
-.table-wrapper .order-table {
-    width: 100%;
-    border-collapse: collapse;
-    white-space: nowrap;
-}
-
-table th {
-    background-color: #c2f0d5; 
-    border: solid 1px #bbbbbb;
-    padding: 12px 8px;
-    font-size: 14px;
-    color: #27ae60;
-    font-weight: bold;
-}
-
-table td {
-    border: solid 1px #e0e0e0;
-    background-color: #ffffff; 
-    padding: 12px 8px;
-    text-align: center; 
-    font-size: 14px;
-    color: #333333;
-}
-
+/* 画像ボタンの背景と枠線を透明にする */
 .edit-img-btn {
     background: none;
     border: none;
@@ -185,105 +232,144 @@ table td {
     cursor: pointer;
 }
 
+/* 画像のサイズ調整（お好みの大きさに変更してください） */
 .edit-icon-img {
-    width: 26px;
-    height: 26px;
+    width: 36px;
+    height: 36px;
     vertical-align: middle;
 }
 
-.served-btn {
-    border: none;
-    padding: 6px 0;
-    width: 60px;
-    border-radius: 6px;
-    font-weight: bold;
-    font-size: 12px;
-    cursor: pointer;
-    box-shadow: 0 1px 3px rgba(0,0,0,.15);
-    text-align: center;
+/* マウスを乗せたときに少し透明にする（クリックできる感が出ます） */
+.edit-img-btn:hover {
+    opacity: 0.7;
 }
 
-.bg-green { background-color: #2ecc71; color: #ffffff; }
-.bg-yellow { background-color: #f1c40f; color: #333333; }
-.bg-red { background-color: #e74c3c; color: #ffffff; }
-
-/* ==========================================================================
-   5. フッターエリア & モーダル（元の仕様を完全に維持）
-   ========================================================================== */
-.footer-legend {
+/* フッター */
+.footer-legend{
     position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
-    background: #ffffff;
-    padding: 10px 15px;
+    background: #fff;
+    padding: 15px 30px;
     display: flex;
     align-items: center;
-    box-shadow: 0 -2px 8px rgba(0,0,0,.1);
-    box-sizing: border-box;
-    z-index: 100;
+    box-shadow: 0 -3px 10px rgba(0,0,0,.15);
 }
 
-.legend-group {
+.legend-group{
     display: flex;
     align-items: center;
-    gap: 15px;
+    margin-left: 200px;
+   
 }
 
-.legend-title {
-    font-size: 14px;
-    font-weight: bold;
-    color: #555555;
+.legend-title{
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    margin-right: 40px;
+    white-space: nowrap;
 }
 
-.legend-item {
+.served-btn{
+    border:none;
+    padding:6px 15px;
+    border-radius:4px;
+    font-weight:bold;
+    cursor:pointer;
+    box-shadow:0 2px 4px rgba(0,0,0,.1);
+}
+
+/* 色と文字を横並び */
+.legend-item{
     display: flex;
     align-items: center;
-    font-size: 13px;
+    margin-right: 150px;
 }
 
-.legend-box {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    margin-right: 6px;
-    display: inline-block;
+/* 四角 */
+.legend-box{
+    width: 18px;
+    height: 18px;
+    margin-right: 8px;
+    border: 1px solid #333;
+    flex-shrink: 0;
 }
 
-.legend-box.bg-green { background: #2ecc71; }
-.legend-box.bg-yellow { background: #f1c40f; }
-.legend-box.bg-red { background: #e74c3c; }
+/* 色だけ設定 */
+.legend-box.bg-green{
+    background:#2ecc71;
+}
 
-.history-form {
+.legend-box.bg-yellow{
+    background:#f1c40f;
+}
+
+.legend-box.bg-red{
+    background:#e74c3c;
+}
+
+/* 履歴フォームを右端から100px内側へ */
+.history-form{
     margin-left: auto;
+    margin-right: 100px;
 }
 
-.history-form input[type="submit"] {
-    background-color: #ffffff;
-    border: 1px solid #cccccc;
-    border-radius: 4px;
-    padding: 4px 12px;
-    font-size: 12px;
+/* 履歴ボタン */
+.history-form input[type="submit"]{
+    background-color: #fafafa;
+    color: #000;
+    border: 1px solid #d0d0d0;
+    border-radius: 8px;
+    padding: 10px 22px;
+    font-size: 14px;
+    font-weight: 600;
     cursor: pointer;
+    transition: background-color 0.2s ease,
+                box-shadow 0.2s ease,
+                transform 0.1s ease;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
 }
 
-.modal-overlay {
-    display: none; 
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background-color: rgba(0, 0, 0, 0.4);
-    z-index: 1000;
-    justify-content: center; align-items: center;
+/* マウスを乗せたとき */
+.history-form input[type="submit"]:hover{
+    background-color: #1f6fd1;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
 
-.modal-content {
-    background-color: #ffffff;
-    padding: 30px;
-    border: 1px solid #000000;
-    text-align: center;
-    width: 90%; max-width: 350px;
+/* 押したとき */
+.history-form input[type="submit"]:active{
+    transform: translateY(1px);
 }
 
-.btn-modal-no, .btn-modal-yes { padding: 8px 20px; font-size: 13px; cursor: pointer; }
-.btn-modal-no { background-color: #ffffff; color: #000000; border: 1px solid #000000; }
-.btn-modal-yes { background-color: #e60012; color: #ffffff; font-weight: bold; }
+/* 🟢 5分未満（鮮やかな緑・文字は白） */
+.bg-green {
+    background-color: #2ecc71;
+    color: #ffffff;
+    border-radius: 1px;
+}
+
+/* 🟡 5分〜10分未満（警告の黄色・文字は黒の方が見やすい） */
+.bg-yellow {
+    background-color: #f1c40f;
+    color: #333333;
+}
+
+/* 🔴 10分以上（緊急の赤・文字は白） */
+.bg-red {
+    background-color: #e74c3c;
+    color: #ffffff;
+}
+
+.served-btn.bg-green:hover{
+    background-color: #27ae60;
+}
+
+.served-btn.bg-yellow:hover{
+    background-color: #d4ac0d;
+}
+
+.served-btn.bg-red:hover{
+    background-color: #c0392b;
+}

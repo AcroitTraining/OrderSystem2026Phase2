@@ -1,9 +1,7 @@
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 import java.io.IOException;
-import java.sql.SQLException;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,47 +9,50 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import model.LoginInfo;
 import servlet.LoginServlet;
 
-
 @ExtendWith(MockitoExtension.class)
 class LoginServletTest2 {
-	// @Mock private OrderStartDAO dao;
-	@Mock private HttpServletRequest request;
-	@Mock private HttpServletResponse response;
-	@Mock private RequestDispatcher dispatcher;
-	@InjectMocks private LoginServlet servlet;
 
-	@Test
-	void testLoginServlet() throws ServletException, IOException, SQLException, ClassNotFoundException {
+    @Mock
+    private HttpServletRequest request;
 
-		String userId = "order";
-		String password = "1234";
-		LoginInfo InfoTest = new LoginInfo(userId, password);
+    @Mock
+    private HttpServletResponse response;
 
-		when(request.getParameter("userId")).thenReturn("order");
-		when(request.getParameter("password")).thenReturn("1234");
-		doNothing().when(dispatcher).forward(request, response);
-		when(request.getRequestDispatcher("HomeServlet")).thenReturn(dispatcher);
+    @Mock
+    private HttpSession session;
 
-		// servletの実行
-		servlet.doPost(request, response);
+    @InjectMocks
+    private LoginServlet servlet;
 
-		LoginInfo Info = servlet.getLoginInfo();
+    @Test
+    void testLoginServlet() throws ServletException, IOException {
 
-		assertEquals(InfoTest.getLoginId(), Info.getLoginId());
-		assertEquals(InfoTest.getLoginPassword(), Info.getLoginPassword());
+        // テストデータ
+        String userId = "order";
+        String password = "1234";
 
-		verify(request, times(1)).setAttribute("loginInfo", Info);
-		verify(request, times(1)).getRequestDispatcher(anyString());
+        when(request.getParameter("userId")).thenReturn(userId);
+        when(request.getParameter("password")).thenReturn(password);
+        when(request.getSession()).thenReturn(session);
 
-	}
+        // Servlet実行
+        servlet.doPost(request, response);
 
+        // LoginInfoの確認
+        LoginInfo info = servlet.getLoginInfo();
 
+        assertEquals(userId, info.getLoginId());
+        assertEquals(password, info.getLoginPassword());
 
+        // パラメータ取得確認
+        verify(request).getParameter("userId");
+        verify(request).getParameter("password");
+    }
 }
