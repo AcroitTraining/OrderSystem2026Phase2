@@ -1,8 +1,6 @@
 package servlet;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -18,35 +16,32 @@ import model.OrderManagementLogic;
 @WebServlet("/OrderManagementServlet")
 public class OrderManagementServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	//DB接続情報
-	private final String URL = "jdbc:mysql://localhost:3306/order_management";
-	private final String USER = "order";
-	private final String PASS = "1234";
+	
+	// 引数なしコンストラクタで生成するように修正
+	private OrderManagementDAO dao = new OrderManagementDAO();
+	
+	public void setOrderManagementDAO(OrderManagementDAO dao) {
+		this.dao = dao;
+	}
+	
+	private OrderManagementInfo orderManagementInfo;
+	public OrderManagementInfo geOderManagement() { return orderManagementInfo; }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
 		OrderManagementLogic logic = new OrderManagementLogic();
 
-		//1. 2つのパラメータを別々に受け取る（名前を明快に分けました）
 		String categoryFilter = request.getParameter("categoryFilter");
 		String tableFilter = request.getParameter("tableFilter");
 
 		try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-		try (Connection conn = DriverManager.getConnection(URL, USER, PASS)) {
-
-			OrderManagementDAO dao = new OrderManagementDAO(conn);
-
-			// 全件データを取得
+			// 全件データを取得（throws SQLException に対するハンドリング）
 			List<OrderManagementInfo> allList = dao.findorderDetails();
 
-			// 🟢 修正：ロジッククラスの新しいメソッドを呼び出して一撃で集計する
+			// ロジッククラスの新しいメソッドを呼び出して一撃で集計する
 			java.util.Map<String, Integer> counts = logic.calculateBadgeCounts(allList);
 
-			// 🟢 修正：Mapから集計データを取得してJSPスコープにセット（名前は元のままなのでJSPの変更不要）
+			// Mapから集計データを取得してJSPスコープにセット
 			request.setAttribute("countAll", counts.get("countAll"));
 			request.setAttribute("countOkonomi", counts.get("countOkonomi"));
 			request.setAttribute("countMonja", counts.get("countMonja"));
@@ -62,13 +57,13 @@ public class OrderManagementServlet extends HttpServlet {
 			request.setAttribute("countTable3", counts.get("countTable3"));
 			request.setAttribute("countTable4", counts.get("countTable4"));
 
-			// 🆕 3. 現在「何が選択されているか」の状態もJSPへ引き継ぐために保存（ここから下はそのまま）
+			// 現在「何が選択されているか」の状態もJSPへ引き継ぐために保存
 			if (categoryFilter == null) categoryFilter = "全て";
 			if (tableFilter == null) tableFilter = "全ての卓";
 			request.setAttribute("currentCategory", categoryFilter);
 			request.setAttribute("currentTable", tableFilter);
 
-			// 4. ロジックに2つのフィルターを渡して掛け合わせ
+			// ロジックに2つのフィルターを渡して掛け合わせ
 			logic.calculateOrderTimes(allList);
 			List<OrderManagementInfo> omList = logic.filterOrders(allList, categoryFilter, tableFilter);
 			logic.calculateOrderTimes(omList);
@@ -77,35 +72,30 @@ public class OrderManagementServlet extends HttpServlet {
 			request.setAttribute("omList", omList);
 
 		} catch (SQLException e) {
+			// SQLエラーが発生した場合のハンドリング
 			e.printStackTrace();
+			throw new ServletException("データベース処理中にエラーが発生しました。", e);
 		}
 
 		request.getRequestDispatcher("/WEB-INF/jsp/orderManagement.jsp").forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
-		} catch (ClassNotFoundException e) {
-			// TODO 自動生成された catch ブロック
-			e.printStackTrace();
-		}
 		String oidstr = request.getParameter("oid");
 		String action = request.getParameter("action");
 
-		int orderId = Integer.parseInt(oidstr);
-
-		try (Connection conn = DriverManager.getConnection(URL, USER, PASS)) {
-			OrderManagementDAO dao = new OrderManagementDAO(conn);
-
-
-			if(action.equals("提供")) {
-				dao.updateServedFlag(orderId);
+		if (oidstr != null && action != null) {
+			int orderId = Integer.parseInt(oidstr);
+			try {
+				if (action.equals("提供")) {
+					dao.updateServedFlag(orderId);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+				throw new ServletException("ステータス更新中にエラーが発生しました。", e);
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			// 必要に応じてエラー画面への遷移処理など
 		}
+
 		response.sendRedirect("OrderManagementServlet");
 	}
 }

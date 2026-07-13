@@ -1,6 +1,7 @@
 package dao;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,21 +13,27 @@ import java.util.Map;
 import model.OrderManagementInfo;
 
 public class OrderManagementDAO {
-	private Connection conn;
+	
+	// データベース接続情報
+	private final String JDBC_URL = "jdbc:mysql://localhost:3306/order_management";
+	private final String DB_USER = "order";
+	private final String DB_PASS = "1234";
 
-	public OrderManagementDAO(Connection conn) {
-		this.conn = conn;
+	// 静的初期化ブロックでJDBCドライバを1度だけ読み込む
+	static {
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			throw new IllegalStateException("JDBCドライバを読み込めませんでした", e);
+		}
+	}
+
+	// 引数なしコンストラクタ
+	public OrderManagementDAO() {
 	}
 
 	public List<OrderManagementInfo> findorderDetails() throws SQLException {
-
 		Map<Integer, OrderManagementInfo> map = new LinkedHashMap<>();
-		//JDBCドライバを読み込む
-		try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
-		}catch(ClassNotFoundException e){
-			throw new IllegalStateException("JDBCドライバを読み込めませんでした");
-		}
 
 		String sql = 
 				"SELECT od.order_id, od.product_quantity, od.session_id, od.order_flag, ts.table_id, "
@@ -49,68 +56,59 @@ public class OrderManagementDAO {
 						+ "AND od.accounting_flag = 0 "
 						+ "ORDER BY od.order_id DESC";
 
-		try (PreparedStatement ps = conn.prepareStatement(sql)) {
-			try (ResultSet rs = ps.executeQuery()) {
-				while (rs.next()) {
-					int orderId = rs.getInt("order_id");
+		try (Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS);
+			 PreparedStatement ps = conn.prepareStatement(sql);
+			 ResultSet rs = ps.executeQuery()) {
 
-					OrderManagementInfo info = map.get(orderId);
-					if (info == null) {
-						info = new OrderManagementInfo();
-						info.setOrderId(orderId);
-						info.setTableId(rs.getInt("table_id"));
-						info.setOrderTime(rs.getString("order_time")); 
-						info.setCategoryName(rs.getString("category_name"));
-						info.setProductName(rs.getString("product_name"));
-						info.setOrderQuantity(rs.getInt("product_quantity"));
-						info.setOrderFlag(rs.getInt("order_flag"));
-						info.setOrderPrice(rs.getInt("order_price"));
-						info.setProductPrice(rs.getInt("product_price"));
-						info.setProductStock(rs.getInt("product_stock"));
-						info.setToppingStock(rs.getInt("topping_stock"));
-						info.setToppingQuantity(rs.getInt("topping_quantity"));
-						info.setToppingPrice(rs.getInt("topping_price"));
-						// 初期金額（商品単価 × 数量）
-						info.setSubTotal(rs.getInt("product_price") * rs.getInt("product_quantity"));
-						map.put(orderId, info);
-					}
+			while (rs.next()) {
+				int orderId = rs.getInt("order_id");
 
-					String toppingName = rs.getString("topping_name");
-					if (toppingName != null) {
-						int tQty = rs.getInt("topping_quantity");
-						int tPrice = rs.getInt("topping_price");
-						info.addTopping(toppingName, tQty, tPrice);
-						// トッピング金額を加算 (トッピング単価 × 個数 × 商品の数量)
-						int currentSubTotal = info.getSubTotal();
-						info.setSubTotal(currentSubTotal + (tPrice * tQty * info.getOrderQuantity()));
-					}
-					int cname = info.getToppingStock();
+				OrderManagementInfo info = map.get(orderId);
+				if (info == null) {
+					info = new OrderManagementInfo();
+					info.setOrderId(orderId);
+					info.setTableId(rs.getInt("table_id"));
+					info.setOrderTime(rs.getString("order_time")); 
+					info.setCategoryName(rs.getString("category_name"));
+					info.setProductName(rs.getString("product_name"));
+					info.setOrderQuantity(rs.getInt("product_quantity"));
+					info.setOrderFlag(rs.getInt("order_flag"));
+					info.setOrderPrice(rs.getInt("order_price"));
+					info.setProductPrice(rs.getInt("product_price"));
+					info.setProductStock(rs.getInt("product_stock"));
+					info.setToppingStock(rs.getInt("topping_stock"));
+					info.setToppingQuantity(rs.getInt("topping_quantity"));
+					info.setToppingPrice(rs.getInt("topping_price"));
+					info.setSubTotal(rs.getInt("product_price") * rs.getInt("product_quantity"));
+					map.put(orderId, info);
+				}
+
+				String toppingName = rs.getString("topping_name");
+				if (toppingName != null) {
+					int tQty = rs.getInt("topping_quantity");
+					int tPrice = rs.getInt("topping_price");
+					info.addTopping(toppingName, tQty, tPrice);
+					int currentSubTotal = info.getSubTotal();
+					info.setSubTotal(currentSubTotal + (tPrice * tQty * info.getOrderQuantity()));
 				}
 			}
 
 		} catch (SQLException e) {
-			// ✅ ここでエラーハンドリング（例外処理）を行う
 			System.err.println("SQLの実行に失敗しました: " + e.getMessage());
-			// 必要に応じて、サーブレット側にエラーを知らせるために再スローする
 			throw new RuntimeException(e); 		
 		}
 		return new ArrayList<>(map.values());
 	}
 
-	public void updateServedFlag(int orderId) throws SQLException{
-		//JDBCドライバを読み込む
-		try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
-		}catch(ClassNotFoundException e){
-			throw new IllegalStateException("JDBCドライバを読み込めませんでしたあ♡");
-		}
-
+	public void updateServedFlag(int orderId) throws SQLException {
 		String sql = "UPDATE order_details SET served_flag = 1 WHERE order_id = ?";
 
-		try (PreparedStatement ps = conn.prepareStatement(sql)) {
+		try (Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS);
+			 PreparedStatement ps = conn.prepareStatement(sql)) {
+			
 			ps.setInt(1, orderId);
-			int rs = ps.executeUpdate();
-		}catch(SQLException e) {
+			ps.executeUpdate();
+		} catch (SQLException e) {
 			throw e;
 		}
 	}
