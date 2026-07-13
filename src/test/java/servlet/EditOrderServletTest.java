@@ -22,25 +22,18 @@ class EditOrderServletTest {
 	
 	@Mock
     private HttpServletRequest request;
-
     @Mock
     private HttpServletResponse response;
-
     @Mock
     private HttpSession session;
-
     @Mock
     private EditOrderDAO dao;
-    
     @Mock
     private EditOrderLogic logic;
-    
     @Mock
     private RequestDispatcher dispatcher;
-
     @InjectMocks
     private EditOrderServlet servlet;
-
     @BeforeEach
     void setUp() {
         servlet.setEditOrderDAO(dao);
