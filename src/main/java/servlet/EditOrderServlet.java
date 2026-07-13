@@ -23,6 +23,12 @@ public class EditOrderServlet extends HttpServlet {
     	this.dao = dao;
     }
     
+    private EditOrderLogic logic = new EditOrderLogic(dao);
+
+    public void setLogic(EditOrderLogic logic){
+        this.logic = logic;
+    }
+    
     private EditOrderInfo editOrderInfo;
 
     public void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -84,7 +90,7 @@ public class EditOrderServlet extends HttpServlet {
         String button = request.getParameter("Button");
         String mode = request.getParameter("mode");
 
-        EditOrderLogic logic = new EditOrderLogic(dao);
+
 
         try {
 
@@ -117,20 +123,15 @@ public class EditOrderServlet extends HttpServlet {
 
                 request.setAttribute("editOrderInfo", info);
                 request.setAttribute("from", from);
-
                 request.getRequestDispatcher("WEB-INF/jsp/editOrder.jsp")
                         .forward(request, response);
-
                 return;
             }
 
             // 更新
             if ("update".equals(mode)) {
-
                 logic.updateOrder(info, orderId);
-
                 redirect(response, from);
-
                 return;
             }
 
