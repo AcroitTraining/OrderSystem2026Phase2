@@ -78,5 +78,7 @@ class LoginServletTest2 {
         verify(session).setAttribute("loginUser", testInfo);
 
         verify(response).sendRedirect("HomeServlet");
+        System.out.println(info.getLoginId());
+        System.out.println(info.getLoginPassword());
     }
 }
