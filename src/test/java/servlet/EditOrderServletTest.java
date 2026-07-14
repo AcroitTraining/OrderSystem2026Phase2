@@ -7,8 +7,10 @@ import java.util.ArrayList;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import dao.EditOrderDAO;
 import jakarta.servlet.RequestDispatcher;
@@ -18,6 +20,7 @@ import jakarta.servlet.http.HttpSession;
 import model.EditOrderInfo;
 import model.EditOrderLogic;
 
+@ExtendWith(MockitoExtension.class)
 class EditOrderServletTest {
 	
 	@Mock
@@ -91,6 +94,117 @@ class EditOrderServletTest {
         verify(logic).loadOrder(100);
         verify(logic).updateInfoFromRequest(info, request);
         verify(logic).calcQuantity(info, "main_minus");
+
+        // requestへセットされたか
+        verify(request).setAttribute("editOrderInfo", info);
+        verify(request).setAttribute("from", "order");
+
+        // forwardされたか
+        verify(dispatcher).forward(request, response);
+
+        // redirectされていないか
+        verify(response, never()).sendRedirect(anyString());
+    }
+    
+    @Test
+    void testDoPost_MainPlus() throws Exception {
+
+        // テストデータ
+        EditOrderInfo info = new EditOrderInfo();
+        info.setProductQuantity(2);
+
+        // モック設定
+        when(request.getParameter("oid")).thenReturn("100");
+        when(request.getParameter("from")).thenReturn("order");
+        when(request.getParameter("Button")).thenReturn("main_plus");
+        when(request.getParameter("mode")).thenReturn(null);
+
+        when(logic.loadOrder(100)).thenReturn(info);
+
+        when(request.getRequestDispatcher("WEB-INF/jsp/editOrder.jsp"))
+                .thenReturn(dispatcher);
+
+        // 実行
+        servlet.doPost(request, response);
+
+        // Logicが呼ばれたか
+        verify(logic).loadOrder(100);
+        verify(logic).updateInfoFromRequest(info, request);
+        verify(logic).calcQuantity(info, "main_plus");
+
+        // requestへセットされたか
+        verify(request).setAttribute("editOrderInfo", info);
+        verify(request).setAttribute("from", "order");
+
+        // forwardされたか
+        verify(dispatcher).forward(request, response);
+
+        // redirectされていないか
+        verify(response, never()).sendRedirect(anyString());
+    }
+    
+    @Test
+    void testDoPost_ToppingMinus() throws Exception {
+
+        // テストデータ
+        EditOrderInfo info = new EditOrderInfo();
+        info.setProductQuantity(2);
+
+        // モック設定
+        when(request.getParameter("oid")).thenReturn("100");
+        when(request.getParameter("from")).thenReturn("order");
+        when(request.getParameter("Button")).thenReturn("+0");
+        when(request.getParameter("mode")).thenReturn(null);
+
+        when(logic.loadOrder(100)).thenReturn(info);
+
+        when(request.getRequestDispatcher("WEB-INF/jsp/editOrder.jsp"))
+                .thenReturn(dispatcher);
+
+        // 実行
+        servlet.doPost(request, response);
+
+        // Logicが呼ばれたか
+        verify(logic).loadOrder(100);
+        verify(logic).updateInfoFromRequest(info, request);
+        verify(logic).calcQuantity(info, "+0");
+
+        // requestへセットされたか
+        verify(request).setAttribute("editOrderInfo", info);
+        verify(request).setAttribute("from", "order");
+
+        // forwardされたか
+        verify(dispatcher).forward(request, response);
+
+        // redirectされていないか
+        verify(response, never()).sendRedirect(anyString());
+    }
+    
+    @Test
+    void testDoPost_ToppingPlus() throws Exception {
+
+        // テストデータ
+        EditOrderInfo info = new EditOrderInfo();
+        info.setProductQuantity(2);
+
+        // モック設定
+        when(request.getParameter("oid")).thenReturn("100");
+        when(request.getParameter("from")).thenReturn("order");
+        when(request.getParameter("Button")).thenReturn("-0");
+        when(request.getParameter("mode")).thenReturn(null);
+
+        when(logic.loadOrder(100)).thenReturn(info);
+
+        when(request.getRequestDispatcher("WEB-INF/jsp/editOrder.jsp"))
+                .thenReturn(dispatcher);
+
+        // 実行
+        servlet.doPost(request, response);
+
+        // Logicが呼ばれたか
+        verify(logic).loadOrder(100);
+        verify(logic).updateInfoFromRequest(info, request);
+        verify(logic).calcQuantity(info, "-0");
 
         // requestへセットされたか
         verify(request).setAttribute("editOrderInfo", info);
