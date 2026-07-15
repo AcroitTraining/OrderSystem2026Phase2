@@ -1,8 +1,6 @@
 package servlet;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -18,67 +16,64 @@ import model.ProductListLogic;
 @WebServlet("/ProductListServlet")
 public class ProductListServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	//DB接続情報
-	private final String URL = "jdbc:mysql://localhost:3306/order_management";
-	private final String USER = "order";
-	private final String PASS = "1234";
+	
+	private ProductListDAO dao = new ProductListDAO();
+	
+	public void setProductListDAO(ProductListDAO dao) {
+		this.dao = dao;
+	}
+	
+	private ProductListLogic logic = new ProductListLogic(dao);
+	
+	public void setLogic(ProductListLogic logic) {
+		this.logic = logic;
+	}
     
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
-		} catch (ClassNotFoundException e) {
-			// TODO 自動生成された catch ブロック
-			e.printStackTrace();
-		}
 		
-		ProductListLogic logic = new ProductListLogic();
 		String filter = request.getParameter("filter");
 		if (filter == null || filter.isEmpty()) {
 	        filter = "全て";
 	    }
-		
-		try (Connection conn = DriverManager.getConnection(URL, USER, PASS)) {
-			ProductListDAO dao = new ProductListDAO(conn);
 			
-			List<ProductListInfo> pList = dao.findAllProduct();
-			pList = logic.fillterProducts(pList, filter);
-			
-			request.setAttribute("pList", pList);
-			request.setAttribute("currentCategory", filter);
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+			List<ProductListInfo> pList;
+			try {
+				pList = dao.findAllProduct();
+				pList = logic.filterProducts(pList, filter);
+				
+				request.setAttribute("pList", pList);
+				request.setAttribute("currentCategory", filter);
+			} catch (SQLException e) {
+				// TODO 自動生成された catch ブロック
+				e.printStackTrace();
+			}
 		
 		request.getRequestDispatcher("/WEB-INF/jsp/productList.jsp").forward(request, response);
 	}
 
 	
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
-		} catch (ClassNotFoundException e) {
-			// TODO 自動生成された catch ブロック
-			e.printStackTrace();
-		}
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {	
 		
 		String pid = request.getParameter("productId");
-		int productId = Integer.parseInt(pid);
-		String action = request.getParameter("action");
-		System.out.println(action + productId);
 		
-		try (Connection conn = DriverManager.getConnection(URL, USER, PASS)) {
-			ProductListDAO dao = new ProductListDAO(conn);
+		if (pid == null || pid.isEmpty()) {
+		    response.sendRedirect("ProductListServlet");
+		    return;
+		}
+		
+		int productId = Integer.parseInt(pid);
+		
+		String action = request.getParameter("action");
 
-
-			if(action.equals("表示切り替え")) {
+		
+		try {
+			if("表示切り替え".equals(action)) {
 				dao.updateProductDisplayFlag(productId);
-			}else if(action.equals("削除")) {
+			}else if("削除".equals(action)) {
 				dao.updateProductDeleteFlag(productId);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			// 必要に応じてエラー画面への遷移処理など
 		}
 		response.sendRedirect("ProductListServlet");
 	}

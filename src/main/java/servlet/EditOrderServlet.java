@@ -136,11 +136,8 @@ public class EditOrderServlet extends HttpServlet {
             }
 
         } catch (SQLException e) {
-
             e.printStackTrace();
-
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-
         }
 
     }
