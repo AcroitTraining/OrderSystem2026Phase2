@@ -14,18 +14,15 @@ public class ToppingEditDAO {
     private final String DB_PASS = "1234";
 
     private Connection connection;
-
-    public ToppingEditDAO() throws SQLException {
-        this.connection = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS);
-    }
-
-    public ToppingEditDAO(Connection connection) {
-        this.connection = connection;
-    }
-
-    public Connection getConnection() {
-        return this.connection;
-    }
+    
+    private Connection getConnection() throws SQLException {
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			throw new IllegalStateException("JDBCドライバエラー", e);
+		}
+		return DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS);
+	}
 
     // トッピング詳細の取得
     public ToppingEditInfo findToppingDetails(int toppingId) throws SQLException {
