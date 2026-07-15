@@ -13,25 +13,29 @@
 <title>商品一覧画面</title>
 </head>
 <body>
-<header class="fixed-header">
-		<!-- ① ホームボタン -->
-		<div class="home-container">
-			<form action="HomeServlet" method="get">
-				<button type="submit" class="home-btn">
-					<img src="./image/homeButton.png" alt="ホーム" class="home-img">
-				</button>
-			</form>
-		</div>
-		
-		<!-- ② 新規作成ボタン ＆ ③ カテゴリタブエリア -->
-		<category-area class="category-wrapper"> 
-			<form action="ProductEditServlet" method="get" class="create-form-sticky">
+	<header class="fixed-header">
+
+		<div class="header-content">
+
+			<div class="home-container">
+				<form action="HomeServlet" method="get">
+					<button type="submit" class="home-btn">
+						<img src="./image/homeButton.png" alt="ホーム" class="home-img">
+					</button>
+				</form>
+			</div>
+
+			<!-- ② 新規作成ボタン ＆ ③ カテゴリタブエリア -->
+			<div class="category-wrapper">
+			<form action="ProductEditServlet" method="get"
+				class="create-form-sticky">
 				<button type="submit" class="create-btn">
-					<img src="./image/create_button-removebg-preview.png" alt="新規作成" class="create-img">
+					<img src="./image/createNew.png" alt="新規作成" class="create-img">
 				</button>
 			</form>
-		
-			<form action="ProductListServlet" method="get" style="display: inline; width: 100%;">
+
+			<form action="ProductListServlet" method="get"
+				style="display: inline; width: 100%;">
 				<div class="category-tabs">
 					<!-- currentCategoryと一致するボタンにだけ 'active' クラスを付与 -->
 					<button type="submit" name="filter" value="全て"
@@ -60,10 +64,11 @@
 						data-category="ボトル">ボトル</button>
 				</div>
 			</form>
-		</category-area>
+			</category-area>
+		</div>
 	</header>
 
-	<table class="product-table">
+	<table class="table-wrapper">
 		<tr>
 			<!-- 🟢 各ヘッダーにカラム識別用クラスを追加 -->
 			<th class="col-name">商品名</th>
@@ -81,10 +86,9 @@
 					<form action="ProductEditServlet" method="get">
 						<input type="hidden" name="productId" value="${item.productId}">
 						<button type="submit" name="action" value="商品編集"
-								class="edit-img-btn">
-								<img src="./image/edit_icon.png" alt="商品編集"
-									class="edit-icon-img">
-							</button>
+							class="edit-img-btn">
+							<img src="./image/edit_icon.png" alt="商品編集" class="edit-icon-img">
+						</button>
 					</form>
 				</td>
 				<td class="col-toggle display">
@@ -99,8 +103,8 @@
 								<span class="status-text text-hide">非表示：</span>
 							</c:otherwise>
 						</c:choose>
-						<label class="toggle-button-4">
-						<input type="checkbox"	name="displayStatus" value="true" onclick="this.form.submit()"
+						<label class="toggle-button-4"> <input type="checkbox"
+							name="displayStatus" value="true" onclick="this.form.submit()"
 							${item.productDisplayFlag == 1 ? 'checked' : ''} />
 						</label>
 					</form>

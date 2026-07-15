@@ -13,25 +13,35 @@
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     display: flex;
     align-items: center;
+    justify-content:center;
     padding: 10px 0;
     box-sizing: border-box;
 }
 
+.fixed-header > *{
+    width:90%;
+    max-width:1400px;
+}
+
+.header-content{
+    width:90%;
+    max-width:1400px;
+
+    display:flex;
+    align-items:center;
+}
+
 /* ホームボタンを左寄せした状態から、新規作成ボタンへ近づける余白 */
 .home-container {
-    margin: 0 10px 0 30px !important;
+    margin-right: 16px;
 }
 
 /* 🟢 新規作成ボタン ＆ カテゴリタブの親 wrapper */
-.category-wrapper {
-    display: flex;
-    align-items: center;
-    flex-grow: 1;
-    position: relative;
-    padding-bottom: 0;
-    margin-bottom: 0;
-    /* 💡 新規作成ボタンが真ん中に飛び出さないよう、強制的に「左詰め」にします */
-    justify-content: flex-start !important; 
+.category-wrapper{
+    display:flex;
+    align-items:center;
+    flex:1;
+    min-width:0;
 }
 
 /* 新規作成ボタンの粘着設定（スクロールで文字をくぐらせる） */
@@ -43,6 +53,18 @@
     padding-right: 15px;
     display: flex;
     align-items: center;
+    flex-shrink:0;
+}
+
+.category-scroll{
+    flex:1;
+    overflow-x:auto;
+    overflow-y:hidden;
+    min-width:0;
+}
+
+.category-form{
+    width:max-content;
 }
 
 .create-btn {
@@ -70,8 +92,8 @@
     display: flex;
     gap: 20px;
     overflow-x: auto;
-    white-space: nowrap;
     width: 100%;
+    flex-wrap:nowrap;
 }
 
 .category-tabs::-webkit-scrollbar { height: 4px; }
@@ -107,31 +129,7 @@
     border-radius: 2px;
 }
 
-/* ==========================================
-   3. 商品一覧テーブル専用設定
-   ========================================== */
-body {
-    /* 固定ヘッダーにテーブルが被らないように上部余白を作成 */
-    padding-top: 80px !important;
-    /* テーブルを中央寄せにするためのレイアウト設定 */
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-}
 
-.product-table {
-    table-layout: fixed;
-    width: 90%;
-    max-width: 900px;
-    min-width: 800px;
-    margin-top: 20px;
-}
-
-.col-name   { width: 35%; text-align: left; }
-.col-price  { width: 15%; }
-.col-edit   { width: 15%; }
-.col-toggle { width: 20%; }
-.col-delete { width: 15%; }
 
 /* ==========================================
    4. 商品編集ボタン

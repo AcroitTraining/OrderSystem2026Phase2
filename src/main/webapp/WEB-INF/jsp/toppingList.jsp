@@ -28,14 +28,14 @@
 		<div class="create-container">
 			<form action="ToppingEditServlet" method="get">
 				<button type="submit" class="create-btn">
-					<img src="./image/create_button-removebg-preview.png" alt="新規作成" class="create-img">
+					<img src="./image/createNew.png" alt="新規作成" class="create-img">
 				</button>
 			</form>
 		</div>
 	</header>
 
 	<!-- 🟢 トッピング一覧テーブル -->
-	<table class="topping-table">
+	<table class="table-wrapper">
 		<tr>
 			<!-- 各ヘッダーにカラム識別用クラスを追加 -->
 			<th class="col-name">トッピング名</th>
