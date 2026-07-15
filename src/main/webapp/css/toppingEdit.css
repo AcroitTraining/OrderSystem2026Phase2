@@ -34,7 +34,7 @@ body {
 
 .main-card {
     background: #ffffff;
-    max-width: 900px;
+    max-width: 600px;
     margin: 0 auto;
     padding: 35px 45px;
     border-radius: 15px;
@@ -124,16 +124,14 @@ body {
     font-size: 14px;
 }
 
-/* ==========================================================================
-   ポップアップ（確認モーダル）完全再現スタイル 
-   ========================================================================== */
+/* ポップアップ（確認モーダル）完全再現スタイル  */
 .modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.4); /* 暗すぎず自然なグレー背景を再現 */
+    background-color: rgba(0, 0, 0, 0.4);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -161,7 +159,7 @@ body {
 .modal-body {
     text-align: left;
     margin-bottom: 25px;
-    padding-left: 30px; /* バランスを考慮し中央寄りに調整 */
+    padding-left: 30px; 
 }
 
 .modal-row {
@@ -174,7 +172,7 @@ body {
 .modal-label {
     width: 110px;
     font-weight: bold;
-    color: #00aa00; /* 見本の綺麗な緑色 */
+    color: #00aa00; 
     display: inline-block;
 }
 
@@ -210,7 +208,7 @@ body {
 }
 
 .btn-modal-yes {
-    background-color: #00aa00; /* 見本の「はい」ボタンの緑 */
+    background-color: #00aa00; 
     border: 1px solid #00aa00;
     color: #ffffff;
     padding: 6px 20px;

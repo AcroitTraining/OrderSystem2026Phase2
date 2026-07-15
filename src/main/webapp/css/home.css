@@ -7,7 +7,7 @@ body {
     font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
     background-color: #ffffff;
     color: #000000;
-    overflow-x: hidden; /* 横スクロールバーの発生を防ぐ */
+    overflow-x: hidden; 
 }
 
 /* 全体を囲むコンテナ：画面の拡大縮小に滑らかに追従 */
@@ -112,23 +112,17 @@ body {
     max-width: clamp(120px, 14vw, 170px);
 }
 
-/* ===================================================
-   タブレット縦向き〜スマホ向けの微調整
-   =================================================== */
+/*タブレット縦向き〜スマホ向けの微調整 */
 @media screen and (max-width: 768px) {
     .container {
         padding: 20px 10px;
     }
-    /* 中央寄せへの切り替えは行わない。常に左寄せのまま、
-       幅が足りなくなったら自然に折り返すだけにする */
     .button-group.horizontal {
         flex-wrap: wrap;
     }
 }
 
-/* ===================================================
-   ポップアップ（モーダル）のレスポンシブ・固定対応
-   =================================================== */
+/*   ポップアップ（モーダル）のレスポンシブ・固定対応 */
 .modal-overlay {
     display: none;
     position: fixed;    /* 画面に対して完全に固定 */
