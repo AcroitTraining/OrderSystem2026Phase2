@@ -1,20 +1,20 @@
-/* WebContent(または webapp)/css/Logincss.css として上書き保存してください */
+/* WebContent(または webapp)/css/Login.css として上書き保存してください */
 body {
     font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif;
-    background-color: #f7f9fa; /* うっすらとした明るい背景 */
+    background-color: #f7f9fa;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
     margin: 0;
 }
 
 /* 画面最上部の一番大きな「ログイン」タイトル */
 .page-title {
-    font-size: 16px;
+    font-size: clamp(16px, 1.6vw, 22px);
     font-weight: bold;
-    margin-bottom: 15px;
+    margin-bottom: clamp(12px, 1.5vh, 20px);
     color: #000000;
 }
 
@@ -22,41 +22,35 @@ body {
     background-color: #ffffff;
     border: 2px solid #000000;
     border-radius: 28px;
-    
-    /* ==========================================
-       ★ここが縦横比（アスペクト比）固定のコア設定
-       ========================================== */
-    width: 380px;               /* ← ここの数値を変えるだけで、縦横比を保ったまま全体が拡大縮小します */
-    aspect-ratio: 1 / 0.9;     /* 横1に対して縦1.05の黄金比（画像のすっきりした縦横比） */
-    height: auto;               /* 高さを固定せず、アスペクト比に従って自動計算させる */
-    
-    /* 内側の余白を上下左右でバランスよく配置（%やflexで中身を収める） */
-    padding: 35px 30px;         
+
+
+    width: clamp(360px, 32vw, 520px);
+    aspect-ratio: 1 / 0.9;
+    height: auto;
+
+    padding: clamp(28px, 3vw, 45px) clamp(24px, 2.6vw, 38px);
     box-sizing: border-box;
-    
-    /* Flexboxを使って、中の要素を縦に綺麗に均等配置する（高さが連動したときにはみ出さない対策） */
+
     display: flex;
     flex-direction: column;
-    justify-content: space-between; /* 縦長になっても中のパーツが綺麗に分散する */
-    
-    flex-shrink: 0;             /* 画面が狭くなっても絶対に縮まない固定 */
+    justify-content: space-between;
+
+    flex-shrink: 0;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
     text-align: center;
 }
 
-/* display: flex にしたため、フォーム内の各要素をしっかり制御するために
-   formタグ自体もコンテナいっぱいに広げる設定を足します
-*/
 .login-container form {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 100%; /* コンテナの高さ（自動計算された値）を100%使う */
+    height: 100%;
     margin: 0;
+}
 
 /* 各入力ブロックの間隔 */
 .form-group {
-    margin-bottom: 18px;
+    margin-bottom: clamp(14px, 1.8vh, 22px);
     text-align: center;
 }
 
@@ -64,48 +58,47 @@ body {
 label {
     display: block;
     font-weight: bold;
-    font-size: 14px;
+    font-size: clamp(13px, 1.1vw, 16px);
     margin-bottom: 8px;
     color: #000000;
 }
 
-/* 入力ボックス（枠の線と、うっすらとした角丸の調整） */
+/* 入力ボックス */
 input[type="text"],
 input[type="password"] {
     width: 85%;
-    padding: 10px;
+    padding: clamp(9px, 1vw, 13px);
     border: 1px solid #dcdcdc;
-    border-radius: 8px; /* 入力欄の優しい角丸 */
-    font-size: 14px;
+    border-radius: 8px;
+    font-size: clamp(13px, 1.1vw, 16px);
     outline: none;
     box-sizing: border-box;
     text-align: left;
 }
 
-/* 入力ボックスにフォーカスが当たったとき */
 input[type="text"]:focus,
 input[type="password"]:focus {
     border-color: #a0a0a0;
 }
 
-/* 赤文字のエラーメッセージのスタイル設定 */
+/* 赤文字のエラーメッセージ */
 .error-message {
     color: #ff0000;
-    font-size: 13px;
+    font-size: clamp(12px, 1vw, 14px);
     font-weight: 500;
     margin-top: 8px;
     display: block;
 }
 
-/* ログインボタン（鮮やかな緑色、しっかりとした角丸） */
+/* ログインボタン */
 .submit-btn {
-    background-color: #008000; /* 画像のような深い鮮やかな緑 */
+    background-color: #008000;
     color: #ffffff;
     border: none;
-    padding: 10px 28px;
-    font-size: 15px;
+    padding: clamp(9px, 1vw, 12px) clamp(24px, 2.8vw, 34px);
+    font-size: clamp(14px, 1.1vw, 16px);
     font-weight: bold;
-    border-radius: 12px; /* ボタンの角丸 */
+    border-radius: 12px;
     cursor: pointer;
     box-shadow: 0 3px 6px rgba(0, 128, 0, 0.2);
     margin-top: 5px;
@@ -114,4 +107,11 @@ input[type="password"]:focus {
 
 .submit-btn:hover {
     background-color: #006400;
+}
+
+/* タブレットなど横幅が狭くなりすぎる場合の保険 */
+@media (max-width: 480px) {
+    .login-container {
+        width: 90vw;
+    }
 }

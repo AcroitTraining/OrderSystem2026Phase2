@@ -25,7 +25,7 @@ public class OrderManagementServlet extends HttpServlet {
 	}
 	
 	private OrderManagementInfo orderManagementInfo;
-	public OrderManagementInfo geOderManagement() { return orderManagementInfo; }
+	public OrderManagementInfo getOderManagement() { return orderManagementInfo; }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
