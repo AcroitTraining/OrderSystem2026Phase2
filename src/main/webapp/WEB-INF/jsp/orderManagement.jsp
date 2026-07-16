@@ -100,83 +100,81 @@
 		</div>
 	</div>
 
-		<div class="table-wrapper">
-			<table class="order-table">
-				<tr class="order-row">
-					<th>No.</th>
-					<th>注文時間</th>
-					<th>個数</th>
-					<th>商品</th>
-					<th>トッピング</th>
-					<th>編集</th>
-					<th>卓番/ 提供</th>
-				</tr>
-				<c:forEach var="item" items="${omList}">
-					<tr class="order-row" data-category="${item.categoryName}">
-						<td>No.${item.orderId}</td>
-						<td>${item.orderTime}</td>
-						<td>${item.orderQuantity}個</td>
-						<td>${item.productName}</td>
-						<td><c:if test="${!empty item.toppings}">
-								<c:forEach var="t" items="${item.toppings}">
+	<table class="table-wrapper">
+			<tr class="order-row">
+				<th>No.</th>
+				<th>注文時間</th>
+				<th>個数</th>
+				<th>商品</th>
+				<th>トッピング</th>
+				<th>編集</th>
+				<th>卓番/ 提供</th>
+			</tr>
+			<c:forEach var="item" items="${omList}">
+				<tr class="order-row" data-category="${item.categoryName}">
+					<td>No.${item.orderId}</td>
+					<td>${item.orderTime}</td>
+					<td>${item.orderQuantity}個</td>
+					<td>${item.productName}</td>
+					<td><c:if test="${!empty item.toppings}">
+							<c:forEach var="t" items="${item.toppings}">
 								・${t.name}✕${t.quantity}<br>
-								</c:forEach>
-							</c:if></td>
-						<td>
-							<form action="EditOrderServlet" method="get">
-								<button type="submit" name="action" value="注文編集"
-									class="edit-img-btn">
-									<img src="./image/edit_icon.png" alt="注文編集"
-										class="edit-icon-img">
-								</button>
-								<input type="hidden" name="oid" value="${item.orderId}">
-								<input type="hidden" name="from" value="orderManagement">
-							</form>
-						</td>
-						<td>
-							<form action="OrderManagementServlet" method="post"
-								class="served-form">
-								<input type="submit" name="action" value="${item.tableId}卓 
+							</c:forEach>
+						</c:if></td>
+					<td>
+						<form action="EditOrderServlet" method="get">
+							<button type="submit" name="action" value="注文編集"
+								class="edit-img-btn">
+								<img src="./image/edit_icon.png" alt="注文編集"
+									class="edit-icon-img">
+							</button>
+							<input type="hidden" name="oid" value="${item.orderId}">
+							<input type="hidden" name="from" value="orderManagement">
+						</form>
+					</td>
+					<td>
+						<form action="OrderManagementServlet" method="post"
+							class="served-form">
+							<input type="submit" name="action" value="${item.tableId}卓 
 提供"
-									class="served-btn ${item.timeColorClass}"> <input
-									type="hidden" name="oid" value="${item.orderId}"> <input
-									type="hidden" name="action" value="提供">
-							</form>
-						</td>
-					</tr>
-				</c:forEach>
-			</table>
-		</div>
+								class="served-btn ${item.timeColorClass}"> <input
+								type="hidden" name="oid" value="${item.orderId}"> <input
+								type="hidden" name="action" value="提供">
+						</form>
+					</td>
+				</tr>
+			</c:forEach>
+		</table>
 
-		<div class="footer-legend">
-			<div class="legend-group">
-				<span class="legend-title">※</span>
-				<div class="legend-item">
-					<span class="legend-box bg-green"></span> <span>～5分</span>
-				</div>
-				<div class="legend-item">
-					<span class="legend-box bg-yellow"></span> <span>5分～10分</span>
-				</div>
-				<div class="legend-item">
-					<span class="legend-box bg-red"></span> <span>10分以上</span>
-				</div>
+	<div class="footer-legend">
+		<div class="legend-group">
+			<span class="legend-title">※</span>
+			<div class="legend-item">
+				<span class="legend-box bg-green"></span> <span>～5分</span>
 			</div>
-			<form action="ServedHistoryServlet" method="get" class="history-form">
-				<input type="submit" name="action" value="履歴">
-			</form>
-		</div>
-
-		<div id="customModal" class="modal-overlay" style="display: none;">
-			<div class="modal-content">
-				<p class="modal-message-title">確認</p>
-				<p class="modal-message-sub">本当に提供しますか？</p>
-				<div class="modal-buttons">
-					<button type="button" id="modalNoBtn" class="btn-modal-no">いいえ</button>
-					<button type="button" id="modalYesBtn" class="btn-modal-yes">はい</button>
-				</div>
+			<div class="legend-item">
+				<span class="legend-box bg-yellow"></span> <span>5分～10分</span>
+			</div>
+			<div class="legend-item">
+				<span class="legend-box bg-red"></span> <span>10分以上</span>
 			</div>
 		</div>
+		<form action="ServedHistoryServlet" method="get" class="history-form">
+			<input type="submit" name="action" value="履歴">
+		</form>
+	</div>
 
-		<script src="./js/orderManagement.js" defer></script>
+	<div id="customModal" class="modal-overlay" style="display: none;">
+		<div class="modal-content">
+			<p class="modal-message-title">確認</p>
+			<p class="modal-message-sub">本当に提供しますか？</p>
+			<div class="modal-buttons">
+				<button type="button" id="modalNoBtn" class="btn-modal-no">いいえ</button>
+				<button type="button" id="modalYesBtn" class="btn-modal-yes">はい</button>
+			</div>
+		</div>
+	</div>
+
+	<script src="./js/orderManagement.js" defer></script>
 </body>
 </html>

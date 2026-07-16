@@ -40,6 +40,8 @@ public class ServedHistoryServlet extends HttpServlet {
 			ServedHistoryDAO dao = new ServedHistoryDAO(conn);
 			List<ServedHistoryInfo> shList = dao.findorderDetails();
 			
+			if (tableFilter == null) tableFilter = "全ての卓";
+			request.setAttribute("currentTable", tableFilter);
 
 			ServedHistoryLogic logic = new ServedHistoryLogic();
 			shList = logic.filterByTable(shList, tableFilter);
