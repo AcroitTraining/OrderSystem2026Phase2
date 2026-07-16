@@ -20,13 +20,15 @@
 
 .content-area{
 	width:90%;
-    min-width:600px;
-    max-width: 1400px;
+    max-width:1400px;
+
+    display:flex;
+    align-items:center;
 }
 
 /* ホームボタンの左マージン */
 .home-container {
-    margin: 0 10px 0 100px !important;
+    margin: 0 50px 0 150px !important;
 }
 
 /* 新規作成ボタンの配置調整（ホームのすぐ右隣に綺麗に並びます） */

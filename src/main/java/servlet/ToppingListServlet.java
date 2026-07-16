@@ -33,8 +33,6 @@ public class ToppingListServlet extends HttpServlet {
 			try (Connection conn = DriverManager.getConnection(URL, USER, PASS)) {
 				ToppingListDAO dao = new ToppingListDAO(conn);	
 				List<ToppingListInfo> tList = dao.findAllTopping();
-				int n = tList.size();
-				System.out.println(n);
 				request.setAttribute("tList", tList);
 				
 			} catch (SQLException e) {

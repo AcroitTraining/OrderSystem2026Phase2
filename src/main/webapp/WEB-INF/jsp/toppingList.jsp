@@ -83,7 +83,7 @@
 					</form>
 				</td>
 				<td class="col-delete">
-					<form action="ToppingListServlet" method="post">
+					<form action="ToppingListServlet" method="post" class="delete-form">
 						<input type="hidden" name="action" value="削除"> <input
 							type="hidden" name="toppingId" value="${item.toppingId}">
 
@@ -97,5 +97,17 @@
 			</tr>
 		</c:forEach>
 	</table>
+	
+	<div id="customModal" class="modal-overlay" style="display: none;">
+		<div class="modal-content">
+			<p class="modal-message-title">確認</p>
+			<p class="modal-message-sub">本当に削除しますか？</p>
+			<div class="modal-buttons">
+				<button type="button" id="modalNoBtn" class="btn-modal-no">いいえ</button>
+				<button type="button" id="modalYesBtn" class="btn-modal-yes">はい</button>
+			</div>
+		</div>
+	</div>
+	<script src="./js/toppingList.js"defer></script>
 </body>
 </html>
