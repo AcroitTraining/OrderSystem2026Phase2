@@ -1,35 +1,198 @@
 @charset "UTF-8";
-.table-tabs {
-	display: flex;
-	gap: 20px;
-	border-bottom: 1px solid #e0e0e0;
-	padding-bottom: 5px;
-	margin-top: 10px;
+
+/* ================================
+   カテゴリタブ全体
+================================ */
+.header-nav-area{
+    position: sticky;
+    top: 0;
+    background-color: #fff;
+    z-index: 100;
+    height:70px;
 }
 
-.table-tab-btn {
-	position: relative;
-	background: none;
+.header-nav-row{
+	width:90%;
+    max-width:1400px;
+    margin:0 auto;
+	
+    display:flex;
+    align-items:center;
+    gap:20px;
+    padding: 8px 16px;
+}
+
+.header-left-box{
+    flex-shrink:0;
+}
+
+.category-filter{
+    flex:7;
+}
+
+.table-filter{
+    flex:3;
+}
+
+.scrollable-tabs-wrapper::-webkit-scrollbar{
+    display:none;
+}
+
+.scrollable-tabs-wrapper{
+    overflow-x:auto;
+    width:100%;
+    scrollbar-width:none;
+}
+
+.tab-items-container{
+    display:flex;
+    gap:20px;
+    flex-wrap:nowrap;
+    border-bottom:1px solid #e0e0e0;
+    padding-bottom:5px;
+    cursor:grab;
+}
+
+
+/* ドラッグ中 */
+.category-tabs.dragging{
+    cursor:grabbing;
+}
+
+
+/* スクロールバー */
+.category-tabs::-webkit-scrollbar{
+    height:4px;
+}
+
+
+.category-tabs::-webkit-scrollbar-thumb{
+
+    background:#ccc;
+
+    border-radius:2px;
+
+}
+.tab-item-link {
+    position: relative;
+    background: none;
+    border: none;
+    padding: 10px 5px;
+    font-size: 15px;
+    color: #888888;            /* 選択されていない文字はグレー */
+    cursor: pointer;
+    font-family: inherit;
+    display: inline-flex;
+    align-items: center;
+    transition: all 0.2s ease;
+    flex-shrink:0;
+}
+
+/* 選択されているタブ（緑の下線と文字色） */
+.tab-item-link.active {
+    color: #27ae60;            /* イメージ画像の鮮やかな緑色 */
+    font-weight: bold;
+}
+
+.nav-tab-form{
+    display:flex;
+}
+
+/* 選択中の下線を要素の底ぴったりにつける */
+.tab-item-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;/* 親のborder-bottomと重ねる調整 */
+    left: 0;
+    width: 100%;
+    height: 3px;              
+    background-color: #27ae60; 
+    border-radius: 2px;
+}
+
+/*各種ボタン*/
+/* 画像ボタンの背景と枠線を透明にする */
+.edit-img-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+/* 画像のサイズ調整（お好みの大きさに変更してください） */
+.edit-icon-img {
+    width: 36px;
+    height: 36px;
+    vertical-align: middle;
+}
+
+.return-btn{
 	border: none;
-	padding: 10px 5px;
-	font-size: 15px;
-	color: #888;
-	cursor: pointer;
-	font-family: inherit;
+    padding: 6px 15px;
+    border-radius: 4px;
+    background:#e74c3c;
+    color: #fafafa;
 }
 
-.table-tab-btn.active {
-	color: #27ae60;
-	font-weight: bold;
+footer{
+    position:fixed;
+    bottom:0;
+    left:0;
+    width:100%;
+
+    background:#fff;
+
+    padding:15px 30px;
+
+    display:flex;
+    justify-content:flex-end;
+    align-items:center;
+
+    box-shadow:0 -3px 10px rgba(0,0,0,.15);
+    
+footer input[type="submit"]{
+    background-color:#fafafa;
+    color:#000;
+    border:1px solid #d0d0d0;
+    border-radius:8px;
+    padding:10px 22px;
+    font-size:14px;
+    font-weight:600;
+    cursor:pointer;
+    transition:background-color .2s ease,
+               box-shadow .2s ease,
+               transform .1s ease;
+    box-shadow:0 2px 6px rgba(0,0,0,.15);
 }
 
-.table-tab-btn.active::after {
-	content: '';
-	position: absolute;
-	bottom: -6px;
-	left: 0;
-	width: 100%;
-	height: 3px;
-	background-color: #27ae60;
-	border-radius: 2px;
+/* 履歴フォームを右端から100px内側へ */
+.history-form{
+    margin-left: auto;
+    margin-right: 100px;
+}
+
+/* 履歴ボタン */
+.history-form input[type="submit"]{
+    background-color: #fafafa;
+    color: #000;
+    border: 1px solid #d0d0d0;
+    border-radius: 8px;
+    padding: 10px 22px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease,
+                box-shadow 0.2s ease,
+                transform 0.1s ease;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+footer input[type="submit"]:hover{
+    background-color:#1f6fd1;
+    box-shadow:0 4px 10px rgba(0,0,0,.2);
+}
+
+footer input[type="submit"]:active{
+    transform:translateY(1px);
+}
 }

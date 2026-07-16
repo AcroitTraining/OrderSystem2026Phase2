@@ -15,23 +15,27 @@
 
 	<!-- 🟢 画面最上部に固定するヘッダーエリア（1行化） -->
 	<header class="fixed-header">
-		<!-- ① ホームボタン -->
-		<div class="home-container">
-			<form action="HomeServlet" method="get">
-				<button type="submit" class="home-btn">
-					<img src="./image/homeButton.png" alt="ホーム" class="home-img">
-				</button>
-			</form>
+
+		<div class="content-area">
+			<!-- ① ホームボタン -->
+			<div class="home-container">
+				<form action="HomeServlet" method="get">
+					<button type="submit" class="home-btn">
+						<img src="./image/homeButton.png" alt="ホーム" class="home-img">
+					</button>
+				</form>
+			</div>
+
+			<!-- ② トッピング新規作成ボタン（隣に綺麗に並べます） -->
+			<div class="create-container">
+				<form action="ToppingEditServlet" method="get">
+					<button type="submit" class="create-btn">
+						<img src="./image/createNew.png" alt="新規作成" class="create-img">
+					</button>
+				</form>
+			</div>
 		</div>
-		
-		<!-- ② トッピング新規作成ボタン（隣に綺麗に並べます） -->
-		<div class="create-container">
-			<form action="ToppingEditServlet" method="get">
-				<button type="submit" class="create-btn">
-					<img src="./image/createNew.png" alt="新規作成" class="create-img">
-				</button>
-			</form>
-		</div>
+
 	</header>
 
 	<!-- 🟢 トッピング一覧テーブル -->
@@ -53,10 +57,10 @@
 					<form action="ToppingEditServlet" method="get">
 						<input type="hidden" name="toppingId" value="${item.toppingId}">
 						<button type="submit" name="action" value="トッピング編集"
-								class="edit-img-btn">
-								<img src="./image/edit_icon.png" alt="トッピング編集"
-									class="edit-icon-img">
-							</button>
+							class="edit-img-btn">
+							<img src="./image/edit_icon.png" alt="トッピング編集"
+								class="edit-icon-img">
+						</button>
 					</form>
 				</td>
 				<td class="col-toggle display">
@@ -72,20 +76,21 @@
 								<span class="status-text text-hide">非表示：</span>
 							</c:otherwise>
 						</c:choose>
-						<label class="toggle-button-4"> 
-							<input type="checkbox" name="displayStatus" value="true" onclick="this.form.submit()"
+						<label class="toggle-button-4"> <input type="checkbox"
+							name="displayStatus" value="true" onclick="this.form.submit()"
 							${item.toppingDisplayFlag == 1 ? 'checked' : ''} />
 						</label>
 					</form>
 				</td>
 				<td class="col-delete">
 					<form action="ToppingListServlet" method="post">
-						<input type="hidden" name="action" value="削除"> 
-						<input type="hidden" name="toppingId" value="${item.toppingId}">
-						
+						<input type="hidden" name="action" value="削除"> <input
+							type="hidden" name="toppingId" value="${item.toppingId}">
+
 						<!-- 🟢 削除も画像ボタンに変更 -->
 						<button type="submit" class="img-delete-btn">
-							<img src="./image/delete_button.png" alt="削除" class="delete-icon-img">
+							<img src="./image/delete_button.png" alt="削除"
+								class="delete-icon-img">
 						</button>
 					</form>
 				</td>

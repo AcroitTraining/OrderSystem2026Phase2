@@ -13,45 +13,56 @@
 <title>注文済み履歴画面</title>
 </head>
 <body>
-<!-- 卓番選択エリア -->
-<table-area>
+	<div class="header-nav-area">
 
-<form action="ServedHistoryServlet" method="get">
+		<div class="header-nav-row">
+			<!-- 卓番選択エリア -->
+			<div class="tab-items-container">
 
-	<div class="table-tabs">
+				<div class="home-container">
+					<form action="HomeServlet" method="get">
+						<button type="submit" class="home-btn">
+							<img src="./image/homeButton.png" alt="ホーム" class="home-img">
+						</button>
+					</form>
+				</div>
 
-		<button type="submit" name="tableFilter" value="全ての卓"
-			class="table-tab-btn ${currentTable == '全ての卓' ? 'active' : ''}">
-			全ての卓
-		</button>
 
-		<button type="submit" name="tableFilter" value="1卓"
-			class="table-tab-btn ${currentTable == '1卓' ? 'active' : ''}">
-			1卓
-		</button>
 
-		<button type="submit" name="tableFilter" value="2卓"
-			class="table-tab-btn ${currentTable == '2卓' ? 'active' : ''}">
-			2卓
-		</button>
+				<form action="ServedHistoryServlet" method="get">
 
-		<button type="submit" name="tableFilter" value="3卓"
-			class="table-tab-btn ${currentTable == '3卓' ? 'active' : ''}">
-			3卓
-		</button>
+					<div class="table-tabs">
 
-		<button type="submit" name="tableFilter" value="4卓"
-			class="table-tab-btn ${currentTable == '4卓' ? 'active' : ''}">
-			4卓
-		</button>
+						<button type="submit" name="tableFilter" value="全ての卓"
+							class="tab-item-link ${currentTable == '全ての卓' ? 'active' : ''}">
+							全ての卓<span class="tab-badge">${countTableAll}</span>
+						</button>
+						<button type="submit" name="tableFilter" value="1卓"
+							class="tab-item-link ${currentTable == '1卓' ? 'active' : ''}">
+							1卓<span class="tab-badge">${countTable1}</span>
+						</button>
+						<button type="submit" name="tableFilter" value="2卓"
+							class="tab-item-link ${currentTable == '2卓' ? 'active' : ''}">
+							2卓<span class="tab-badge">${countTable2}</span>
+						</button>
+						<button type="submit" name="tableFilter" value="3卓"
+							class="tab-item-link ${currentTable == '3卓' ? 'active' : ''}">
+							3卓<span class="tab-badge">${countTable3}</span>
+						</button>
+						<button type="submit" name="tableFilter" value="4卓"
+							class="tab-item-link ${currentTable == '4卓' ? 'active' : ''}">
+							4卓<span class="tab-badge">${countTable4}</span>
+						</button>
 
+					</div>
+
+				</form>
+
+			</div>
+		</div>
 	</div>
 
-</form>
-
-</table-area>
-
-	<table class="history-table">
+	<table class="table-wrapper">
 		<tr>
 			<th>卓番</th>
 			<th>注文時間</th>
@@ -74,29 +85,31 @@
 					</c:if></td>
 				<td>
 					<form action="EditOrderServlet" method="get">
-						<input type="submit" name="action" value="履歴編集"> <input
-							type="hidden" name="oid" value="${item.orderId}"> <input
+						<button type="submit" name="action" value="注文編集"
+							class="edit-img-btn">
+							<img src="./image/edit_icon.png" alt="注文編集" class="edit-icon-img">
+						</button>
+						<input type="hidden" name="oid" value="${item.orderId}"> <input
 							type="hidden" name="from" value="servedHistory">
 					</form>
 				</td>
 				<td>
 					<form action="ServedHistoryServlet" method="post">
 
-						<input type="submit" name="action" value="戻す"> <input
-							type="hidden" name="oid" value="${item.orderId}">
+						<input type="submit" name="action" value="戻す" class="return-btn">
+						<input type="hidden" name="oid" value="${item.orderId}">
 					</form>
 				</td>
 			</tr>
 		</c:forEach>
 	</table>
 
-	<table class="footer-table">
-		<tr>
-			<td>
-				<form action="OrderManagementServlet" method="get">
-					<input type="submit" name="action" value="注文">
-				</form>
-			</td>
-		</tr>
+	<footer class="footer-legend">
+		<form action="OrderManagementServlet" method="get"
+			class="history-form">
+			<input type="submit" name="action" value="注文">
+		</form>
+	</footer>
+	<script src="./js/orderManagement.js" defer></script>
 </body>
 </html>

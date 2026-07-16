@@ -18,9 +18,15 @@
     justify-content: flex-start !important; /* 強制的に左詰め */
 }
 
+.content-area{
+	width:90%;
+    min-width:600px;
+    max-width: 1400px;
+}
+
 /* ホームボタンの左マージン */
 .home-container {
-    margin: 0 10px 0 50px !important;
+    margin: 0 10px 0 100px !important;
 }
 
 /* 新規作成ボタンの配置調整（ホームのすぐ右隣に綺麗に並びます） */
@@ -60,14 +66,6 @@ body {
     align-items: center !important;
 }
 
-.topping-table {
-    table-layout: fixed;
-    width: 90%;
-    max-width: 900px;
-    min-width: 800px;
-    margin-top: 20px;
-}
-
 /* カラムごとの幅比率設定（商品一覧と揃えて統一感を出します） */
 .col-name   { width: 35%; text-align: left; }
 .col-price  { width: 15%; }
@@ -100,7 +98,7 @@ body {
     opacity: 0.7;                       /* マウスホバー時に少し薄くする演出 */
 }
 
-* ==========================================
+/* ==========================================
    5. 表示切り替えトグルボタン ＆ 削除
    ========================================== */
 .status-text { font-size: 14px; font-weight: bold; margin-right: 8px; user-select: none; }
