@@ -107,7 +107,7 @@ class ProductListTest {
 		when(request.getParameter("productId")).thenReturn(productId);
 		when(request.getParameter("action")).thenReturn(action);
 
-		doNothing().when(dao).updateProductDisplayFlag(1);
+		doNothing().when(dao).updateProductDeleteFlag(1);
 
 		servlet.doPost(request, response);
 

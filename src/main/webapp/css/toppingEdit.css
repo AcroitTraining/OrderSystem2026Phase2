@@ -14,13 +14,13 @@ body {
 }
 
 .home-btn {
-    text-decoration: none; 
-    display: inline-block; 
-    padding: 10px; 
+    text-decoration: none;
+    display: inline-block;
+    padding: 10px;
 }
 
 .home-icon {
-    width: 32px;   
+    width: 32px;
     height: 32px;
     vertical-align: middle;
 }
@@ -124,7 +124,7 @@ body {
     font-size: 14px;
 }
 
-/* ポップアップ（確認モーダル）完全再現スタイル  */
+/* ポップアップ（確認モーダル）完全再現スタイル + アニメーション */
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -139,27 +139,82 @@ body {
 }
 
 .modal-content {
-    background-color: #ffffff;
     padding: 30px 40px;
     border-radius: 4px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.2);
     width: 450px;
     text-align: center;
     font-family: sans-serif;
+
+    /* 登場時のフェードイン */
+    animation: fadeIn 0.7s ease-in, gradShift 10s linear infinite;
+
+    /* 常時流れるグラデーション背景 */
+    background: linear-gradient(120deg, #ff7a7a, #ffd27a, #7af3ff);
+    background-size: 600% 600%;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes gradShift {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* 閉じるときのアニメーション */
+.modal-overlay.closing {
+    animation: fadeOut 0.2s ease-in forwards;
+}
+
+.modal-overlay.closing .modal-content {
+    animation: fadeOutContent 0.2s ease-in forwards, gradShift 10s linear infinite;
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+@keyframes fadeOutContent {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(20px);
+    }
 }
 
 .modal-content h3 {
     margin-top: 0;
     margin-bottom: 25px;
     font-size: 18px;
-    color: #000000;
+    color: #ffffff;
     font-weight: bold;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.3);
 }
 
 .modal-body {
     text-align: left;
     margin-bottom: 25px;
-    padding-left: 30px; 
+    padding-left: 30px;
 }
 
 .modal-row {
@@ -172,20 +227,21 @@ body {
 .modal-label {
     width: 110px;
     font-weight: bold;
-    color: #00aa00; 
+    color: #004d00;
     display: inline-block;
 }
 
 .modal-label::after {
     content: " ｜";
-    color: #cccccc;
+    color: rgba(255,255,255,0.6);
     float: right;
 }
 
 .modal-val {
     flex: 1;
     padding-left: 15px;
-    color: #333333;
+    color: #222222;
+    font-weight: 600;
 }
 
 .modal-actions {
@@ -208,7 +264,7 @@ body {
 }
 
 .btn-modal-yes {
-    background-color: #00aa00; 
+    background-color: #00aa00;
     border: 1px solid #00aa00;
     color: #ffffff;
     padding: 6px 20px;

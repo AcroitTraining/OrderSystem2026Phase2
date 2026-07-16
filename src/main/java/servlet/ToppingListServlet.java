@@ -21,7 +21,7 @@ public class ToppingListServlet extends HttpServlet {
 		private final String URL = "jdbc:mysql://localhost:3306/order_management";
 		private final String USER = "order";
 		private final String PASS = "1234";
-	    
+	
 		protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 			try {
 				Class.forName("com.mysql.cj.jdbc.Driver");
@@ -33,8 +33,6 @@ public class ToppingListServlet extends HttpServlet {
 			try (Connection conn = DriverManager.getConnection(URL, USER, PASS)) {
 				ToppingListDAO dao = new ToppingListDAO(conn);	
 				List<ToppingListInfo> tList = dao.findAllTopping();
-				int n = tList.size();
-				System.out.println(n);
 				request.setAttribute("tList", tList);
 				
 			} catch (SQLException e) {
@@ -61,7 +59,7 @@ public class ToppingListServlet extends HttpServlet {
 			ToppingListDAO dao = new ToppingListDAO(conn);
 
 
-			if("表示切り替え".equals(action)) { 
+			if("表示切り替え".equals(action)) {
 				dao.updateToppingDisplayFlag(toppingId);
 			} else if("削除".equals(action)) {
 				dao.updateToppingDeleteFlag(toppingId);

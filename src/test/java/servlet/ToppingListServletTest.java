@@ -1,66 +1,73 @@
 package servlet;
-import java.io.IOException;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
+
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.List;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
 import dao.ToppingListDAO;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.ToppingListInfo;
-@WebServlet("/ToppingListServlet")
-public class ToppingListServletTest extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-	//DB接続情報
-	private final String URL = "jdbc:mysql://localhost:3306/order_management";
-	private final String USER = "order";
-	private final String PASS = "1234";
 
-	protected Connection createConnection() throws SQLException {
-		try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
-		} catch (ClassNotFoundException e) {
-			throw new IllegalStateException("JDBCドライバエラー", e);
-		}
-		return DriverManager.getConnection(URL, USER, PASS);
+class ToppingListServletTest {
+
+	@Mock private HttpServletRequest request;
+	@Mock private HttpServletResponse response;
+	@Mock private RequestDispatcher dispatcher;
+	@Mock private Connection connection;
+	@Mock private ToppingListDAO dao;
+
+	private ToppingListServlet servlet;
+
+	@BeforeEach
+	void setUp() throws Exception {
+		MockitoAnnotations.openMocks(this);
+		servlet = spy(new ToppingListServlet());
+		doReturn(connection).when(servlet).createConnection();
+		doReturn(dao).when(servlet).createDAO(connection);
+		when(request.getRequestDispatcher("/WEB-INF/jsp/toppingList.jsp")).thenReturn(dispatcher);
 	}
 
-	protected ToppingListDAO createDAO(Connection conn) {
-		return new ToppingListDAO(conn);
+	@Test
+	void doGet_トッピング一覧を取得してフォワードする() throws Exception {
+		List<ToppingListInfo> tList = Arrays.asList(new ToppingListInfo(), new ToppingListInfo());
+		when(dao.findAllTopping()).thenReturn(tList);
+
+		servlet.doGet(request, response);
+
+		verify(request).setAttribute("tList", tList);
+		verify(dispatcher).forward(request, response);
 	}
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.setCharacterEncoding("UTF-8");
-		try (Connection conn = createConnection()) {
-			ToppingListDAO dao = createDAO(conn);
-			List<ToppingListInfo> tList = dao.findAllTopping();
-			request.setAttribute("tList", tList);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		request.getRequestDispatcher("/WEB-INF/jsp/toppingList.jsp").forward(request, response);
+	@Test
+	void doPost_表示切り替えアクションでフラグ更新される() throws Exception {
+		when(request.getParameter("toppingId")).thenReturn("5");
+		when(request.getParameter("action")).thenReturn("表示切り替え");
+
+		servlet.doPost(request, response);
+
+		verify(dao).updateToppingDisplayFlag(5);
+		verify(dao, never()).updateToppingDeleteFlag(anyInt());
+		verify(response).sendRedirect("ToppingListServlet");
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.setCharacterEncoding("UTF-8");
-		String tid = request.getParameter("toppingId");
-		int toppingId = Integer.parseInt(tid);
-		String action = request.getParameter("action");
+	@Test
+	void doPost_削除アクションでフラグ更新される() throws Exception {
+		when(request.getParameter("toppingId")).thenReturn("7");
+		when(request.getParameter("action")).thenReturn("削除");
 
-		try (Connection conn = createConnection()) {
-			ToppingListDAO dao = createDAO(conn);
-			if ("表示切り替え".equals(action)) {
-				dao.updateToppingDisplayFlag(toppingId);
-			} else if ("削除".equals(action)) {
-				dao.updateToppingDeleteFlag(toppingId);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		response.sendRedirect("ToppingListServlet");
+		servlet.doPost(request, response);
+
+		verify(dao).updateToppingDeleteFlag(7);
+		verify(dao, never()).updateToppingDisplayFlag(anyInt());
+		verify(response).sendRedirect("ToppingListServlet");
 	}
 }

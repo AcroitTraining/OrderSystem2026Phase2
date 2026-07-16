@@ -1,8 +1,6 @@
 @charset "UTF-8";
 
-/* ==========================================
-   1. 固定ヘッダー（画面の最上部に1行化）
-   ========================================== */
+/* 固定ヘッダー（画面の最上部に1行化）*/
 .fixed-header {
     position: fixed;
     top: 0;
@@ -34,6 +32,7 @@
 /* ホームボタンを左寄せした状態から、新規作成ボタンへ近づける余白 */
 .home-container {
     margin-right: 16px;
+    flex-shrink: 0;
 }
 
 /* 🟢 新規作成ボタン ＆ カテゴリタブの親 wrapper */
@@ -54,6 +53,14 @@
     display: flex;
     align-items: center;
     flex-shrink:0;
+}
+
+/* カテゴリタブを包んでいるform自体を「縮められるflexアイテム」にする */
+.category-wrapper form:not(.create-form-sticky) {
+    flex: 1 1 auto;
+    min-width: 0;
+    width: auto !important; 
+    display: block;
 }
 
 .category-scroll{
@@ -85,13 +92,12 @@
     opacity: 0.7;
 }
 
-/* ==========================================
-   2. カテゴリタブ内の詳細デザイン
-   ========================================== */
+/*カテゴリタブ内の詳細デザイン*/
 .category-tabs {
     display: flex;
     gap: 20px;
     overflow-x: auto;
+    overflow-y: hidden;
     width: 100%;
     flex-wrap:nowrap;
 }
@@ -110,6 +116,8 @@
     font-family: inherit;
     display: inline-flex;
     align-items: center;
+    white-space: nowrap;
+    flex-shrink: 0;
     transition: all 0.2s ease;
 }
 
@@ -131,13 +139,11 @@
 
 
 
-/* ==========================================
-   4. 商品編集ボタン
-   ========================================== */
+/* 商品編集ボタン*/
 .edit-img-btn {
-    background: transparent !important; /* 背景を完全に透明化 */
-    border: none !important;            /* 枠線を確実に消す */
-    box-shadow: none !important;        /* 影を確実に消す */
+    background: transparent !important; 
+    border: none !important;            
+    box-shadow: none !important;        
     padding: 0;
     margin: 0;
     cursor: pointer;
@@ -147,18 +153,16 @@
 }
 
 .edit-icon-img {
-    width: 70px;                        /* 削除画像とサイズを合わせて統一感を出します */
+    width: 70px;                       
     height: 35px;
     object-fit: contain;
 }
 
 .edit-img-btn:hover {
-    opacity: 0.7;                       /* マウスホバー時に少し薄くする演出 */
+    opacity: 0.7;                      
 }
 
-/* ==========================================
-   5. 表示切り替えトグルボタン ＆ 削除
-   ========================================== */
+/*  表示切り替えトグルボタン ＆ 削除*/
 .status-text { font-size: 14px; font-weight: bold; margin-right: 8px; user-select: none; }
 .text-show { color: #27ae60; }
 .text-hide { color: #7f8c8d; }
@@ -167,8 +171,8 @@
     display: flex !important;
     justify-content: center !important;
     align-items: center !important;
-    flex-direction: row !important; /* 🟢 強制的に横並び */
-    flex-wrap: nowrap !important;   /* 🟢 絶対に縦に折り返さない */
+    flex-direction: row !important; 
+    flex-wrap: nowrap !important;   
 }
 .toggle-button-4 {
     display: flex;
@@ -209,9 +213,7 @@
 .toggle-button-4:has(:checked)::after { left: 18px; color: #ffb900; content: 'Yes'; }
 .toggle-button-4 input { display: none; }
 
-/* ==========================================
-   5. 削除画像ボタン
-   ========================================== */
+/* 5. 削除画像ボタン */
 .img-delete-btn {
     background: transparent !important;
     border: none !important;

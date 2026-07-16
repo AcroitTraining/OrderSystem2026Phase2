@@ -59,7 +59,7 @@ body {
     margin-bottom: 20px;
 }
 
-/* 画像ボタン共通設定 */
+/* 画像ボタン共通設定（ホバーカード風アニメーション付き） */
 .btn-img {
     background: none;
     border: none;
@@ -68,19 +68,32 @@ body {
     outline: none;
     display: block;
     width: 100%;
-    transition: transform 0.1s ease, opacity 0.2s;
+    box-sizing: border-box;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.2s;
 }
 
-.btn-img:hover { opacity: 0.9; }
-.btn-img:active { transform: scale(0.96); }
+.btn-img:hover {
+    transform: translateY(-8px);
+    opacity: 0.95;
+}
 
-/* 画像自体のサイズ制御 */
+.btn-img:active {
+    transform: translateY(-2px) scale(0.96);
+}
+
+/* 画像自体のサイズ制御（影・角丸はここに付与） */
+/* 画像自体のサイズ制御（影・角丸はCSSでは付けない） */
 .btn-img img {
     display: block;
     width: 100%;
     height: auto;
     max-width: clamp(120px, 14vw, 170px);
     margin: 0 auto;
+}
+
+.btn-img:hover img {
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
 }
 
 /* ログアウトボタンのサイズ */

@@ -3,10 +3,9 @@ document.addEventListener("DOMContentLoaded", function () {
     var categorySelect = document.querySelector("select[name='categoryName']");
     var productNameInput = document.querySelector("input[name='productName']");
     var productPriceInput = document.querySelector("input[name='productPrice']");
-    
-    // 新規作成画面（isNew = true）か、変更画面（isNew = false）かを判定
+
     var productIdInput = document.querySelector("input[name='productId']");
-    var isNew = true; 
+    var isNew = true;
     if (productIdInput) {
         var idVal = productIdInput.value.trim();
         if (idVal !== "" && idVal !== "0") {
@@ -14,7 +13,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // エラー表示用スパンの自動生成
     function createErrorElement(inputElement) {
         var errorSpan = inputElement.parentNode.querySelector(".error-message");
         if (!errorSpan) {
@@ -35,7 +33,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     var isNameDuplicate = false;
 
-    // 商品名重複チェック処理
     function checkNameDuplicate() {
         var name = productNameInput.value.trim();
         var productId = productIdInput ? productIdInput.value : "0";
@@ -46,7 +43,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         var xhr = new XMLHttpRequest();
         var url = "ProductEditServlet?action=checkDuplicate&productName=" + encodeURIComponent(name) + "&productId=" + productId;
-        
+
         xhr.open("GET", url, true);
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4 && xhr.status === 200) {
@@ -69,14 +66,12 @@ document.addEventListener("DOMContentLoaded", function () {
         xhr.send();
     }
 
-    // --- 金額バリデーション（0、00000、マイナス文字を徹底ブロック） ---
     function validatePriceValue(val) {
         var trimmed = val.trim();
         if (trimmed === "") return "";
 
         var num = Number(trimmed);
-        
-        // 0や00、00000など、数値に変換して0になるパターンを完全に弾く
+
         if (num === 0 || trimmed.match(/^0+$/)) {
             return "※1以上の正しい金額を入力してください";
         }
@@ -89,7 +84,6 @@ document.addEventListener("DOMContentLoaded", function () {
         return "";
     }
 
-    // --- リアルタイムバリデーションイベント ---
     categorySelect.addEventListener("change", function () {
         if (categorySelect.value !== "") {
             categoryError.textContent = "";
@@ -109,7 +103,6 @@ document.addEventListener("DOMContentLoaded", function () {
         priceError.textContent = validatePriceValue(productPriceInput.value);
     });
 
-    // --- 送信ボタンクリック時の最終チェック ---
     form.addEventListener("submit", function (e) {
         e.preventDefault();
         var hasError = false;
@@ -139,69 +132,90 @@ document.addEventListener("DOMContentLoaded", function () {
             hasError = true;
         }
 
-        if (hasError) return;
+        if (hasError) {
+            return;
+        }
 
         showConfirmModal();
     });
 
-    // --- ポップアップ（確認モーダル）表示 ---
-    function showConfirmModal() {
-        var existingModal = document.getElementById("customModal");
-        if (existingModal) existingModal.remove();
-
+    function buildToppingHtml() {
         var checkboxes = document.querySelectorAll("input[name='toppingId']:checked");
-        var toppingHtml = "";
-        
-        // 複数選択されたトッピングの折り返しと「・」を画像通りに綺麗に再現
+        var html = "";
+
         if (checkboxes.length > 0) {
             for (var i = 0; i < checkboxes.length; i++) {
                 var toppingName = checkboxes[i].parentNode.textContent.trim();
-                toppingHtml += '<span style="display:inline-block; margin-right:12px; white-space:nowrap;">・' + toppingName + '</span>';
+                html += "<span style=\"display:inline-block; margin-right:12px; white-space:nowrap;\">・" + toppingName + "</span>";
             }
         } else {
-            toppingHtml = 'なし';
+            html = "なし";
         }
 
+        return html;
+    }
+
+    function showConfirmModal() {
+        var existingModal = document.getElementById("customModal");
+        if (existingModal) {
+            existingModal.remove();
+        }
+
+        var toppingHtml = buildToppingHtml();
         var actionText = isNew ? "作成" : "変更";
-        
-        var modalHtml = 
-            '<div id="customModal" class="modal-overlay">' +
-                '<div class="modal-content">' +
-                    '<h3>この内容で' + actionText + 'しますか？</h3>' +
-                    '<div class="modal-body">' +
-                        '<div class="modal-row">' +
-                            '<span class="modal-label">カテゴリー</span>' +
-                            '<span class="modal-val">' + categorySelect.value + '</span>' +
-                        '</div>' +
-                        '<div class="modal-row">' +
-                            '<span class="modal-label">商品名</span>' +
-                            '<span class="modal-val">' + productNameInput.value + '</span>' +
-                        '</div>' +
-                        '<div class="modal-row" style="align-items: flex-start;">' +
-                            '<span class="modal-label">トッピング</span>' +
-                            '<span class="modal-val">' + toppingHtml + '</span>' +
-                        '</div>' +
-                        '<div class="modal-row">' +
-                            '<span class="modal-label">金額</span>' +
-                            '<span class="modal-val">' + Number(productPriceInput.value) + ' 円</span>' +
-                        '</div>' +
-                    '</div>' +
-                    '<div class="modal-actions">' +
-                        '<button type="button" id="modalNo" class="btn-modal-no">いいえ</button>' +
-                        '<button type="button" id="modalYes" class="btn-modal-yes">はい</button>' +
-                    '</div>' +
-                '</div>' +
-            '</div>';
+
+        var modalHtml = "";
+        modalHtml += "<div id=\"customModal\" class=\"modal-overlay\">";
+        modalHtml += "<div class=\"modal-content\">";
+        modalHtml += "<h3>この内容で" + actionText + "しますか？</h3>";
+        modalHtml += "<div class=\"modal-body\">";
+        modalHtml += "<div class=\"modal-row\">";
+        modalHtml += "<span class=\"modal-label\">カテゴリー</span>";
+        modalHtml += "<span class=\"modal-val\">" + categorySelect.value + "</span>";
+        modalHtml += "</div>";
+        modalHtml += "<div class=\"modal-row\">";
+        modalHtml += "<span class=\"modal-label\">商品名</span>";
+        modalHtml += "<span class=\"modal-val\">" + productNameInput.value + "</span>";
+        modalHtml += "</div>";
+        modalHtml += "<div class=\"modal-row\" style=\"align-items: flex-start;\">";
+        modalHtml += "<span class=\"modal-label\">トッピング</span>";
+        modalHtml += "<span class=\"modal-val\">" + toppingHtml + "</span>";
+        modalHtml += "</div>";
+        modalHtml += "<div class=\"modal-row\">";
+        modalHtml += "<span class=\"modal-label\">金額</span>";
+        modalHtml += "<span class=\"modal-val\">" + Number(productPriceInput.value) + " 円</span>";
+        modalHtml += "</div>";
+        modalHtml += "</div>";
+        modalHtml += "<div class=\"modal-actions\">";
+        modalHtml += "<button type=\"button\" id=\"modalNo\" class=\"btn-modal-no\">いいえ</button>";
+        modalHtml += "<button type=\"button\" id=\"modalYes\" class=\"btn-modal-yes\">はい</button>";
+        modalHtml += "</div>";
+        modalHtml += "</div>";
+        modalHtml += "</div>";
 
         document.body.insertAdjacentHTML("beforeend", modalHtml);
 
+        var modalOverlay = document.getElementById("customModal");
+
+        function closeModalWithAnimation(afterClose) {
+            modalOverlay.classList.add("closing");
+            modalOverlay.addEventListener("animationend", function handler() {
+                modalOverlay.removeEventListener("animationend", handler);
+                modalOverlay.remove();
+                if (typeof afterClose === "function") {
+                    afterClose();
+                }
+            });
+        }
+
         document.getElementById("modalNo").addEventListener("click", function () {
-            document.getElementById("customModal").remove();
+            closeModalWithAnimation();
         });
 
         document.getElementById("modalYes").addEventListener("click", function () {
-            document.getElementById("customModal").remove();
-            form.submit();
+            closeModalWithAnimation(function () {
+                form.submit();
+            });
         });
     }
 });

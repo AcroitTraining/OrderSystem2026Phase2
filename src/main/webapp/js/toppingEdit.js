@@ -1,21 +1,20 @@
 document.addEventListener("DOMContentLoaded", function () {
-    var form = document.querySelector(".main-card form");
-    var toppingNameInput = document.querySelector("input[name='toppingName']");
-    var toppingPriceInput = document.querySelector("input[name='toppingPrice']");
-    
-    // HTML側にあるデフォルトのHTML5バリデーション（required）をJavaScriptで制御するため無効化
-    if (form) {
-        form.setAttribute("novalidate", "novalidate");
-    }
+    var form = document.getElementById("toppingForm");
+    var toppingNameInput = document.getElementById("toppingName");
+    var toppingPriceInput = document.getElementById("toppingPrice");
+    var openModalBtn = document.getElementById("openModalBtn");
 
-    // 新規作成画面（isNew = true）か、変更画面（isNew = false）かを判定
-    var toppingIdInput = document.querySelector("input[name='toppingId']");
-    var isNew = true; 
-    if (toppingIdInput) {
-        var idVal = toppingIdInput.value.trim();
-        if (idVal !== "" && idVal !== "0") {
-            isNew = false;
-        }
+    var modalOverlay = document.getElementById("modalOverlay");
+    var modalNoBtn = document.getElementById("modalNoBtn");
+    var modalYesBtn = document.getElementById("modalYesBtn");
+    var modalToppingName = document.getElementById("modalToppingName");
+    var modalToppingPrice = document.getElementById("modalToppingPrice");
+
+    if (!form || !openModalBtn || !modalOverlay) {
+        console.error("toppingEdit.js: 必要な要素が見つかりません。", {
+            form: form, openModalBtn: openModalBtn, modalOverlay: modalOverlay
+        });
+        return;
     }
 
     // エラー表示用スパンの自動生成
@@ -24,10 +23,6 @@ document.addEventListener("DOMContentLoaded", function () {
         if (!errorSpan) {
             errorSpan = document.createElement("span");
             errorSpan.className = "error-message";
-            errorSpan.style.color = "red";
-            errorSpan.style.fontSize = "12px";
-            errorSpan.style.display = "block";
-            errorSpan.style.marginTop = "5px";
             inputElement.parentNode.appendChild(errorSpan);
         }
         return errorSpan;
@@ -36,14 +31,13 @@ document.addEventListener("DOMContentLoaded", function () {
     var nameError = createErrorElement(toppingNameInput);
     var priceError = createErrorElement(toppingPriceInput);
 
-    // --- 金額バリデーション（0、00000、マイナス文字を徹底ブロック） ---
+    // --- 金額バリデーション ---
     function validatePriceValue(val) {
         var trimmed = val.trim();
         if (trimmed === "") return "";
 
         var num = Number(trimmed);
-        
-        // 0や00、00000など、数値に変換して0になるパターンを完全に弾く
+
         if (num === 0 || trimmed.match(/^0+$/)) {
             return "※1以上の正しい金額を入力してください";
         }
@@ -56,7 +50,7 @@ document.addEventListener("DOMContentLoaded", function () {
         return "";
     }
 
-    // --- リアルタイムバリデーションイベント ---
+    // --- リアルタイムバリデーション ---
     toppingNameInput.addEventListener("input", function () {
         if (!toppingNameInput.value.trim()) {
             nameError.textContent = "※入力してください";
@@ -71,9 +65,8 @@ document.addEventListener("DOMContentLoaded", function () {
         priceError.textContent = validatePriceValue(toppingPriceInput.value);
     });
 
-    // --- 送信ボタンクリック時の最終チェック ---
-    form.addEventListener("submit", function (e) {
-        e.preventDefault();
+    // --- 「作成/変更」ボタン押下時の最終チェック ---
+    openModalBtn.addEventListener("click", function () {
         var hasError = false;
 
         if (!toppingNameInput.value.trim()) {
@@ -95,46 +88,33 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (hasError) return;
 
-        showConfirmModal();
+        // モーダルに入力内容を反映して表示
+        modalToppingName.textContent = toppingNameInput.value;
+        modalToppingPrice.textContent = Number(toppingPriceInput.value) + " 円";
+        modalOverlay.style.display = "flex";
+        modalOverlay.classList.remove("closing");
     });
 
-    // --- ポップアップ（確認モーダル）表示 ---
-    function showConfirmModal() {
-        var existingModal = document.getElementById("customModal");
-        if (existingModal) existingModal.remove();
-
-        var actionText = isNew ? "作成" : "変更";
-        
-        var modalHtml = 
-            '<div id="customModal" class="modal-overlay">' +
-                '<div class="modal-content">' +
-                    '<h3>この内容で' + actionText + 'しますか？</h3>' +
-                    '<div class="modal-body">' +
-                        '<div class="modal-row">' +
-                            '<span class="modal-label">トッピング名</span>' +
-                            '<span class="modal-val">' + toppingNameInput.value + '</span>' +
-                        '</div>' +
-                        '<div class="modal-row">' +
-                            '<span class="modal-label">金額</span>' +
-                            '<span class="modal-val">' + Number(toppingPriceInput.value) + ' 円</span>' +
-                        '</div>' +
-                    '</div>' +
-                    '<div class="modal-actions">' +
-                        '<button type="button" id="modalNo" class="btn-modal-no">いいえ</button>' +
-                        '<button type="button" id="modalYes" class="btn-modal-yes">はい</button>' +
-                    '</div>' +
-                '</div>' +
-            '</div>';
-
-        document.body.insertAdjacentHTML("beforeend", modalHtml);
-
-        document.getElementById("modalNo").addEventListener("click", function () {
-            document.getElementById("customModal").remove();
-        });
-
-        document.getElementById("modalYes").addEventListener("click", function () {
-            document.getElementById("customModal").remove();
-            form.submit();
+    // --- モーダルを閉じる（アニメーション付き） ---
+    function closeModalWithAnimation(afterClose) {
+        modalOverlay.classList.add("closing");
+        modalOverlay.addEventListener("animationend", function handler() {
+            modalOverlay.removeEventListener("animationend", handler);
+            modalOverlay.style.display = "none";
+            modalOverlay.classList.remove("closing");
+            if (typeof afterClose === "function") {
+                afterClose();
+            }
         });
     }
+
+    modalNoBtn.addEventListener("click", function () {
+        closeModalWithAnimation();
+    });
+
+    modalYesBtn.addEventListener("click", function () {
+        closeModalWithAnimation(function () {
+            form.submit();
+        });
+    });
 });
