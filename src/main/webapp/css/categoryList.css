@@ -34,8 +34,8 @@
 .home-btn .home-img,
 .home-container .home-img,
 img.home-img {
-    width: 50px !important;
-    height: 50px !important;
+    width: clamp(40px, 4vw, 50px) !important;
+    height: clamp(40px, 4vw, 50px) !important;
     display: block;
 }
 
@@ -80,13 +80,12 @@ body {
 }
 
 /* ==========================================
-   3. ブロブとリストをまとめて中央に重ねる土台（全体を縮小）
+   3. ブロブとリストをまとめて中央に重ねる土台（モニターサイズに応じて拡縮）
    ========================================== */
 .blob-wrapper {
     position: relative;
-    width: 480px;
-    max-width: 80vw;
-    height: 480px;
+    width: clamp(360px, 35vw, 480px);
+    height: clamp(360px, 35vw, 480px);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -112,14 +111,13 @@ body {
 }
 
 /* ==========================================
-   4. カテゴリテーブル（全体縮小に合わせて文字も縮小）
+   4. カテゴリテーブル（モニターサイズに応じて文字も拡縮）
    ========================================== */
 .category-table {
     position: relative;
     z-index: 10;
-    width: 280px;
-    max-width: 65vw;
-    font-size: 22px;
+    width: clamp(220px, 20vw, 280px);
+    font-size: clamp(16px, 1.6vw, 22px);
     background-color: transparent;
     border-collapse: collapse;
 }
@@ -140,7 +138,7 @@ body {
 }
 
 .category-table thead th {
-    font-size: 28px;
+    font-size: clamp(20px, 2vw, 28px);
     position: relative;
     padding-bottom: 14px;
     border-bottom: none;
@@ -179,16 +177,16 @@ body {
 .floaty-1 {
     top: 15%;
     left: 8%;
-    width: 60px;
-    height: 60px;
+    width: clamp(40px, 6vw, 60px);
+    height: clamp(40px, 6vw, 60px);
     animation: floatDrift 9s ease-in-out infinite;
 }
 
 .floaty-2 {
     bottom: 10%;
     right: 10%;
-    width: 90px;
-    height: 90px;
+    width: clamp(60px, 9vw, 90px);
+    height: clamp(60px, 9vw, 90px);
     animation: pulseGlow 6s ease-in-out infinite;
 }
 
