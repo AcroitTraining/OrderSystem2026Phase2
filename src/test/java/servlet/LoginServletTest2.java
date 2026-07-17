@@ -52,8 +52,8 @@ class LoginServletTest2 {
         LoginInfo testInfo = new LoginInfo(userId, password);
 
         // モックの設定
-        when(request.getParameter("userId")).thenReturn(userId);
-        when(request.getParameter("password")).thenReturn(password);
+        when(request.getParameter("userId")).thenReturn("order");
+        when(request.getParameter("password")).thenReturn("1934");
         when(request.getSession()).thenReturn(session);
 
         // DAOの戻り値を設定
