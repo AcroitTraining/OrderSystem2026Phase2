@@ -139,6 +139,7 @@ body {
 }
 
 .modal-content {
+    background-color: #ffffff;
     padding: 30px 40px;
     border-radius: 4px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.2);
@@ -146,12 +147,7 @@ body {
     text-align: center;
     font-family: sans-serif;
 
-    /* 登場時のフェードイン */
-    animation: fadeIn 0.7s ease-in, gradShift 10s linear infinite;
-
-    /* 常時流れるグラデーション背景 */
-    background: linear-gradient(120deg, #ff7a7a, #ffd27a, #7af3ff);
-    background-size: 600% 600%;
+    animation: fadeIn 0.35s ease-out;
 }
 
 @keyframes fadeIn {
@@ -165,25 +161,13 @@ body {
     }
 }
 
-@keyframes gradShift {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
-}
-
 /* 閉じるときのアニメーション */
 .modal-overlay.closing {
-    animation: fadeOut 0.2s ease-in forwards;
+    animation: fadeOut 0.15s ease-in forwards;
 }
 
 .modal-overlay.closing .modal-content {
-    animation: fadeOutContent 0.2s ease-in forwards, gradShift 10s linear infinite;
+    animation: fadeOutContent 0.15s ease-in forwards;
 }
 
 @keyframes fadeOut {
@@ -206,9 +190,8 @@ body {
     margin-top: 0;
     margin-bottom: 25px;
     font-size: 18px;
-    color: #ffffff;
+    color: #000000;
     font-weight: bold;
-    text-shadow: 0 1px 3px rgba(0,0,0,0.3);
 }
 
 .modal-body {
@@ -227,21 +210,20 @@ body {
 .modal-label {
     width: 110px;
     font-weight: bold;
-    color: #004d00;
+    color: #00aa00;
     display: inline-block;
 }
 
 .modal-label::after {
     content: " ｜";
-    color: rgba(255,255,255,0.6);
+    color: #cccccc;
     float: right;
 }
 
 .modal-val {
     flex: 1;
     padding-left: 15px;
-    color: #222222;
-    font-weight: 600;
+    color: #333333;
 }
 
 .modal-actions {

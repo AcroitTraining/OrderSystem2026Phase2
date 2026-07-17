@@ -1,44 +1,205 @@
 @charset "UTF-8";
 
 /* ==========================================
-   1. 固定ヘッダー（最上部に完全固定）
+   1. ヘッダー（固定をやめて通常の流れに置く）
    ========================================== */
 .fixed-header {
-    position: fixed;
-    top: 0;
-    left: 0;
+    position: static;
     width: 100%;
-    z-index: 100;
-    background-color: #ffffff;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1); /* 下側に軽い影 */
+    background-color: transparent;
+    box-shadow: none;
     display: flex;
     align-items: center;
     padding: 10px 0;
     box-sizing: border-box;
-    justify-content: flex-start !important; /* ホームボタンを確実に左詰めに固定 */
+    justify-content: flex-start !important;
 }
 
-/* ホームボタンを左寄せした状態からの画面内の指定マージン */
 .home-container {
-    margin: 0 10px 0 30px !important;
+    margin: 0 0 0 40px !important;
+}
+
+.home-btn {
+    animation: homeFloat 2.5s ease-in-out infinite;
+    transition: transform 0.2s ease;
+    background: none !important;
+    border: none !important;
+    padding: 0 !important;
+}
+
+.home-btn:hover {
+    transform: scale(1.15);
+}
+
+.home-btn .home-img,
+.home-container .home-img,
+img.home-img {
+    width: 50px !important;
+    height: 50px !important;
+    display: block;
+}
+
+@keyframes homeFloat {
+    0%   { transform: translateY(0); }
+    50%  { transform: translateY(-6px); }
+    100% { transform: translateY(0); }
 }
 
 /* ==========================================
-   2. 画面全体のレイアウトとカテゴリテーブルの設定
+   2. 画面全体のレイアウトとグラデーション背景
    ========================================== */
 body {
-    /* 固定ヘッダーにコンテンツが潜り込んで隠れないように上部を押し下げる */
-    padding-top: 80px !important;
-    
-    /* 画面全体を中央揃えにするためのレイアウト設定 */
+    margin: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+    position: relative;
+    overflow-x: hidden;
+
+    padding-bottom: 60px;
+
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
+
+    min-height: 100vh;
+
+    background: linear-gradient(45deg,
+        #ff6b6b,
+        #4ecdc4,
+        #45b7d1,
+        #96ceb4,
+        #ff6b6b);
+    background-size: 400% 400%;
+    animation: gradientShift 15s ease infinite;
 }
 
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
 
-/* セル内のテキスト調整（中央寄せで見やすくします） */
+/* ==========================================
+   3. ブロブとリストをまとめて中央に重ねる土台（全体を縮小）
+   ========================================== */
+.blob-wrapper {
+    position: relative;
+    width: 480px;
+    max-width: 80vw;
+    height: 480px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: -20px;
+}
+
+.blob {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #7af3ff, #7a9bff);
+    border-radius: 40% 60% 55% 45% / 45% 40% 60% 55%;
+    animation: blobMorph 8s ease-in-out infinite;
+    filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.15));
+}
+
+@keyframes blobMorph {
+    0% { border-radius: 40% 60% 55% 45% / 45% 40% 60% 55%; }
+    50% { border-radius: 60% 40% 35% 65% / 55% 65% 35% 45%; }
+    100% { border-radius: 40% 60% 55% 45% / 45% 40% 60% 55%; }
+}
+
+/* ==========================================
+   4. カテゴリテーブル（全体縮小に合わせて文字も縮小）
+   ========================================== */
+.category-table {
+    position: relative;
+    z-index: 10;
+    width: 280px;
+    max-width: 65vw;
+    font-size: 22px;
+    background-color: transparent;
+    border-collapse: collapse;
+}
+
 .category-table th,
 .category-table td {
     text-align: center !important;
+    padding: 10px;
+    background-color: transparent;
+    color: #0a2a4d;
+    font-weight: bold;
+    border: none;
+    border-bottom: 2px solid rgba(10, 42, 77, 0.4);
+}
+
+.category-table tr:last-child td {
+    border-bottom: none;
+}
+
+.category-table thead th {
+    font-size: 28px;
+    position: relative;
+    padding-bottom: 14px;
+    border-bottom: none;
+}
+
+.category-table thead th::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 3px;
+    width: 100%;
+    height: 4px;
+    border-radius: 3px;
+    background: linear-gradient(90deg, #45b7d1, #7af3ff, #4ecdc4, #7a9bff, #45b7d1);
+    background-size: 300% 100%;
+    animation: underlineFlow 4s linear infinite;
+}
+
+@keyframes underlineFlow {
+    0%   { background-position: 0% 50%; }
+    100% { background-position: 300% 50%; }
+}
+
+/* ==========================================
+   5. 周りの空白を彩る小さな装飾（別アニメーション）
+   ========================================== */
+.floaty {
+    position: fixed;
+    z-index: 1;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ffffff80, #7af3ff80);
+    filter: blur(1px) drop-shadow(0 6px 14px rgba(0,0,0,0.1));
+    pointer-events: none;
+}
+
+.floaty-1 {
+    top: 15%;
+    left: 8%;
+    width: 60px;
+    height: 60px;
+    animation: floatDrift 9s ease-in-out infinite;
+}
+
+.floaty-2 {
+    bottom: 10%;
+    right: 10%;
+    width: 90px;
+    height: 90px;
+    animation: pulseGlow 6s ease-in-out infinite;
+}
+
+@keyframes floatDrift {
+    0%   { transform: translate(0, 0) scale(1); }
+    50%  { transform: translate(20px, -30px) scale(1.1); }
+    100% { transform: translate(0, 0) scale(1); }
+}
+
+@keyframes pulseGlow {
+    0%   { transform: scale(1); opacity: 0.7; }
+    50%  { transform: scale(1.25); opacity: 1; }
+    100% { transform: scale(1); opacity: 0.7; }
 }
