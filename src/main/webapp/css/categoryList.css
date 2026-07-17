@@ -36,17 +36,6 @@ body {
     align-items: center !important;
 }
 
-/* 🟢 カテゴリ一覧用の専用テーブル幅調整（ご指定の数値に最適化） */
-.category-table {
-    table-layout: fixed;
-    width: 80%;           /* 画面に対して80%の幅 */
-    max-width: 800px;     /* 最高横幅 800px */
-    min-width: 400px;     /* 最低横幅 400px */
-    
-    margin-top: 20px;
-    margin-left: auto;    /* 左右マージン auto で確実に中央揃え */
-    margin-right: auto;
-}
 
 /* セル内のテキスト調整（中央寄せで見やすくします） */
 .category-table th,

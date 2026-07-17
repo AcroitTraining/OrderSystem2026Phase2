@@ -56,6 +56,10 @@ class LoginServletTest2 {
         // モックの設定（実行したい値を設定する）
         when(request.getParameter("userId")).thenReturn("order");
         when(request.getParameter("password")).thenReturn("1234");
+
+        // モックの設定
+        when(request.getParameter("userId")).thenReturn("order");
+        when(request.getParameter("password")).thenReturn("1934");
         when(request.getSession()).thenReturn(session);
 
         // モックの設定　（DAOの戻り値を設定）
