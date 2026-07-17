@@ -60,17 +60,18 @@ body {
 }
 
 /* 画像ボタン共通設定（ホバーカード風アニメーション付き） */
-.btn-img {
-    background: none;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-    outline: none;
-    display: block;
-    width: 100%;
-    box-sizing: border-box;
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-                opacity 0.2s;
+.btn-img{
+    background:none;
+    border:none;
+    padding:0;
+    cursor:pointer;
+
+    display:inline-block;
+    width:fit-content;
+    backface-visibility: hidden;
+    transition:
+        transform .3s cubic-bezier(.4,0,.2,1),
+        opacity .2s;
 }
 
 .btn-img:hover {
@@ -82,19 +83,16 @@ body {
     transform: translateY(-2px) scale(0.96);
 }
 
-/* 画像自体のサイズ制御（影・角丸はここに付与） */
-/* 画像自体のサイズ制御（影・角丸はCSSでは付けない） */
+/* 画像自体のサイズ制御 */
 .btn-img img {
     display: block;
-    width: 100%;
+    width: auto;
     height: auto;
     max-width: clamp(120px, 14vw, 170px);
     margin: 0 auto;
 }
 
-.btn-img:hover img {
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
-}
+
 
 /* ログアウトボタンのサイズ */
 .logout-section .btn-img img {
@@ -107,7 +105,6 @@ body {
     justify-content: flex-start;
 }
 .button-group form {
-    width: 100%;
     max-width: clamp(120px, 14vw, 170px);
 }
 
