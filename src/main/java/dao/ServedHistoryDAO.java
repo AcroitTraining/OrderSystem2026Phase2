@@ -30,7 +30,7 @@ public class ServedHistoryDAO {
 
 			String sql = 
 	                "SELECT od.order_id, od.product_quantity, od.session_id, od.order_flag, "
-	                + "p.product_name, p.product_price, od.order_price, p.category_name, od.order_time, "
+	                + "p.product_name, p.product_price, od.order_price, c.category_name, od.order_time, "
 	                + "t.topping_name, t.topping_price, t.topping_stock, p.product_stock, ts.table_id, "
 	                + "mt.topping_quantity, (od.product_quantity * od.order_price) AS sub_total "
 	                + "FROM order_details AS od "
@@ -38,6 +38,8 @@ public class ServedHistoryDAO {
 	                + "ON od.order_id = pd.order_id "
 	                + "LEFT JOIN product AS p "
 	                + "ON pd.product_id = p.product_id "
+	                + "LEFT JOIN category AS c "
+	                + "ON p.category_id = c.category_id "
 	                + "LEFT JOIN multiple_toppings AS mt "
 	                + "ON od.order_id = mt.order_id "
 	                + "LEFT JOIN topping AS t "

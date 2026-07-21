@@ -13,7 +13,8 @@
 
 	<div class="container">
 		<div class="logout-section">
-			<form id="logoutForm" action="index.jsp" method="get">
+			<form id="logoutForm" action="HomeServlet" method="get">
+				<input type="hidden" name="logout" value="true">
 				<button type="button" id="logoutTrigger" class="btn-img">
 					<img src="image/logoutButton.png" alt="ログアウト">
 				</button>

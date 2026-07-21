@@ -60,9 +60,30 @@ public class ProductEditDAO {
         return list;
     }
 
+    /** カテゴリのプルダウン表示用に、category テーブルの一覧を取得する */
+    public List<ProductEditInfo.ToppingMaster> findAllCategories() throws SQLException {
+        // ※ ToppingMaster を流用せず専用の CategoryMaster クラスがあればそちらを使ってください
+        String sql = "SELECT category_id, category_name FROM category";
+        List<ProductEditInfo.ToppingMaster> list = new ArrayList<>();
+
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                ProductEditInfo.ToppingMaster cm = new ProductEditInfo.ToppingMaster();
+                cm.setToppingId(rs.getInt("category_id"));
+                cm.setToppingName(rs.getString("category_name"));
+                list.add(cm);
+            }
+        }
+        return list;
+    }
+
     public ProductEditInfo findProductDetails(int productId) throws SQLException {
-        String productSql = "SELECT product_id, product_name, category_name, product_price "
-                          + "FROM product WHERE product_id = ? AND product_delete_flag = 1";
+        String productSql = "SELECT p.product_id, p.product_name, p.category_id, c.category_name, p.product_price "
+                          + "FROM product p "
+                          + "LEFT JOIN category c ON p.category_id = c.category_id "
+                          + "WHERE p.product_id = ? AND p.product_delete_flag = 1";
 
         ProductEditInfo info = null;
 
@@ -74,6 +95,7 @@ public class ProductEditDAO {
                     info = new ProductEditInfo();
                     info.setProductId(rs.getInt("product_id"));
                     info.setProductName(rs.getString("product_name"));
+                    info.setCategoryId(rs.getInt("category_id"));
                     info.setCategoryName(rs.getString("category_name"));
                     info.setProductPrice(rs.getInt("product_price"));
                 }
@@ -99,8 +121,8 @@ public class ProductEditDAO {
         return info;
     }
 
-    public void insertProductDetails(String productName, int productPrice, String categoryName, String[] toppingIds) throws SQLException {
-        String insertProductSql = "INSERT INTO product (product_name, product_price, category_name, product_stock, product_display_flag, product_delete_flag) "
+    public void insertProductDetails(String productName, int productPrice, int categoryId, String[] toppingIds) throws SQLException {
+        String insertProductSql = "INSERT INTO product (product_name, product_price, category_id, product_stock, product_display_flag, product_delete_flag) "
                                 + "VALUES (?, ?, ?, 0, 1, 1)";
         String insertToppingSql = "INSERT INTO product_topping (product_id, topping_id) VALUES (?, ?)";
 
@@ -112,7 +134,7 @@ public class ProductEditDAO {
                 try (PreparedStatement ps = conn.prepareStatement(insertProductSql, PreparedStatement.RETURN_GENERATED_KEYS)) {
                     ps.setString(1, productName);
                     ps.setInt(2, productPrice);
-                    ps.setString(3, categoryName);
+                    ps.setInt(3, categoryId);
                     ps.executeUpdate();
 
                     try (ResultSet rs = ps.getGeneratedKeys()) {
@@ -140,33 +162,35 @@ public class ProductEditDAO {
             }
         }
     }
+
     /**
      * バリデーション＋重複チェック＋新規/更新の判定をまとめて行う保存メソッド。
      * 成功時はtrue、入力不正時はfalseを返す。
      */
     public boolean saveProduct(int productId, String productName, int productPrice,
-                                String categoryName, String[] toppingIds) throws SQLException {
+                                int categoryId, String[] toppingIds) throws SQLException {
 
-        if (!isValid(productName, productPrice, categoryName)
+        if (!isValid(productName, productPrice, categoryId)
                 || isProductNameExists(productName, productId)) {
             return false;
         }
 
         if (productId == 0) {
-            insertProductDetails(productName, productPrice, categoryName, toppingIds);
+            insertProductDetails(productName, productPrice, categoryId, toppingIds);
         } else {
-            updateProductDetails(productId, productName, productPrice, categoryName, toppingIds);
+            updateProductDetails(productId, productName, productPrice, categoryId, toppingIds);
         }
         return true;
     }
 
-    private boolean isValid(String productName, int productPrice, String categoryName) {
+    private boolean isValid(String productName, int productPrice, int categoryId) {
         return productName != null && !productName.trim().isEmpty() && productName.length() <= 18
                 && productPrice >= 0 && productPrice <= 99999
-                && categoryName != null && !categoryName.isEmpty();
+                && categoryId > 0;
     }
-    public void updateProductDetails(int productId, String productName, int productPrice, String categoryName, String[] toppingIds) throws SQLException {
-        String updateProductSql = "UPDATE product SET product_name = ?, product_price = ?, category_name = ? WHERE product_id = ?";
+
+    public void updateProductDetails(int productId, String productName, int productPrice, int categoryId, String[] toppingIds) throws SQLException {
+        String updateProductSql = "UPDATE product SET product_name = ?, product_price = ?, category_id = ? WHERE product_id = ?";
         String deleteToppingSql = "DELETE FROM product_topping WHERE product_id = ?";
         String insertToppingSql = "INSERT INTO product_topping (product_id, topping_id) VALUES (?, ?)";
 
@@ -177,7 +201,7 @@ public class ProductEditDAO {
                 try (PreparedStatement ps = conn.prepareStatement(updateProductSql)) {
                     ps.setString(1, productName);
                     ps.setInt(2, productPrice);
-                    ps.setString(3, categoryName);
+                    ps.setInt(3, categoryId);
                     ps.setInt(4, productId);
                     ps.executeUpdate();
                 }
