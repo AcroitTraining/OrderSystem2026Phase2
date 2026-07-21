@@ -2,8 +2,7 @@
                         
     
     
-    
-    
+   
     <wb-module deploy-name="OrderSystem2026Phase1-0.0.1-SNAPSHOT">
                                         
         
@@ -24,12 +23,19 @@
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
                                 
         
-        
+    <wb-module deploy-name="OrderSystem2026Phase2-0.0.1-SNAPSHOT">
+        <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
+        <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
+                                                
+
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/java"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/test/resources"/>
                                                 
         
+
         
         
         
