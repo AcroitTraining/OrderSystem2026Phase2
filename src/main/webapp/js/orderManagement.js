@@ -1,114 +1,268 @@
-
 document.addEventListener("DOMContentLoaded", () => {
-    // 要素の取得
-    const servedForms = document.querySelectorAll(".served-form");
-    const modal = document.getElementById("customModal");
-    const yesBtn = document.getElementById("modalYesBtn");
-    const noBtn = document.getElementById("modalNoBtn");
 
-    let currentForm = null; // 現在クリックされたフォームを一時保存する変数
+    /*
+     * =========================
+     * モーダル
+     * =========================
+     */
 
-    // 全ての「提供フォーム」の送信イベントを監視
+    const servedForms =
+        document.querySelectorAll(".served-form");
+
+    const modal =
+        document.getElementById("customModal");
+
+    const yesBtn =
+        document.getElementById("modalYesBtn");
+
+    const noBtn =
+        document.getElementById("modalNoBtn");
+
+    let currentForm = null;
+
     servedForms.forEach(form => {
-        form.addEventListener("submit", (event) => {
-            // ① 通常のフォーム送信（ページ遷移）を一旦ストップ
+
+        form.addEventListener("submit", event => {
+
             event.preventDefault();
 
-            // ② クリックされたフォームを保存
             currentForm = form;
 
-            // ③ モーダルを表示する (CSSの display: none を flex に上書き)
             modal.style.display = "flex";
+
         });
+
     });
 
-    // 「はい」ボタンが押されたとき
     yesBtn.addEventListener("click", () => {
+
         if (currentForm) {
-            // 実際のフォーム送信を実行
+
             currentForm.submit();
+
         }
+
     });
 
-    // 「いいえ」ボタンが押されたとき
     noBtn.addEventListener("click", () => {
-        // モーダルを非表示にする
+
         modal.style.display = "none";
-        currentForm = null; // 保持していたフォームをクリア
+
+        currentForm = null;
+
     });
 
-    // モーダルの背景（グレー部分）をクリックしたときもキャンセルにする場合
-    modal.addEventListener("click", (event) => {
+    modal.addEventListener("click", event => {
+
         if (event.target === modal) {
+
             modal.style.display = "none";
+
             currentForm = null;
+
         }
+
     });
-});
-
-document.addEventListener("DOMContentLoaded",()=>{
-
-    const categoryTabs = document.getElementById("categoryTabs");
-    const rightBtn = document.querySelector(".scroll-btn.right");
-    const leftBtn = document.querySelector(".scroll-btn.left");
 
 
-    rightBtn.addEventListener("click",()=>{
+    /*
+     * =========================
+     * タブスクロール
+     * =========================
+     */
+
+    const categoryTabs =
+        document.getElementById("categoryTabs");
+
+    const rightBtn =
+        document.querySelector(".scroll-btn.right");
+
+    const leftBtn =
+        document.querySelector(".scroll-btn.left");
+
+
+    rightBtn.addEventListener("click", () => {
+
         categoryTabs.scrollBy({
-            left:200,
-            behavior:"smooth"
+            left: 200,
+            behavior: "smooth"
         });
+
     });
 
 
-    leftBtn.addEventListener("click",()=>{
+    leftBtn.addEventListener("click", () => {
+
         categoryTabs.scrollBy({
-            left:-200,
-            behavior:"smooth"
+            left: -200,
+            behavior: "smooth"
         });
+
     });
 
-});
 
-document.addEventListener("DOMContentLoaded",()=>{
-
-    const tabs = document.getElementById("categoryTabs");
+    /*
+     * =========================
+     * ドラッグスクロール
+     * =========================
+     */
 
     let isDown = false;
+
     let startX;
+
     let scrollLeft;
 
 
-    tabs.addEventListener("mousedown",(e)=>{
+    categoryTabs.addEventListener("mousedown", event => {
+
         isDown = true;
-        tabs.classList.add("dragging");
 
-        startX = e.pageX - tabs.offsetLeft;
-        scrollLeft = tabs.scrollLeft;
+        categoryTabs.classList.add("dragging");
+
+        startX =
+            event.pageX - categoryTabs.offsetLeft;
+
+        scrollLeft =
+            categoryTabs.scrollLeft;
+
     });
 
 
-    tabs.addEventListener("mouseleave",()=>{
+    categoryTabs.addEventListener("mouseleave", () => {
+
         isDown = false;
-        tabs.classList.remove("dragging");
+
+        categoryTabs.classList.remove("dragging");
+
     });
 
 
-    tabs.addEventListener("mouseup",()=>{
+    categoryTabs.addEventListener("mouseup", () => {
+
         isDown = false;
-        tabs.classList.remove("dragging");
+
+        categoryTabs.classList.remove("dragging");
+
     });
 
 
-    tabs.addEventListener("mousemove",(e)=>{
-        if(!isDown) return;
+    categoryTabs.addEventListener("mousemove", event => {
 
-        e.preventDefault();
+        if (!isDown) {
+            return;
+        }
 
-        const x = e.pageX - tabs.offsetLeft;
-        const walk = (x - startX) * 1.5;
+        event.preventDefault();
 
-        tabs.scrollLeft = scrollLeft - walk;
+        const x =
+            event.pageX - categoryTabs.offsetLeft;
+
+        const walk =
+            (x - startX) * 1.5;
+
+        categoryTabs.scrollLeft =
+            scrollLeft - walk;
+
     });
 
 });
+
+    
+//テーブル1行分のデータ
+// テーブル1行分のデータ
+function createOrderRow(item) {
+
+    const toppingHtml =
+        createToppingHtml(item.toppings);
+
+    return "<tr class=\"order-row\" data-category=\""
+        + item.categoryName
+        + "\">"
+        + "<td>No."
+        + item.orderId
+        + "</td>"
+        + "<td>"
+        + item.orderTime
+        + "</td>"
+        + "<td>"
+        + item.orderQuantity
+        + "個</td>"
+        + "<td>"
+        + item.productName
+        + "</td>"
+        + "<td>"
+        + toppingHtml
+        + "</td>"
+        + "</tr>";
+
+}
+
+function getCurrentFilters() {
+    return {
+        category: document.querySelector(".category-filter .active").value,
+        table: document.querySelector(".table-filter .active").value
+    };
+}
+
+
+//トッピングの出力
+function createToppingHtml(toppings) {
+	
+	if (!toppings || toppings.length === 0) {
+        return "";
+    }
+
+    let html = "";
+
+    toppings.forEach(t => {
+        html += `・${t.name}×${t.quantity}<br>`;
+    });
+
+    return html;
+}
+
+//更新処理
+function updateTable(orders) {
+
+    let html = "";
+
+    orders.forEach(item => {
+        html += createOrderRow(item);
+    });
+
+    document.getElementById("orderTableBody").innerHTML = html;
+}
+
+
+
+async function fetchOrders() {
+    try {
+        const filters = getCurrentFilters();
+
+        const url =
+            "OrderManagementAjaxServlet"
+            + "?categoryFilter="
+            + encodeURIComponent(filters.category)
+            + "&tableFilter="
+            + encodeURIComponent(filters.table);
+
+        const response = await fetch(url);
+
+        const data = await response.json();
+
+        updateTable(data.orders);
+
+    } catch (error) {
+        console.error(
+            "注文データの取得に失敗しました",
+            error
+        );
+    }
+}
+
+//通信する関数を呼び出す
+fetchOrders();
+
+//5秒ごとに呼び出す
+setInterval(fetchOrders, 5000);

@@ -101,6 +101,7 @@
 	</div>
 
 	<table class="table-wrapper">
+		<thead>
 			<tr class="order-row">
 				<th>No.</th>
 				<th>注文時間</th>
@@ -110,6 +111,8 @@
 				<th>編集</th>
 				<th>卓番/ 提供</th>
 			</tr>
+		</thead>
+		<tbody id="orderTableBody">
 			<c:forEach var="item" items="${omList}">
 				<tr class="order-row" data-category="${item.categoryName}">
 					<td>No.${item.orderId}</td>
@@ -144,7 +147,8 @@
 					</td>
 				</tr>
 			</c:forEach>
-		</table>
+		</tbody>
+	</table>
 
 	<div class="footer-legend">
 		<div class="legend-group">
