@@ -9,14 +9,5 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
-  <servlet>
-    <description></description>
-    <display-name>OrderManagementAjaxServlet</display-name>
-    <servlet-name>OrderManagementAjaxServlet</servlet-name>
-    <servlet-class>servlet.OrderManagementAjaxServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>OrderManagementAjaxServlet</servlet-name>
-    <url-pattern>/OrderManagementAjaxServlet</url-pattern>
-  </servlet-mapping>
+ 
 </web-app>
