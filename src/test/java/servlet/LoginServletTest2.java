@@ -41,11 +41,11 @@ class LoginServletTest2 {
     void setUp() {
         servlet.setLoginDAO(dao);
     }
-    //正しいIDとパスワードを入力してログインできるか確かめるテスt
+    //正しいIDとパスワードを入力してログインできるか確かめるテスト
     @Test
     void testLogin() throws ServletException, IOException {
 
-        // テストデータ
+        //テストデータ
     	//ただしいIDの値
         String userId = "order";
         //正しいパスワードの値
@@ -53,17 +53,14 @@ class LoginServletTest2 {
 
         LoginInfo testInfo = new LoginInfo(userId, password);
 
-        // モックの設定（実行したい値を設定する）
+        // モックの設定（テストするときに使用する正しい値を作成する）
         when(request.getParameter("userId")).thenReturn("order");
         when(request.getParameter("password")).thenReturn("1234");
 
-        // モックの設定
-        when(request.getParameter("userId")).thenReturn("order");
-        when(request.getParameter("password")).thenReturn("1934");
         when(request.getSession()).thenReturn(session);
 
         // モックの設定　（DAOの戻り値を設定）
-        //when(dao.loginCheck(userId, password)).thenReturn(testInfo);
+        when(dao.loginCheck(userId, password)).thenReturn(testInfo);
 
         // Servlet実行
         servlet.doPost(request, response);
@@ -80,12 +77,11 @@ class LoginServletTest2 {
         verify(request).getParameter("password");
         verify(request).getSession();
 
-        //verify(dao).loginCheck(userId, password);
+        verify(dao).loginCheck(userId, password);
 
         verify(session).setAttribute("loginUser", testInfo);
 
         verify(response).sendRedirect("HomeServlet");
-        System.out.println(info.getLoginId());
-        System.out.println(info.getLoginPassword());
+
     }
 }

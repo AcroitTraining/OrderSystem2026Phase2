@@ -30,7 +30,7 @@
 		<div class="button-group">
 			<form action="OrderManagementServlet" method="get">
 				<button type="submit" name="orderManagementButton" class="btn-img">
-					<img src="image/orderListButton.png" alt="注文一覧">
+					<img src="image/finalCmpBtn.png" alt="注文一覧">
 				</button>
 			</form>
 		</div>
