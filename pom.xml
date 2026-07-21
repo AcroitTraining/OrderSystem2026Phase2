@@ -5,24 +5,27 @@
   <version>0.0.1-SNAPSHOT</version>
   <packaging>war</packaging>
 
+  <properties>
+    <maven.compiler.source>21</maven.compiler.source>
+    <maven.compiler.target>21</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
   <build>
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.8.1</version>
-        <configuration>
-          <release>21</release>
-        </configuration>
+        <version>3.11.0</version>
       </plugin>
       
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>3.0.0-M5</version>
+        <version>3.1.2</version>
       </plugin>
 
       <plugin>
         <artifactId>maven-war-plugin</artifactId>
-        <version>3.2.3</version>
+        <version>3.4.0</version>
       </plugin>
     </plugins>
   </build>
@@ -35,6 +38,21 @@
       <scope>provided</scope>
     </dependency>
 
+    <!-- MySQL Driver (scope=test を削除し、実行時も読めるように修正) -->
+    <dependency>
+      <groupId>com.mysql</groupId>
+      <artifactId>mysql-connector-j</artifactId>
+      <version>8.3.0</version>
+    </dependency>
+
+    <!-- Jackson (JSON用) -->
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>2.17.0</version>
+    </dependency>
+
+    <!-- テスト用ライブラリ -->
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
@@ -45,13 +63,6 @@
       <groupId>org.mockito</groupId>
       <artifactId>mockito-junit-jupiter</artifactId>
       <version>4.4.0</version>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>com.mysql</groupId>
-      <artifactId>mysql-connector-j</artifactId>
-      <version>9.3.0</version>
       <scope>test</scope>
     </dependency>
 
@@ -67,12 +78,6 @@
       <artifactId>junit-jupiter-engine</artifactId>
       <version>5.8.2</version>
       <scope>test</scope>
-    </dependency>
-    
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-databind</artifactId>
-      <version>2.19.0</version>
     </dependency>
   </dependencies>
   

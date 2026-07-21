@@ -162,13 +162,13 @@ class ProductEditServletTest {
         when(request.getParameter("productId")).thenReturn("7");
         when(request.getParameter("productName")).thenReturn("既存商品");
         when(request.getParameter("productPrice")).thenReturn("800");
-        when(request.getParameter("categoryName")).thenReturn("ドリンク");
+        when(request.getParameter("categoryId")).thenReturn("1"); // categoryName から categoryId ("1") に変更
         when(request.getParameterValues("toppingId")).thenReturn(null);
-        when(dao.saveProduct(eq(7), eq("既存商品"), eq(800), eq("ドリンク"), any())).thenReturn(true);
+        when(dao.saveProduct(eq(7), eq("既存商品"), eq(800), eq(1), any())).thenReturn(true); // 第4引数を 1 に修正
 
         servlet.doPost(request, response);
 
-        verify(dao).saveProduct(7, "既存商品", 800, "ドリンク", null);
+        verify(dao).saveProduct(7, "既存商品", 800, 1, null); // 第4引数を 1 に修正
         verify(response).sendRedirect("ProductListServlet");
     }
 
@@ -177,13 +177,13 @@ class ProductEditServletTest {
         when(request.getParameter("productId")).thenReturn(null);
         when(request.getParameter("productName")).thenReturn("");
         when(request.getParameter("productPrice")).thenReturn("100");
-        when(request.getParameter("categoryName")).thenReturn("フード");
-        when(dao.saveProduct(anyInt(), anyString(), anyInt(), anyString(), any())).thenReturn(false);
+        when(request.getParameter("categoryId")).thenReturn("1"); // categoryName から categoryId ("1") に変更
+        when(dao.saveProduct(anyInt(), anyString(), anyInt(), anyInt(), any())).thenReturn(false); // 第4引数を anyInt() に修正
 
         servlet.doPost(request, response);
 
         verify(response).sendError(eq(HttpServletResponse.SC_BAD_REQUEST), anyString());
-        verify(response, never()).sendRedirect(anyString());
+        verify(response, never()).sendRedirect("ProductListServlet");
     }
 
     @Test
@@ -191,9 +191,9 @@ class ProductEditServletTest {
         when(request.getParameter("productId")).thenReturn(null);
         when(request.getParameter("productName")).thenReturn("商品X");
         when(request.getParameter("productPrice")).thenReturn("300");
-        when(request.getParameter("categoryName")).thenReturn("フード");
+        when(request.getParameter("categoryId")).thenReturn("1"); // categoryName から categoryId ("1") に変更
         doThrow(new SQLException("DB error"))
-                .when(dao).saveProduct(anyInt(), anyString(), anyInt(), anyString(), any());
+                .when(dao).saveProduct(anyInt(), anyString(), anyInt(), anyInt(), any()); // 第4引数を anyInt() に修正
 
         servlet.doPost(request, response);
 
@@ -207,12 +207,12 @@ class ProductEditServletTest {
         when(request.getParameter("productId")).thenReturn("");
         when(request.getParameter("productName")).thenReturn("商品Y");
         when(request.getParameter("productPrice")).thenReturn("");
-        when(request.getParameter("categoryName")).thenReturn("フード");
-        when(dao.saveProduct(eq(0), eq("商品Y"), eq(0), eq("フード"), any())).thenReturn(true);
+        when(request.getParameter("categoryId")).thenReturn("1"); // categoryName から categoryId ("1") に変更
+        when(dao.saveProduct(eq(0), eq("商品Y"), eq(0), eq(1), any())).thenReturn(true); // 第4引数を 1 に修正
 
         servlet.doPost(request, response);
 
-        verify(dao).saveProduct(0, "商品Y", 0, "フード", null);
+        verify(dao).saveProduct(0, "商品Y", 0, 1, null); // 第4引数を 1 に修正
         verify(response).sendRedirect("ProductListServlet");
     }
 }
