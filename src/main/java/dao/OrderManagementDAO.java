@@ -1,7 +1,6 @@
 package dao;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,10 +13,11 @@ import model.OrderManagementInfo;
 
 public class OrderManagementDAO {
 	
-	// データベース接続情報
-	private final String JDBC_URL = "jdbc:mysql://localhost:3306/order_management";
-	private final String DB_USER = "order";
-	private final String DB_PASS = "1234";
+	private Connection conn;
+
+    public OrderManagementDAO(Connection conn) {
+        this.conn = conn;
+    }
 
 	// 静的初期化ブロックでJDBCドライバを1度だけ読み込む
 	static {
@@ -37,7 +37,7 @@ public class OrderManagementDAO {
 
 		String sql = 
 				"SELECT od.order_id, od.product_quantity, od.session_id, od.order_flag, ts.table_id, "
-						+ "p.product_name, p.product_price, od.order_price, p.category_name, od.order_time, "
+						+ "p.product_name, p.product_price, od.order_price, c.category_name, od.order_time, "
 						+ "t.topping_name, t.topping_price, t.topping_stock, p.product_stock, "
 						+ "mt.topping_quantity, (od.product_quantity * od.order_price) AS sub_total "
 						+ "FROM order_details AS od "
@@ -51,65 +51,81 @@ public class OrderManagementDAO {
 						+ "ON mt.topping_id = t.topping_id "
 						+ "LEFT JOIN table_sessions AS ts "
 						+ "ON ts.session_id = od.session_id "
+						+ "LEFT JOIN category AS c "
+						+ "ON p.category_id = c.category_id "
 						+ "WHERE od.order_flag = 1 "
 						+ "AND od.served_flag = 0 "
 						+ "AND od.accounting_flag = 0 "
 						+ "ORDER BY od.order_id DESC";
 
-		try (Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS);
-			 PreparedStatement ps = conn.prepareStatement(sql);
-			 ResultSet rs = ps.executeQuery()) {
+		 try (PreparedStatement ps = conn.prepareStatement(sql);
+		         ResultSet rs = ps.executeQuery()) {
 
-			while (rs.next()) {
-				int orderId = rs.getInt("order_id");
+		        while (rs.next()) {
 
-				OrderManagementInfo info = map.get(orderId);
-				if (info == null) {
-					info = new OrderManagementInfo();
-					info.setOrderId(orderId);
-					info.setTableId(rs.getInt("table_id"));
-					info.setOrderTime(rs.getString("order_time")); 
-					info.setCategoryName(rs.getString("category_name"));
-					info.setProductName(rs.getString("product_name"));
-					info.setOrderQuantity(rs.getInt("product_quantity"));
-					info.setOrderFlag(rs.getInt("order_flag"));
-					info.setOrderPrice(rs.getInt("order_price"));
-					info.setProductPrice(rs.getInt("product_price"));
-					info.setProductStock(rs.getInt("product_stock"));
-					info.setToppingStock(rs.getInt("topping_stock"));
-					info.setToppingQuantity(rs.getInt("topping_quantity"));
-					info.setToppingPrice(rs.getInt("topping_price"));
-					info.setSubTotal(rs.getInt("product_price") * rs.getInt("product_quantity"));
-					map.put(orderId, info);
-				}
+		            int orderId = rs.getInt("order_id");
 
-				String toppingName = rs.getString("topping_name");
-				if (toppingName != null) {
-					int tQty = rs.getInt("topping_quantity");
-					int tPrice = rs.getInt("topping_price");
-					info.addTopping(toppingName, tQty, tPrice);
-					int currentSubTotal = info.getSubTotal();
-					info.setSubTotal(currentSubTotal + (tPrice * tQty * info.getOrderQuantity()));
-				}
-			}
+		            OrderManagementInfo info = map.get(orderId);
 
-		} catch (SQLException e) {
-			System.err.println("SQLの実行に失敗しました: " + e.getMessage());
-			throw new RuntimeException(e); 		
+		            if (info == null) {
+
+		                info = new OrderManagementInfo();
+
+		                info.setOrderId(orderId);
+		                info.setTableId(rs.getInt("table_id"));
+		                info.setOrderTime(rs.getString("order_time"));
+		                info.setCategoryName(rs.getString("category_name"));
+		                info.setProductName(rs.getString("product_name"));
+		                info.setOrderQuantity(rs.getInt("product_quantity"));
+		                info.setOrderFlag(rs.getInt("order_flag"));
+		                info.setOrderPrice(rs.getInt("order_price"));
+		                info.setProductPrice(rs.getInt("product_price"));
+		                info.setProductStock(rs.getInt("product_stock"));
+		                info.setToppingStock(rs.getInt("topping_stock"));
+		                info.setToppingQuantity(rs.getInt("topping_quantity"));
+		                info.setToppingPrice(rs.getInt("topping_price"));
+
+		                info.setSubTotal(
+		                    rs.getInt("product_price")
+		                    * rs.getInt("product_quantity")
+		                );
+
+		                map.put(orderId, info);
+		            }
+
+		            String toppingName = rs.getString("topping_name");
+
+		            if (toppingName != null) {
+
+		                int tQty = rs.getInt("topping_quantity");
+		                int tPrice = rs.getInt("topping_price");
+
+		                info.addTopping(toppingName, tQty, tPrice);
+
+		                int currentSubTotal = info.getSubTotal();
+
+		                info.setSubTotal(
+		                    currentSubTotal
+		                    + (tPrice * tQty * info.getOrderQuantity())
+		                );
+		            }
+		        }
+		    }
+
+		    return new ArrayList<>(map.values());
 		}
-		return new ArrayList<>(map.values());
-	}
 
 	public void updateServedFlag(int orderId) throws SQLException {
-		String sql = "UPDATE order_details SET served_flag = 1 WHERE order_id = ?";
 
-		try (Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS);
-			 PreparedStatement ps = conn.prepareStatement(sql)) {
-			
-			ps.setInt(1, orderId);
-			ps.executeUpdate();
-		} catch (SQLException e) {
-			throw e;
-		}
+	    String sql =
+	            "UPDATE order_details "
+	            + "SET served_flag = 1 "
+	            + "WHERE order_id = ?";
+
+	    try (PreparedStatement ps =
+	            conn.prepareStatement(sql)) {
+	        ps.setInt(1, orderId);
+	        ps.executeUpdate();
+	    }
 	}
 }

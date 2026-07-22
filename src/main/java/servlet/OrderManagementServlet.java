@@ -1,9 +1,11 @@
 package servlet;
 
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
+import dao.DBConnection;
 import dao.OrderManagementDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -17,12 +19,34 @@ import model.OrderManagementLogic;
 public class OrderManagementServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
-	// 引数なしコンストラクタで生成するように修正
-	private OrderManagementDAO dao = new OrderManagementDAO();
-	
-	public void setOrderManagementDAO(OrderManagementDAO dao) {
-		this.dao = dao;
-	}
+	private OrderManagementDAO dao;
+
+    protected OrderManagementDAO createDAO()
+            throws SQLException {
+
+        Connection conn =
+                DBConnection.getConnection();
+
+        return new OrderManagementDAO(conn);
+    }
+
+    @Override
+    public void init()
+            throws ServletException {
+
+        try {
+            dao = createDAO();
+
+        } catch (SQLException e) {
+            throw new ServletException(e);
+        }
+    }
+
+    public void setOrderManagementDAO(
+            OrderManagementDAO dao) {
+
+        this.dao = dao;
+    }
 	
 	private OrderManagementInfo orderManagementInfo;
 	public OrderManagementInfo getOderManagement() { return orderManagementInfo; }

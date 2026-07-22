@@ -1,6 +1,7 @@
 package servlet;
 
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.Map;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import dao.DBConnection;
 import dao.OrderManagementDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -20,7 +22,34 @@ import model.OrderManagementLogic;
 @WebServlet("/OrderManagementAjaxServlet")
 public class OrderManagementAjaxServlet extends HttpServlet {
 
-    private OrderManagementDAO dao = new OrderManagementDAO();
+	private OrderManagementDAO dao;
+
+    protected OrderManagementDAO createDAO()
+            throws SQLException {
+
+        Connection conn =
+                DBConnection.getConnection();
+
+        return new OrderManagementDAO(conn);
+    }
+
+    @Override
+    public void init()
+            throws ServletException {
+
+        try {
+            dao = createDAO();
+
+        } catch (SQLException e) {
+            throw new ServletException(e);
+        }
+    }
+
+    public void setOrderManagementDAO(
+            OrderManagementDAO dao) {
+
+        this.dao = dao;
+    }
 
     @Override
     protected void doGet(HttpServletRequest request,
