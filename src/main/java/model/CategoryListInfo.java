@@ -7,8 +7,8 @@ public class CategoryListInfo implements Serializable {
 
     private int categoryId;
     private String categoryName;
-    private int displayOrder; // 1:表示中, 0:非表示
-    private int deleteFlag;   // 0:未削除, 1:削除済み
+    private int displayOrder; 
+    private int deleteFlag;  
 
     public CategoryListInfo() {}
 

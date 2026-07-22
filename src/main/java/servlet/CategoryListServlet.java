@@ -26,14 +26,14 @@ public class CategoryListServlet extends HttpServlet {
         return new CategoryListDAO(conn);
     }
 
-    // 🟢 画面表示処理（カテゴリ一覧の取得）
+    // 画面表示処理（カテゴリ一覧の取得）
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         try (Connection conn = createConnection()) {
             CategoryListDAO dao = createDAO(conn);
             
-            // DAOを使ってDBからカテゴリリストを取得
+            // DAOを使ってDBからカテゴリリストを取得（delete_flag = 1 のみ）
             List<CategoryListInfo> cList = dao.findAllCategory();
             
             // JSPで ${cList} として参照できるようにリクエスト属性へ格納
@@ -46,23 +46,23 @@ public class CategoryListServlet extends HttpServlet {
         request.getRequestDispatcher("/WEB-INF/jsp/categoryList.jsp").forward(request, response);
     }
 
-    // 🟢 表示切り替え・削除ボタン押下時の処理
+    // 削除ボタン押下時の処理
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         String cid = request.getParameter("categoryId");
-        int categoryId = Integer.parseInt(cid);
         String action = request.getParameter("action");
 
-        try (Connection conn = createConnection()) {
-            CategoryListDAO dao = createDAO(conn);
-            if ("表示切り替え".equals(action)) {
-                dao.updateCategoryDisplayOrder(categoryId);
-            } else if ("削除".equals(action)) {
+        if (cid != null && "削除".equals(action)) {
+            try (Connection conn = createConnection()) {
+                int categoryId = Integer.parseInt(cid);
+                CategoryListDAO dao = createDAO(conn);
+                
+                // delete_flag を 0 に変更（削除処理）
                 dao.updateCategoryDeleteFlag(categoryId);
+            } catch (SQLException | NumberFormatException e) {
+                e.printStackTrace();
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
         
         // 処理後は再度一覧画面をリロード（再取得）

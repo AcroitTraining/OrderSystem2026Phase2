@@ -1,203 +1,252 @@
 @charset "UTF-8";
 
 /* ==========================================
-   1. ヘッダー（固定をやめて通常の流れに置く）
+   1. 鉄板ベース ＆ WEBGL Fluid Canvas Container
    ========================================== */
-.fixed-header {
-    position: static;
-    width: 100%;
-    background-color: transparent;
-    box-shadow: none;
-    display: flex;
-    align-items: center;
-    padding: 10px 0;
-    box-sizing: border-box;
-    justify-content: flex-start !important;
-}
-
-.home-container {
-    margin: 0 0 0 40px !important;
-}
-
-.home-btn {
-    animation: homeFloat 2.5s ease-in-out infinite;
-    transition: transform 0.2s ease;
-    background: none !important;
-    border: none !important;
-    padding: 0 !important;
-}
-
-.home-btn:hover {
-    transform: scale(1.15);
-}
-
-.home-btn .home-img,
-.home-container .home-img,
-img.home-img {
-    width: 4vw !important;
-    height: 4vw !important;
-    display: block;
-}
-
-@keyframes homeFloat {
-    0%   { transform: translateY(0); }
-    50%  { transform: translateY(-6px); }
-    100% { transform: translateY(0); }
-}
-
-/* ==========================================
-   2. 画面全体のレイアウトとグラデーション背景
-   ========================================== */
-body {
+html, body {
     margin: 0;
-    box-sizing: border-box;
-    font-family: sans-serif;
+    padding: 0;
+    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+    font-family: "SF Pro Display", "Hiragino Sans", "メイリオ", sans-serif;
+    user-select: none;
+}
+
+body.teppan-championship {
     position: relative;
-    overflow-x: hidden;
-
-    padding-bottom: 60px;
-
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
-
-    min-height: 100vh;
-
-    background: linear-gradient(45deg,
-        #ff6b6b,
-        #4ecdc4,
-        #45b7d1,
-        #96ceb4,
-        #ff6b6b);
-    background-size: 400% 400%;
-    animation: gradientShift 15s ease infinite;
+    justify-content: center !important;
+    background: #000;
 }
 
-@keyframes gradientShift {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
-
-/* ==========================================
-   3. ブロブとリストをまとめて中央に重ねる土台（画面幅の%で拡縮）
-   ========================================== */
-.blob-wrapper {
-    position: relative;
-    width: 35vw;
-    height: 35vw;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: -20px;
-}
-
-.blob {
-    position: absolute;
+/* 提供いただいたスタイルを背景に固定化 */
+#fluid-container {
+    position: fixed;
     top: 0;
     left: 0;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1; /* 最背面 */
+}
+
+#fluidCanvas {
     width: 100%;
     height: 100%;
-    background: linear-gradient(135deg, #7af3ff, #7a9bff);
-    border-radius: 40% 60% 55% 45% / 45% 40% 60% 55%;
-    animation: blobMorph 8s ease-in-out infinite;
-    filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.15));
 }
 
-@keyframes blobMorph {
-    0% { border-radius: 40% 60% 55% 45% / 45% 40% 60% 55%; }
-    50% { border-radius: 60% 40% 35% 65% / 55% 65% 35% 45%; }
-    100% { border-radius: 40% 60% 55% 45% / 45% 40% 60% 55%; }
+/* 3D立体ステンレスフレーム */
+.teppan-border {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    border: 20px solid transparent;
+    border-image: linear-gradient(135deg, #888 0%, #333 30%, #aaa 50%, #222 70%, #666 100%) 1;
+    pointer-events: none;
+    z-index: 99;
+    box-shadow: inset 0 0 80px rgba(0,0,0,0.9);
 }
 
 /* ==========================================
-   4. カテゴリテーブル（画面幅の%で文字も拡縮）
+   2. ヘラ（ボタン）デザイン
+   ========================================== */
+.form-hera-left { position: fixed; top: 7%; left: 5%; z-index: 20; perspective: 1000px; }
+.form-hera-right { position: fixed; bottom: 5%; right: 5%; z-index: 20; perspective: 1000px; }
+
+.hera-btn {
+    background: none !important;
+    border: none !important;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    outline: none;
+}
+
+.hera-handle {
+    width: 22px; height: 55px;
+    background: linear-gradient(90deg, #3d1c0e, #8b4513, #5c2c16, #2a1107);
+    border-radius: 6px;
+    box-shadow: 4px 6px 12px rgba(0,0,0,0.7);
+}
+
+.handle-bottom { order: 2; }
+
+.hera-blade {
+    position: relative;
+    width: 125px; height: 85px;
+    background: linear-gradient(135deg, #ffffff 0%, #cfcfcf 40%, #999999 100%);
+    border-radius: 6px 6px 18px 18px;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 12px 25px rgba(0,0,0,0.8), inset 0 2px 2px rgba(255,255,255,0.9);
+    border: 1px solid rgba(255,255,255,0.6);
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.create-color {
+    border-radius: 18px 18px 6px 6px;
+    background: linear-gradient(135deg, #ff9800, #f57c00, #d84315);
+}
+
+.blade-text {
+    font-size: 15px; font-weight: 900; color: #111;
+    text-shadow: 0 1px 1px rgba(255,255,255,0.8); z-index: 2;
+}
+
+.create-color .blade-text { color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.6); }
+
+.mayo-drizzle {
+    position: absolute; top: 6px; width: 80%; height: 10px;
+    background: #fffde7; border-radius: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3); opacity: 0.9;
+}
+
+.hera-btn:hover .hera-blade {
+    transform: scale(1.15) translateZ(20px);
+    box-shadow: 0 20px 40px rgba(255, 152, 0, 0.5);
+}
+
+/* ==========================================
+   3. お好み焼き＆黒皿（形状固定）
+   ========================================== */
+.okonomi-plate-wrapper {
+    position: relative;
+    width: 50vw; height: 50vw;
+    max-width: 580px; max-height: 580px;
+    display: flex; justify-content: center; align-items: center;
+    z-index: 10;
+}
+
+.black-plate {
+    position: absolute; width: 100%; height: 100%;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, #3a3838 0%, #1a1919 60%, #0d0c0c 100%);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.9), inset 0 0 25px rgba(255,255,255,0.1);
+    border: 4px solid #222;
+    display: flex; justify-content: center; align-items: center;
+}
+
+.okonomiyaki-body {
+    position: relative;
+    width: 84%; height: 84%;
+    border-radius: 50%;
+    background: radial-gradient(circle at 40% 40%, #ffb74d 0%, #e65100 45%, #4e1d00 90%);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.8), inset 0 0 30px rgba(0,0,0,0.6);
+    overflow: hidden;
+}
+
+.sauce-glaze {
+    position: absolute; width: 92%; height: 92%; top: 4%; left: 4%;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #3d1403 0%, #1e0800 70%, transparent 100%);
+    opacity: 0.95;
+    box-shadow: inset 0 0 15px rgba(255, 204, 128, 0.3);
+}
+
+.mayo-line {
+    position: absolute; background: #fffde7; height: 6px; width: 110%; left: -5%;
+    border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.4); opacity: 0.85;
+}
+.line-1 { top: 25%; transform: rotate(-15deg); }
+.line-2 { top: 50%; transform: rotate(-15deg); }
+.line-3 { top: 75%; transform: rotate(-15deg); }
+
+.katsuobushi {
+    position: absolute; font-size: 2.2vw; opacity: 0.85;
+    animation: danceKatsuo 2.5s infinite ease-in-out alternate;
+}
+.k-1 { top: 30%; left: 35%; }
+.k-2 { top: 40%; right: 30%; animation-delay: 0.4s; }
+.k-3 { bottom: 35%; left: 40%; animation-delay: 0.8s; }
+.k-4 { top: 20%; right: 40%; animation-delay: 1.2s; }
+
+.aonori { position: absolute; top: 35%; left: 25%; font-size: 2vw; }
+.benishoga { position: absolute; bottom: 25%; right: 25%; font-size: 2vw; }
+
+@keyframes danceKatsuo {
+    0% { transform: scale(1) rotate(0deg); }
+    50% { transform: scale(1.1) rotate(8deg) skewX(5deg); }
+    100% { transform: scale(0.95) rotate(-5deg); }
+}
+
+/* ==========================================
+   4. 完全透過ネオ・テーブルデザイン
    ========================================== */
 .category-table {
-    position: relative;
-    z-index: 10;
-    width: 20vw;
-    font-size: 1.6vw;
-    background-color: transparent;
-    border-collapse: collapse;
+    position: relative; z-index: 12;
+    width: 28vw; max-width: 400px;
+    font-size: 1.2vw; border-collapse: separate; border-spacing: 0 8px;
+    background: transparent !important;
 }
 
-.category-table th,
+.category-table th {
+    padding: 8px 4px; color: #ffeb3b; font-size: 1.1em; font-weight: 900;
+    text-shadow: 0 2px 8px #000000, 0 0 10px #ff6f00; border: none;
+}
+
 .category-table td {
-    text-align: center !important;
-    padding: 10px;
-    background-color: transparent;
-    color: #0a2a4d;
-    font-weight: bold;
-    border: none;
-    border-bottom: 2px solid rgba(10, 42, 77, 0.4);
+    padding: 6px 4px; background: transparent !important;
+    border: none; border-bottom: 1px dashed rgba(255, 255, 255, 0.3);
+    text-align: center !important; vertical-align: middle;
 }
 
-.category-table tr:last-child td {
-    border-bottom: none;
+.category-text-badge {
+    color: #ffffff; font-weight: 900; font-size: 1.1em;
+    text-shadow: 0 2px 6px #000, 0 0 12px #000;
 }
 
-.category-table thead th {
-    font-size: 2vw;
-    position: relative;
-    padding-bottom: 14px;
-    border-bottom: none;
+.glass-action-btn {
+    background: rgba(255, 255, 255, 0.2) !important;
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(255, 255, 255, 0.5) !important;
+    border-radius: 50%; width: 36px; height: 36px;
+    display: inline-flex; align-items: center; justify-content: center;
+    cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    transition: all 0.2s ease;
 }
 
-.category-table thead th::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    bottom: 3px;
-    width: 100%;
-    height: 4px;
-    border-radius: 3px;
-    background: linear-gradient(90deg, #45b7d1, #7af3ff, #4ecdc4, #7a9bff, #45b7d1);
-    background-size: 300% 100%;
-    animation: underlineFlow 4s linear infinite;
+.glass-action-btn:hover {
+    transform: scale(1.2); background: rgba(255, 255, 255, 0.4) !important;
+    box-shadow: 0 0 15px #ffca28;
 }
 
-@keyframes underlineFlow {
-    0%   { background-position: 0% 50%; }
-    100% { background-position: 300% 50%; }
+.btn-icon { font-size: 16px; }
+
+/* モーダル */
+.modal-overlay {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    background-color: rgba(0, 0, 0, 0.75); backdrop-filter: blur(5px);
+    z-index: 1000; display: flex; justify-content: center; align-items: center;
 }
 
-/* ==========================================
-   5. 周りの空白を彩る小さな装飾（別アニメーション）
-   ========================================== */
-.floaty {
-    position: fixed;
-    z-index: 1;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #ffffff80, #7af3ff80);
-    filter: blur(1px) drop-shadow(0 6px 14px rgba(0,0,0,0.1));
-    pointer-events: none;
+.modal-box {
+    background: linear-gradient(135deg, #1f1f1f, #111111);
+    border: 2px solid #ff9800; width: 380px; padding: 30px 20px;
+    border-radius: 16px; text-align: center;
+    box-shadow: 0 20px 50px rgba(255, 87, 34, 0.4); color: #fff;
 }
 
-.floaty-1 {
-    top: 15%;
-    left: 8%;
-    width: 6vw;
-    height: 6vw;
-    animation: floatDrift 9s ease-in-out infinite;
+.modal-header-icon { font-size: 40px; margin-bottom: 10px; }
+.modal-target-name { margin: 0 0 15px 0; font-size: 22px; color: #ffca28; }
+.modal-text { margin: 6px 0; font-size: 16px; font-weight: bold; }
+.highlight-red { color: #ff5252; }
+
+.modal-btn-group { display: flex; justify-content: center; gap: 20px; margin-top: 20px; }
+
+.btn-cancel {
+    width: 100px; padding: 10px 0; background-color: #333; color: #fff;
+    border: 1px solid #666; border-radius: 8px; font-weight: bold; cursor: pointer;
 }
 
-.floaty-2 {
-    bottom: 10%;
-    right: 10%;
-    width: 9vw;
-    height: 9vw;
-    animation: pulseGlow 6s ease-in-out infinite;
-}
-
-@keyframes floatDrift {
-    0%   { transform: translate(0, 0) scale(1); }
-    50%  { transform: translate(20px, -30px) scale(1.1); }
-    100% { transform: translate(0, 0) scale(1); }
-}
-
-@keyframes pulseGlow {
-    0%   { transform: scale(1); opacity: 0.7; }
-    50%  { transform: scale(1.25); opacity: 1; }
-    100% { transform: scale(1); opacity: 0.7; }
+.btn-confirm {
+    width: 110px; padding: 10px 0; background: linear-gradient(135deg, #ff1744, #d50000); color: #fff;
+    border: none; border-radius: 8px; font-weight: bold; cursor: pointer;
 }

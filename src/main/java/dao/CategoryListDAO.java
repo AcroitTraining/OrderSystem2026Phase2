@@ -16,7 +16,7 @@ public class CategoryListDAO {
         this.conn = conn;
     }
 
-    // 🟢 カテゴリ一覧の取得 (delete_flag = 0 の未削除データのみ)
+    // カテゴリ一覧の取得 (delete_flag = 1 の未削除データのみ取得)
     public List<CategoryListInfo> findAllCategory() throws SQLException {
         String sql = "SELECT category_id, category_name, display_order, delete_flag "
                    + "FROM category "
@@ -39,18 +39,9 @@ public class CategoryListDAO {
         return cList;
     }
 
-    // 表示切り替え（1なら0に、0なら1に反転）
-    public void updateCategoryDisplayOrder(int categoryId) throws SQLException {
-        String sql = "UPDATE category SET display_order = 1 - display_order WHERE category_id = ?";
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, categoryId);
-            ps.executeUpdate();
-        }
-    }
-
-    // 論理削除（delete_flagを1に変更）
+    // 論理削除（delete_flagを 0 に変更して非表示化する）
     public void updateCategoryDeleteFlag(int categoryId) throws SQLException {
-        String sql = "UPDATE category SET delete_flag = 1 WHERE category_id = ?";
+        String sql = "UPDATE category SET delete_flag = 0 WHERE category_id = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, categoryId);
             ps.executeUpdate();
