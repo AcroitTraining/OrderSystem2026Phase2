@@ -25,14 +25,14 @@ public class AllSessionError implements Filter {
     private static final String DB_USER = "order";
     private static final String DB_PASS = "1234";
 
-    // ログインチェックをスキップするパス（未ログインでも表示していい画面）
+    // ログインチェックをスキップするパス（未ログインでも表示・実行していい画面／サーブレット）
     private static final Set<String> SKIP_LOGIN_CHECK = Set.of(
-            "/index.jsp", "/LoginServlet"
+            "/index.jsp", "/LoginServlet", "/register.jsp", "/RegisterServlet"
     );
 
     // DB接続チェック自体もスキップするパス（DBを使わずに表示できる画面）
     private static final Set<String> SKIP_DB_CHECK = Set.of(
-            "/index.jsp"
+            "/index.jsp", "/register.jsp"
     );
 
     @Override
@@ -51,7 +51,7 @@ public class AllSessionError implements Filter {
             return;
         }
 
-        // 1. DB接続チェック（index.jspはDBを使わないので対象外）
+        // 1. DB接続チェック（index.jsp, register.jsp は対象外）
         if (!SKIP_DB_CHECK.contains(path)) {
             try {
                 Class.forName("com.mysql.cj.jdbc.Driver");
@@ -64,7 +64,7 @@ public class AllSessionError implements Filter {
             }
         }
 
-        // 2. ログインチェック（index.jsp / LoginServletは対象外）
+        // 2. ログインチェック（index.jsp / LoginServlet / register.jsp / RegisterServlet は対象外）
         if (!SKIP_LOGIN_CHECK.contains(path)) {
             HttpSession session = req.getSession(false);
             boolean isLoggedIn = session != null && session.getAttribute(SESSION_LOGIN_KEY) != null;

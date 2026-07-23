@@ -1,81 +1,99 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isErrorPage="true" %>
+<%@ page import="java.io.StringWriter, java.io.PrintWriter" %>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="color-scheme" content="light only">
-<title>エラー</title>
+<title>エラー詳細画面 (デバッグ用)</title>
 <style>
-    :root {
-        color-scheme: light only;
-    }
-    html, body {
-        margin: 0;
-        padding: 0;
-        background-color: #ffffff;
-    }
     body {
-        min-height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-family: "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
-        padding: 24px;
-        box-sizing: border-box;
+        font-family: monospace, sans-serif;
+        background-color: #f8f9fa;
+        padding: 20px;
+        color: #333;
     }
-    .error-card {
-        width: 100%;
-        max-width: 340px;
-        padding: 40px 28px;
-        border: 1px solid #e2e2e2;
-        border-radius: 16px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
-        text-align: center;
-        box-sizing: border-box;
-        background-color: #ffffff;
+    .error-container {
+        background: #fff;
+        border: 2px solid #dc3545;
+        border-radius: 8px;
+        padding: 20px;
+        max-width: 900px;
+        margin: 0 auto;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
-    .error-title {
-        font-size: 22px;
+    h1 {
+        color: #dc3545;
+        font-size: 20px;
+        margin-top: 0;
+    }
+    .msg-box {
+        background: #f8d7da;
+        color: #721c24;
+        padding: 12px;
+        border-radius: 4px;
         font-weight: bold;
-        color: #222222;
-        margin: 0 0 20px;
-        white-space: nowrap;
+        margin-bottom: 15px;
+        word-break: break-all;
     }
-    .error-message {
-        font-size: 14px;
-        color: #555555;
-        line-height: 1.8;
-        margin: 0 0 24px;
+    pre {
+        background: #272822;
+        color: #f8f8f2;
+        padding: 15px;
+        border-radius: 6px;
+        overflow-x: auto;
+        font-size: 13px;
+        line-height: 1.4;
     }
-    .login-button {
+    .btn {
         display: inline-block;
-        background-color: #2e7d32;
-        color: #ffffff;
+        margin-top: 15px;
+        padding: 8px 16px;
+        background: #0d6efd;
+        color: white;
         text-decoration: none;
-        font-size: 14px;
-        font-weight: bold;
-        padding: 10px 32px;
-        border-radius: 24px;
-    }
-    .login-button:hover {
-        background-color: #256428;
-    }
-
-    /* 極端に幅の狭い端末のみタイトルの折り返しを許可 */
-    @media (max-width: 280px) {
-        .error-title {
-            white-space: normal;
-            font-size: 18px;
-        }
+        border-radius: 4px;
     }
 </style>
 </head>
 <body>
-    <div class="error-card">
-        <p class="error-title">問題が発生しました</p>
-        <p class="error-message">お手数ですが、ログイン画面に<br>再度アクセスしてください</p>
-        <a class="login-button" href="index.jsp">ログインへ</a>
-    </div>
+
+<div class="error-container">
+    <h1>⚠️ エラーが発生しました (詳細ログ)</h1>
+    
+    <%-- 例外メッセージの取得 --%>
+    <%
+        Throwable exc = exception;
+        if (exc == null) {
+            exc = (Throwable) request.getAttribute("jakarta.servlet.error.exception");
+        }
+        if (exc == null) {
+            exc = (Throwable) request.getAttribute("javax.servlet.error.exception");
+        }
+    %>
+
+    <% if (exc != null) { %>
+        <div class="msg-box">
+            例外の種類: <%= exc.getClass().getName() %><br>
+            メッセージ: <%= exc.getMessage() %>
+        </div>
+
+        <h3>スタックトレース:</h3>
+        <pre><%
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            exc.printStackTrace(pw);
+            out.print(sw.toString());
+        %></pre>
+    <% } else { %>
+        <div class="msg-box">
+            例外オブジェクト（Exception）が渡されませんでした。<br>
+            ステータスコード: <%= request.getAttribute("jakarta.servlet.error.status_code") %>
+        </div>
+        <p>※サーブレット側で catch してリダイレクト・フォワードしているか、Filter（AllSessionError等）で捕捉されている可能性があります。</p>
+    <% } %>
+
+    <a href="index.jsp" class="btn">ログイン画面へ戻る</a>
+</div>
+
 </body>
 </html>
