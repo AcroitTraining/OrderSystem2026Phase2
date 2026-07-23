@@ -63,17 +63,13 @@ public class OrderManagementServlet extends HttpServlet {
 			List<OrderManagementInfo> allList = dao.findorderDetails();
 
 			// ロジッククラスの新しいメソッドを呼び出して一撃で集計する
-			java.util.Map<String, Integer> counts = logic.calculateBadgeCounts(allList);
-
+			java.util.Map<String, Object> counts =
+			        logic.calculateBadgeCounts(allList);
 			// Mapから集計データを取得してJSPスコープにセット
+			request.setAttribute(
+			        "categoryCounts",
+			        counts.get("categoryCounts"));
 			request.setAttribute("countAll", counts.get("countAll"));
-			request.setAttribute("countOkonomi", counts.get("countOkonomi"));
-			request.setAttribute("countMonja", counts.get("countMonja"));
-			request.setAttribute("countTeppan", counts.get("countTeppan"));
-			request.setAttribute("countSide", counts.get("countSide"));
-			request.setAttribute("countSoft", counts.get("countSoft"));
-			request.setAttribute("countSake", counts.get("countSake"));
-			request.setAttribute("countBottle", counts.get("countBottle"));
 
 			request.setAttribute("countTableAll", counts.get("countTableAll"));
 			request.setAttribute("countTable1", counts.get("countTable1"));

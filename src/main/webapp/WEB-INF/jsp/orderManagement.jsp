@@ -28,40 +28,23 @@
 				<div class="scrollable-tabs-wrapper">
 					<form action="OrderManagementServlet" method="get"
 						class="nav-tab-form">
+
 						<input type="hidden" name="tableFilter" value="${currentTable}">
+
 						<div class="tab-items-container">
+
 							<button type="submit" name="categoryFilter" value="全て"
 								class="tab-item-link ${currentCategory == '全て' ? 'active' : ''}">
 								全て<span class="tab-badge">${countAll}</span>
 							</button>
-							<button type="submit" name="categoryFilter" value="お好み焼き"
-								class="tab-item-link ${currentCategory == 'お好み焼き' ? 'active' : ''}">
-								お好み焼き<span class="tab-badge">${countOkonomi}</span>
-							</button>
-							<button type="submit" name="categoryFilter" value="もんじゃ焼き"
-								class="tab-item-link ${currentCategory == 'もんじゃ焼き' ? 'active' : ''}">
-								もんじゃ焼き<span class="tab-badge">${countMonja}</span>
-							</button>
-							<button type="submit" name="categoryFilter" value="鉄板焼き"
-								class="tab-item-link ${currentCategory == '鉄板焼き' ? 'active' : ''}">
-								鉄板焼き<span class="tab-badge">${countTeppan}</span>
-							</button>
-							<button type="submit" name="categoryFilter" value="サイドメニュー"
-								class="tab-item-link ${currentCategory == 'サイドメニュー' ? 'active' : ''}">
-								サイドメニュー<span class="tab-badge">${countSide}</span>
-							</button>
-							<button type="submit" name="categoryFilter" value="ソフトドリンク"
-								class="tab-item-link ${currentCategory == 'ソフトドリンク' ? 'active' : ''}">
-								ソフトドリンク<span class="tab-badge">${countSoft}</span>
-							</button>
-							<button type="submit" name="categoryFilter" value="お酒"
-								class="tab-item-link ${currentCategory == 'お酒' ? 'active' : ''}">
-								お酒<span class="tab-badge">${countSake}</span>
-							</button>
-							<button type="submit" name="categoryFilter" value="ボトル"
-								class="tab-item-link ${currentCategory == 'ボトル' ? 'active' : ''}">
-								ボトル<span class="tab-badge">${countBottle}</span>
-							</button>
+
+							<c:forEach var="category" items="${categoryCounts}">
+								<button type="submit" name="categoryFilter"
+									value="${category.key}"
+									class="tab-item-link ${currentCategory == category.key ? 'active' : ''}">
+									${category.key}<span class="tab-badge">${category.value}</span>
+								</button>
+							</c:forEach>
 						</div>
 					</form>
 				</div>
