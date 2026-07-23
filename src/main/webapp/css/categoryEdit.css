@@ -1,233 +1,3003 @@
 @charset "UTF-8";
 
+
+/* =========================================
+   SYSTEM BOOT SCREEN
+========================================= */
+
+.boot-screen {
+
+    position: fixed;
+
+    inset: 0;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    background:
+
+        radial-gradient(
+            circle,
+            rgba(130, 30, 200, 0.25),
+            #030006 65%
+        );
+
+    z-index: 99999;
+
+    animation:
+        bootFadeOut
+        0.8s
+        ease
+        3s
+        forwards;
+
+}
+
+
+.boot-core {
+
+    width: 420px;
+
+    text-align: center;
+
+}
+
+
+.boot-symbol {
+
+    margin-bottom: 25px;
+
+    color: #ed9aff;
+
+    font-size: 70px;
+
+    text-shadow:
+
+        0 0 10px #ffffff,
+        0 0 25px #dc5cff,
+        0 0 60px #9825ff;
+
+    animation:
+
+        bootSymbolPulse
+        1.2s
+        ease-in-out
+        infinite alternate;
+
+}
+
+
+.boot-title {
+
+    color: #ffffff;
+
+    font-size: 18px;
+
+    font-weight: bold;
+
+    letter-spacing: 0.2em;
+
+    text-shadow:
+
+        0 0 8px #ffffff,
+        0 0 20px #c52cff;
+
+}
+
+
+.boot-loading {
+
+    margin-top: 28px;
+
+    color: #c982ef;
+
+    font-size: 10px;
+
+    letter-spacing: 0.18em;
+
+}
+
+
+.boot-progress {
+
+    height: 3px;
+
+    margin-top: 15px;
+
+    overflow: hidden;
+
+    background:
+
+        rgba(150, 60, 200, 0.15);
+
+    border: 1px solid
+        rgba(200, 100, 255, 0.3);
+
+}
+
+
+.boot-progress span {
+
+    display: block;
+
+    width: 0%;
+
+    height: 100%;
+
+    background:
+
+        linear-gradient(
+            90deg,
+            #8d25ff,
+            #ff8cff
+        );
+
+    box-shadow:
+
+        0 0 10px #d755ff;
+
+    animation:
+
+        bootProgress
+        2.5s
+        ease
+        forwards;
+
+}
+
+
+.boot-status {
+
+    margin-top: 12px;
+
+    color: rgba(220, 170, 240, 0.55);
+
+    font-size: 9px;
+
+    letter-spacing: 0.1em;
+
+}
+
+
+@keyframes bootProgress {
+
+    from {
+        width: 0%;
+    }
+
+    to {
+        width: 100%;
+    }
+
+}
+
+
+@keyframes bootSymbolPulse {
+
+    from {
+
+        transform: scale(0.9);
+
+        opacity: 0.6;
+
+    }
+
+    to {
+
+        transform: scale(1.1);
+
+        opacity: 1;
+
+    }
+
+}
+
+
+@keyframes bootFadeOut {
+
+    0% {
+
+        opacity: 1;
+
+        pointer-events: all;
+
+    }
+
+    80% {
+
+        opacity: 1;
+
+    }
+
+    100% {
+
+        opacity: 0;
+
+        pointer-events: none;
+
+    }
+
+}
+
+/* =========================================
+   RESET
+========================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+
+html,
 body {
-    background-color: #ffffff;
-    font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
     margin: 0;
-    padding: 40px 20px;
-    color: #000000;
+
+    min-height: 100%;
+
+    font-family:
+        'Helvetica Neue',
+        Arial,
+        'Hiragino Kaku Gothic ProN',
+        'Hiragino Sans',
+        Meiryo,
+        sans-serif;
 }
 
-.home-container {
-    max-width: 900px;
-    margin: 0 auto 10px auto;
+
+/* =========================================
+   BODY
+========================================= */
+
+body {
+
+    min-height: 100vh;
+
+    padding: 25px;
+
+    color: #ffffff;
+
+    background:
+
+        radial-gradient(
+            circle at 50% 40%,
+            rgba(100, 20, 160, 0.2),
+            transparent 35%
+        ),
+
+        radial-gradient(
+            circle at 10% 90%,
+            rgba(70, 30, 150, 0.2),
+            transparent 30%
+        ),
+
+        linear-gradient(
+            135deg,
+            #050008,
+            #14051f 45%,
+            #030006
+        );
+
+    overflow-x: hidden;
 }
 
-.home-btn {
+
+/* =========================================
+   背景グリッド
+========================================= */
+
+body::before {
+
+    content: "";
+
+    position: fixed;
+
+    inset: 0;
+
+    pointer-events: none;
+
+    background-image:
+
+        linear-gradient(
+            rgba(210, 100, 255, 0.035) 1px,
+            transparent 1px
+        ),
+
+        linear-gradient(
+            90deg,
+            rgba(210, 100, 255, 0.035) 1px,
+            transparent 1px
+        );
+
+    background-size: 50px 50px;
+
+    mask-image:
+
+        linear-gradient(
+            to bottom,
+            black,
+            transparent
+        );
+
+    z-index: -2;
+}
+
+
+/* =========================================
+   外周装飾
+========================================= */
+
+body::after {
+
+    content: "";
+
+    position: fixed;
+
+    width: 800px;
+    height: 800px;
+
+    top: -400px;
+    right: -300px;
+
+    border: 1px solid
+        rgba(190, 80, 255, 0.25);
+
+    border-radius: 50%;
+
+    box-shadow:
+
+        0 0 30px
+        rgba(190, 60, 255, 0.25),
+
+        0 0 100px
+        rgba(140, 30, 255, 0.15);
+
+    animation:
+
+        orbitalRotate
+        40s
+        linear
+        infinite;
+
+    z-index: -1;
+}
+
+
+@keyframes orbitalRotate {
+
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+
+}
+
+
+/* =========================================
+   システム全体
+========================================= */
+
+.system-shell {
+
+    max-width: 1400px;
+
+    min-height: calc(100vh - 50px);
+
+    margin: 0 auto;
+
+    display: flex;
+
+    flex-direction: column;
+
+    border: 1px solid
+        rgba(210, 110, 255, 0.4);
+
+    background:
+
+        rgba(10, 2, 18, 0.65);
+
+    box-shadow:
+
+        0 0 20px
+        rgba(150, 40, 255, 0.2),
+
+        inset 0 0 60px
+        rgba(120, 30, 180, 0.08);
+        
+    position: relative;
+
+    overflow: hidden;
+
+}
+
+.system-shell::after {
+
+    content: "";
+
+    position: absolute;
+
+    top: -20%;
+
+    left: 0;
+
+    width: 100%;
+
+    height: 20%;
+
+    background:
+
+        linear-gradient(
+            to bottom,
+            transparent,
+            rgba(220, 100, 255, 0.08),
+            transparent
+        );
+
+    pointer-events: none;
+
+    animation:
+
+        systemScan
+        8s
+        linear
+        infinite;
+
+}
+
+
+@keyframes systemScan {
+
+    0% {
+
+        top: -20%;
+
+    }
+
+    100% {
+
+        top: 120%;
+
+    }
+
+}
+
+
+/* =========================================
+   ヘッダー
+========================================= */
+
+.system-header {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 18px 28px;
+
+    border-bottom: 1px solid
+        rgba(200, 100, 255, 0.3);
+
+    background:
+
+        linear-gradient(
+            90deg,
+            rgba(70, 20, 100, 0.3),
+            rgba(20, 5, 30, 0.5)
+        );
+
+}
+
+
+.system-logo {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+
+}
+
+
+.logo-symbol {
+
+    font-size: 28px;
+
+    color: #e38aff;
+
+    text-shadow:
+
+        0 0 8px #ffffff,
+        0 0 20px #d34cff,
+        0 0 40px #9425ff;
+
+}
+
+
+.logo-main {
+
+    font-size: 15px;
+
+    font-weight: bold;
+
+    letter-spacing: 0.18em;
+
+    text-shadow:
+
+        0 0 8px #d95cff;
+
+}
+
+
+.logo-sub {
+
+    margin-top: 4px;
+
+    color: rgba(220, 180, 240, 0.5);
+
+    font-size: 8px;
+
+    letter-spacing: 0.2em;
+
+}
+
+
+.system-status-header {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    color: #d978ff;
+
+    font-size: 10px;
+
+    font-weight: bold;
+
+    letter-spacing: 0.2em;
+
+}
+
+
+.header-status-dot {
+
+    width: 8px;
+    height: 8px;
+
+    border-radius: 50%;
+
+    background: #d968ff;
+
+    box-shadow:
+
+        0 0 6px #ffffff,
+        0 0 15px #c92cff;
+
+    animation:
+
+        statusPulse
+        1.5s
+        ease-in-out
+        infinite;
+
+}
+
+/* =========================================
+   ヘッダー右側
+========================================= */
+
+.header-actions {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 28px;
+
+}
+
+
+/* =========================================
+   HOME SYSTEM BUTTON
+========================================= */
+
+.home-system-btn {
+
+    position: relative;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 9px 18px;
+
+    color: #d995f5;
+
+    background:
+
+        rgba(70, 20, 95, 0.35);
+
+    border: 1px solid
+        rgba(210, 120, 255, 0.45);
+
+    border-radius: 5px;
+
     text-decoration: none;
-    display: inline-block;
-    padding: 10px;
+
+    font-size: 10px;
+
+    font-weight: bold;
+
+    letter-spacing: 0.15em;
+
+    transition:
+
+        color 0.25s ease,
+
+        background 0.25s ease,
+
+        border-color 0.25s ease,
+
+        box-shadow 0.25s ease,
+
+        transform 0.25s ease;
+
 }
 
-.home-icon {
-    width: 32px;
-    height: 32px;
-    vertical-align: middle;
+
+.home-system-btn::before {
+
+    content: "";
+
+    position: absolute;
+
+    top: -1px;
+
+    left: 12px;
+
+    right: 12px;
+
+    height: 1px;
+
+    background:
+
+        linear-gradient(
+            90deg,
+            transparent,
+            #e99aff,
+            transparent
+        );
+
+    opacity: 0.7;
+
 }
+
+
+.home-system-btn:hover {
+
+    color: #ffffff;
+
+    background:
+
+        rgba(170, 50, 220, 0.35);
+
+    border-color: #e99aff;
+
+    box-shadow:
+
+        0 0 8px #d855ff,
+
+        0 0 22px
+        rgba(190, 50, 255, 0.55);
+
+    transform:
+
+        translateY(-2px);
+
+}
+/* =========================================
+   メイン
+========================================= */
+
+.system-main {
+
+    flex: 1;
+
+    display: grid;
+
+    grid-template-columns:
+        220px
+        minmax(500px, 1fr)
+        220px;
+
+    gap: 30px;
+
+    padding: 45px;
+
+}
+
+
+/* =========================================
+   左右パネル
+========================================= */
+
+.side-panel,
+.right-panel {
+
+    padding: 22px;
+
+    background:
+
+        linear-gradient(
+            145deg,
+            rgba(35, 10, 50, 0.7),
+            rgba(10, 2, 18, 0.8)
+        );
+
+    border: 1px solid
+        rgba(190, 90, 255, 0.3);
+
+    box-shadow:
+
+        inset 0 0 20px
+        rgba(150, 40, 255, 0.08);
+
+}
+
+
+.panel-title {
+
+    margin-bottom: 28px;
+
+    padding-bottom: 12px;
+
+    border-bottom: 1px solid
+        rgba(210, 120, 255, 0.2);
+
+    color: #d98aff;
+
+    font-size: 10px;
+
+    font-weight: bold;
+
+    letter-spacing: 0.2em;
+
+    text-shadow:
+
+        0 0 8px #b632ff;
+
+}
+
+
+/* =========================================
+   ステータス
+========================================= */
+
+.status-item {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    margin-bottom: 25px;
+
+}
+
+
+.status-light {
+
+    width: 8px;
+    height: 8px;
+
+    border-radius: 50%;
+
+    background: #d66aff;
+
+    box-shadow:
+
+        0 0 6px #ffffff,
+        0 0 15px #b82cff;
+
+}
+
+
+.status-label {
+
+    color: rgba(220, 180, 240, 0.55);
+
+    font-size: 9px;
+
+    letter-spacing: 0.1em;
+
+}
+
+
+.status-value {
+
+    margin-top: 3px;
+
+    color: #e398ff;
+
+    font-size: 11px;
+
+    font-weight: bold;
+
+}
+
+
+.side-decoration {
+
+    margin-top: 60px;
+
+    color: rgba(210, 100, 255, 0.3);
+
+    font-size: 16px;
+
+    letter-spacing: 0.5em;
+
+    text-align: center;
+
+}
+
+
+/* =========================================
+   中央エリア
+========================================= */
+
+.control-area {
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+}
+
+
+/* =========================================
+   タイトル
+========================================= */
 
 .page-title {
-    text-align: center;
-    font-size: 16px;
-    font-weight: bold;
-    margin-bottom: 25px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    margin-bottom: 35px;
+
 }
+
+
+.title-main {
+
+    font-size: 30px;
+
+    font-weight: bold;
+
+    letter-spacing: 0.18em;
+
+    text-shadow:
+
+        0 0 6px #ffffff,
+        0 0 18px #dc5cff,
+        0 0 40px #9f25ff;
+
+}
+
+
+.title-sub {
+
+    margin-top: 10px;
+
+    color: rgba(230, 190, 255, 0.6);
+
+    font-size: 11px;
+
+    letter-spacing: 0.25em;
+
+}
+
+
+/* =========================================
+   メインカード
+========================================= */
 
 .main-card {
-    background: #ffffff;
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 35px 45px;
-    border-radius: 15px;
-    border: 1.5px solid #000000;
+
+    position: relative;
+
+    padding: 55px;
+
+    background:
+
+        linear-gradient(
+            145deg,
+            rgba(45, 12, 65, 0.95),
+            rgba(8, 2, 15, 0.98)
+        );
+
+    border: 1px solid
+        rgba(220, 130, 255, 0.8);
+
+    border-radius: 20px;
+
+    box-shadow:
+
+        0 0 10px #c94cff,
+        0 0 35px rgba(170, 40, 255, 0.5),
+        inset 0 0 35px rgba(180, 50, 255, 0.1);
+
 }
+
+
+/* =========================================
+   カード四隅
+========================================= */
+
+.card-corner {
+
+    position: absolute;
+
+    color: #db6cff;
+
+    font-size: 18px;
+
+    text-shadow:
+
+        0 0 8px #ffffff,
+        0 0 20px #b82cff;
+
+    animation:
+
+        cornerGlow
+        2s
+        ease-in-out
+        infinite
+        alternate;
+
+}
+
+
+.corner-tl {
+    top: 18px;
+    left: 22px;
+}
+
+
+.corner-tr {
+    top: 18px;
+    right: 22px;
+}
+
+
+.corner-bl {
+    bottom: 18px;
+    left: 22px;
+}
+
+
+.corner-br {
+    bottom: 18px;
+    right: 22px;
+}
+
+
+/* =========================================
+   システムステータス
+========================================= */
+
+.system-status {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    margin-bottom: 35px;
+
+    color: #d98aff;
+
+    font-size: 10px;
+
+    font-weight: bold;
+
+    letter-spacing: 0.2em;
+
+}
+
+
+.status-dot {
+
+    width: 8px;
+    height: 8px;
+
+    border-radius: 50%;
+
+    background: #db6cff;
+
+    box-shadow:
+
+        0 0 6px #ffffff,
+        0 0 15px #c02cff;
+
+    animation:
+
+        statusPulse
+        1.5s
+        ease-in-out
+        infinite;
+
+}
+
+
+/* =========================================
+   フォーム
+========================================= */
 
 .form-group {
-    margin-bottom: 35px;
+
+    margin-bottom: 45px;
+
 }
+
 
 .label-title {
+
     display: block;
+
+    margin-bottom: 15px;
+
+    color: #ffffff;
+
+    font-size: 19px;
+
     font-weight: bold;
-    font-size: 15px;
-    margin-bottom: 10px;
+
+    text-shadow:
+
+        0 0 6px #ffffff,
+        0 0 18px #c84cff;
+
 }
+
+
+.label-title::before {
+
+    content: "✦ ";
+
+    color: #df8aff;
+
+}
+
 
 .label-sub {
+
+    margin-left: 8px;
+
+    color: #c69bdc;
+
     font-size: 11px;
-    color: #888;
+
     font-weight: normal;
-    margin-left: 5px;
+
 }
+
+
+/* =========================================
+   入力欄
+========================================= */
 
 .input-category-name {
-    width: 240px;
-    padding: 8px 10px;
-    border: 1px solid #cccccc;
-    border-radius: 6px;
-    font-size: 14px;
+
+    width: 100%;
+
+    padding: 15px 18px;
+
+    color: #ffffff;
+
+    background:
+
+        rgba(5, 0, 10, 0.8);
+
+    border: 1px solid
+        rgba(190, 80, 255, 0.8);
+
+    border-radius: 8px;
+
+    outline: none;
+
+    font-size: 17px;
+
+    box-shadow:
+
+        inset 0 0 15px
+        rgba(160, 40, 255, 0.15),
+
+        0 0 10px
+        rgba(150, 40, 255, 0.25);
+
 }
+
+
+.input-category-name:focus {
+
+    border-color: #ffbaff;
+
+    box-shadow:
+
+        0 0 10px #ffffff,
+        0 0 25px #db4cff,
+        0 0 50px rgba(160, 30, 255, 0.6);
+
+}
+
+
+/* =========================================
+   ボタン
+========================================= */
 
 .footer-actions {
+
     display: flex;
+
     justify-content: center;
-    gap: 40px;
-    margin-top: 20px;
+
+    gap: 25px;
+
 }
+
+
+.btn-back,
+.btn-submit {
+
+    padding: 14px 28px;
+
+    border-radius: 8px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition:
+
+        transform
+        0.3s
+        ease,
+
+        box-shadow
+        0.3s
+        ease;
+
+}
+
 
 .btn-back {
-    display: inline-block;
-    background-color: #7a7a7a;
-    color: #ffffff;
-    padding: 12px 25px;
-    border-radius: 10px;
+
+    color: #ddd0e4;
+
+    background:
+
+        #211827;
+
+    border: 1px solid
+        #897692;
+
     text-decoration: none;
-    font-size: 14px;
-    font-weight: bold;
-    border: none;
-    cursor: pointer;
-    text-align: center;
+
 }
+
 
 .btn-submit {
-    display: inline-block;
-    background-color: #008a00;
+
+    min-width: 170px;
+
     color: #ffffff;
-    padding: 12px 50px;
-    border-radius: 10px;
-    text-decoration: none;
-    font-size: 15px;
-    font-weight: bold;
-    border: none;
-    cursor: pointer;
-    text-align: center;
+
+    background:
+
+        linear-gradient(
+            135deg,
+            #ff50e8,
+            #a52cff,
+            #5513a8
+        );
+
+    border: 1px solid
+        #ffb8ff;
+
+    box-shadow:
+
+        0 0 10px #db55ff,
+        0 0 30px rgba(170, 40, 255, 0.6);
+
 }
 
-/* エラー表記 */
-.error-message {
-    font-weight: bold;
-    color: #ff0000 !important;
-    margin-top: 5px;
-    display: block;
-    font-size: 14px;
+
+.btn-back:hover,
+.btn-submit:hover {
+
+    transform: translateY(-5px);
+
 }
 
-/* モーダル */
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.4);
+
+.btn-submit:hover {
+
+    box-shadow:
+
+        0 0 10px #ffffff,
+        0 0 25px #ff8cff,
+        0 0 60px #b72cff;
+
+}
+
+
+/* =========================================
+   右側 CORE
+========================================= */
+
+.core-orb {
+
     display: flex;
-    justify-content: center;
+
     align-items: center;
-    z-index: 9999;
+    justify-content: center;
+
+    width: 120px;
+    height: 120px;
+
+    margin: 30px auto 20px;
+
+    border: 1px solid
+        rgba(220, 120, 255, 0.8);
+
+    border-radius: 50%;
+
+    box-shadow:
+
+        0 0 10px #d755ff,
+        0 0 30px rgba(180, 40, 255, 0.5),
+        inset 0 0 25px rgba(190, 50, 255, 0.3);
+
+    animation:
+
+        corePulse
+        3s
+        ease-in-out
+        infinite;
+
 }
+
+
+.core-inner {
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    width: 65px;
+    height: 65px;
+
+    border: 1px solid
+        rgba(220, 130, 255, 0.5);
+
+    border-radius: 50%;
+
+    color: #e89cff;
+
+    font-size: 10px;
+
+    letter-spacing: 0.1em;
+
+    box-shadow:
+
+        0 0 20px
+        rgba(200, 70, 255, 0.6);
+
+}
+
+
+.core-status {
+
+    margin-bottom: 30px;
+
+    color: #dc7dff;
+
+    font-size: 11px;
+
+    font-weight: bold;
+
+    text-align: center;
+
+    letter-spacing: 0.2em;
+
+}
+
+
+.data-line {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    margin-top: 15px;
+
+    padding-bottom: 8px;
+
+    border-bottom: 1px solid
+        rgba(220, 120, 255, 0.15);
+
+    color: rgba(220, 180, 240, 0.5);
+
+    font-size: 9px;
+
+}
+
+
+.data-line span {
+
+    color: #dc8aff;
+
+}
+
+
+/* =========================================
+   フッター
+========================================= */
+
+.system-footer {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    padding: 12px 28px;
+
+    border-top: 1px solid
+        rgba(200, 100, 255, 0.25);
+
+    color: rgba(210, 170, 230, 0.45);
+
+    font-size: 8px;
+
+    letter-spacing: 0.15em;
+
+}
+
+
+/* =========================================
+   アニメーション
+========================================= */
+
+@keyframes statusPulse {
+
+    0%,
+    100% {
+
+        opacity: 0.5;
+
+        transform: scale(0.8);
+
+    }
+
+    50% {
+
+        opacity: 1;
+
+        transform: scale(1.2);
+
+    }
+
+}
+
+
+@keyframes cornerGlow {
+
+    from {
+
+        opacity: 0.4;
+
+        transform: scale(0.8);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform: scale(1.2);
+
+    }
+
+}
+
+
+@keyframes corePulse {
+
+    0%,
+    100% {
+
+        transform: scale(0.96);
+
+        box-shadow:
+
+            0 0 10px #d755ff,
+            0 0 30px rgba(180, 40, 255, 0.5);
+
+    }
+
+    50% {
+
+        transform: scale(1.04);
+
+        box-shadow:
+
+            0 0 20px #ffffff,
+            0 0 45px #d755ff,
+            0 0 80px rgba(160, 30, 255, 0.6);
+
+    }
+
+}
+
+.core-orb {
+
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    width: 150px;
+    height: 150px;
+
+    margin: 30px auto 20px;
+
+}
+
+
+.core-ring {
+
+    position: absolute;
+
+    inset: 0;
+
+    border: 1px solid
+        rgba(210, 100, 255, 0.5);
+
+    border-radius: 50%;
+
+}
+
+
+.ring-one {
+
+    animation:
+
+        coreRotateOne
+        8s
+        linear
+        infinite;
+
+}
+
+
+.ring-two {
+
+    inset: 12px;
+
+    border-style: dashed;
+
+    animation:
+
+        coreRotateTwo
+        5s
+        linear
+        infinite;
+
+}
+
+
+.ring-three {
+
+    inset: 25px;
+
+    border-color:
+        rgba(240, 150, 255, 0.7);
+
+    animation:
+
+        coreRotateOne
+        3s
+        linear
+        infinite
+        reverse;
+
+}
+
+
+@keyframes coreRotateOne {
+
+    from {
+
+        transform: rotate(0deg);
+
+    }
+
+    to {
+
+        transform: rotate(360deg);
+
+    }
+
+}
+
+
+@keyframes coreRotateTwo {
+
+    from {
+
+        transform: rotate(360deg);
+
+    }
+
+    to {
+
+        transform: rotate(0deg);
+
+    }
+
+}
+
+.core-editing {
+
+    animation:
+
+        coreEditing
+        0.8s
+        ease-in-out
+        infinite
+        alternate;
+
+}
+
+
+@keyframes coreEditing {
+
+    from {
+
+        filter:
+
+            brightness(1);
+
+        transform:
+
+            scale(1);
+
+    }
+
+    to {
+
+        filter:
+
+            brightness(1.8);
+
+        transform:
+
+            scale(1.08);
+
+    }
+
+}
+
+/* =========================================
+   FINAL BATTLE MODE
+========================================= */
+
+.battle-overlay {
+
+    position: fixed;
+
+    inset: 0;
+
+    display: none;
+
+    align-items: center;
+    justify-content: center;
+
+    background:
+
+        radial-gradient(
+            circle at center,
+            rgba(190, 30, 255, 0.35),
+            rgba(20, 0, 30, 0.96) 55%,
+            #000000
+        );
+
+    backdrop-filter: blur(14px);
+
+    z-index: 999999;
+
+}
+
+
+.battle-overlay.active {
+
+    display: flex;
+
+    animation:
+
+        battleAppear
+        0.35s
+        ease
+        forwards;
+
+}
+
+
+.battle-container {
+
+    width: 600px;
+
+    padding: 45px;
+
+    text-align: center;
+
+    border: 1px solid
+        rgba(240, 150, 255, 0.8);
+
+    background:
+
+        linear-gradient(
+            145deg,
+            rgba(60, 10, 80, 0.92),
+            rgba(5, 0, 10, 0.98)
+        );
+
+    box-shadow:
+
+        0 0 10px #ffffff,
+        0 0 30px #e34cff,
+        0 0 80px rgba(180, 20, 255, 0.8),
+        inset 0 0 40px rgba(200, 50, 255, 0.15);
+
+    animation:
+
+        battleContainer
+        0.7s
+        cubic-bezier(0.16, 1, 0.3, 1);
+
+}
+
+
+.battle-warning {
+
+    color: #ffb5ff;
+
+    font-size: 12px;
+
+    font-weight: bold;
+
+    letter-spacing: 0.25em;
+
+    text-shadow:
+
+        0 0 8px #ffffff,
+        0 0 20px #ff42ff;
+
+    animation:
+
+        warningFlash
+        0.7s
+        ease-in-out
+        infinite
+        alternate;
+
+}
+
+
+.battle-title {
+
+    margin-top: 18px;
+
+    color: #ffffff;
+
+    font-size: 28px;
+
+    font-weight: bold;
+
+    letter-spacing: 0.15em;
+
+    text-shadow:
+
+        0 0 8px #ffffff,
+        0 0 20px #ed5cff,
+        0 0 45px #a52cff;
+
+}
+
+
+.battle-subtitle {
+
+    margin-top: 10px;
+
+    color: rgba(240, 190, 255, 0.65);
+
+    font-size: 10px;
+
+    letter-spacing: 0.25em;
+
+}
+
+
+/* =========================================
+   バトルコア
+========================================= */
+
+.battle-core {
+
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    width: 220px;
+    height: 220px;
+
+    margin: 35px auto;
+
+}
+
+
+.battle-ring {
+
+    position: absolute;
+
+    border-radius: 50%;
+
+    border: 1px solid
+        rgba(220, 100, 255, 0.7);
+
+}
+
+
+.ring-a {
+
+    inset: 0;
+
+    border-top-color: #ffffff;
+
+    border-bottom-color: #e14cff;
+
+    box-shadow:
+
+        0 0 15px #d744ff;
+
+    animation:
+
+        battleRotate
+        4s
+        linear
+        infinite;
+
+}
+
+
+.ring-b {
+
+    inset: 22px;
+
+    border-style: dashed;
+
+    border-color: #ff8cff;
+
+    animation:
+
+        battleRotateReverse
+        2.5s
+        linear
+        infinite;
+
+}
+
+
+.ring-c {
+
+    inset: 48px;
+
+    border-color: #ffffff;
+
+    box-shadow:
+
+        0 0 15px #ffffff,
+        0 0 35px #d849ff;
+
+    animation:
+
+        battlePulse
+        1s
+        ease-in-out
+        infinite
+        alternate;
+
+}
+
+
+.battle-core-symbol {
+
+    color: #ffffff;
+
+    font-size: 70px;
+
+    text-shadow:
+
+        0 0 10px #ffffff,
+        0 0 25px #f65cff,
+        0 0 60px #9d20ff;
+
+    animation:
+
+        coreBattlePulse
+        0.8s
+        ease-in-out
+        infinite
+        alternate;
+
+}
+
+
+/* =========================================
+   プログレスバー
+========================================= */
+
+.battle-progress {
+
+    width: 100%;
+
+    height: 5px;
+
+    overflow: hidden;
+
+    background:
+
+        rgba(255, 255, 255, 0.08);
+
+    border: 1px solid
+        rgba(230, 130, 255, 0.4);
+
+}
+
+
+#battleProgressBar {
+
+    width: 0%;
+
+    height: 100%;
+
+    background:
+
+        linear-gradient(
+            90deg,
+            #8525ff,
+            #ff5cf1,
+            #ffffff
+        );
+
+    box-shadow:
+
+        0 0 12px #ff5cff;
+
+}
+
+
+.battle-message {
+
+    margin-top: 16px;
+
+    min-height: 18px;
+
+    color: #e59aff;
+
+    font-size: 11px;
+
+    font-weight: bold;
+
+    letter-spacing: 0.12em;
+
+}
+
+
+/* =========================================
+   アニメーション
+========================================= */
+
+@keyframes battleAppear {
+
+    from {
+
+        opacity: 0;
+
+    }
+
+    to {
+
+        opacity: 1;
+
+    }
+
+}
+
+
+@keyframes battleContainer {
+
+    from {
+
+        opacity: 0;
+
+        transform:
+
+            scale(0.6)
+            rotateX(25deg);
+
+        filter: blur(12px);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform:
+
+            scale(1)
+            rotateX(0deg);
+
+        filter: blur(0);
+
+    }
+
+}
+
+
+@keyframes battleRotate {
+
+    from {
+
+        transform: rotate(0deg);
+
+    }
+
+    to {
+
+        transform: rotate(360deg);
+
+    }
+
+}
+
+
+@keyframes battleRotateReverse {
+
+    from {
+
+        transform: rotate(360deg);
+
+    }
+
+    to {
+
+        transform: rotate(0deg);
+
+    }
+
+}
+
+
+@keyframes battlePulse {
+
+    from {
+
+        transform: scale(0.85);
+
+        opacity: 0.5;
+
+    }
+
+    to {
+
+        transform: scale(1.15);
+
+        opacity: 1;
+
+    }
+
+}
+
+
+@keyframes coreBattlePulse {
+
+    from {
+
+        transform: scale(0.85);
+
+        filter: brightness(0.8);
+
+    }
+
+    to {
+
+        transform: scale(1.15);
+
+        filter: brightness(2);
+
+    }
+
+}
+
+
+@keyframes warningFlash {
+
+    from {
+
+        opacity: 0.45;
+
+    }
+
+    to {
+
+        opacity: 1;
+
+    }
+
+}
+
+/* =========================================
+   CATEGORY CORE UPDATE MODAL
+========================================= */
+
+.modal-overlay {
+
+    position: fixed;
+
+    inset: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    z-index: 9999;
+
+    background:
+
+        radial-gradient(
+            circle at center,
+            rgba(180, 40, 255, 0.18),
+            rgba(0, 0, 0, 0.85)
+        );
+
+    backdrop-filter: blur(8px);
+
+}
+
+
+/* =========================================
+   モーダル本体
+========================================= */
 
 .modal-content {
-    background-color: #ffffff;
-    padding: 30px 40px;
-    border-radius: 4px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-    width: 450px;
+
+    position: relative;
+
+    width: 520px;
+
+    padding: 35px;
+
+    color: #ffffff;
+
+    background:
+
+        linear-gradient(
+            145deg,
+            rgba(45, 10, 65, 0.98),
+            rgba(8, 1, 18, 0.99)
+        );
+
+    border: 1px solid
+        rgba(230, 130, 255, 0.9);
+
+    border-radius: 18px;
+
+    box-shadow:
+
+        0 0 10px #d84cff,
+
+        0 0 35px
+        rgba(190, 40, 255, 0.8),
+
+        0 0 90px
+        rgba(150, 20, 255, 0.4),
+
+        inset 0 0 30px
+        rgba(180, 50, 255, 0.12);
+
+    animation:
+
+        modalAppear
+        0.35s
+        ease-out;
+
+}
+
+
+@keyframes modalAppear {
+
+    from {
+
+        opacity: 0;
+
+        transform:
+            scale(0.85)
+            translateY(20px);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform:
+            scale(1)
+            translateY(0);
+
+    }
+
+}
+
+
+/* =========================================
+   モーダル上部
+========================================= */
+
+.modal-header {
+
     text-align: center;
-    font-family: sans-serif;
-    animation: fadeIn 0.35s ease-out;
+
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+
+.modal-system-label {
+
+    margin-bottom: 25px;
+
+    color: #d887ff;
+
+    font-size: 10px;
+
+    font-weight: bold;
+
+    letter-spacing: 0.2em;
+
+    text-shadow:
+
+        0 0 10px #c044ff;
+
 }
 
-.modal-overlay.closing {
-    animation: fadeOut 0.15s ease-in forwards;
+
+.modal-status-dot {
+
+    display: inline-block;
+
+    width: 8px;
+
+    height: 8px;
+
+    margin-right: 8px;
+
+    border-radius: 50%;
+
+    background: #df76ff;
+
+    box-shadow:
+
+        0 0 8px #ffffff,
+
+        0 0 20px #c52cff;
+
 }
 
-.modal-overlay.closing .modal-content {
-    animation: fadeOutContent 0.15s ease-in forwards;
+
+.modal-warning {
+
+    margin-bottom: 10px;
+
+    color: #ff8cff;
+
+    font-size: 30px;
+
+    text-shadow:
+
+        0 0 10px #ffffff,
+
+        0 0 25px #ff3cff;
+
 }
 
-@keyframes fadeOut {
-    from { opacity: 1; }
-    to { opacity: 0; }
-}
-
-@keyframes fadeOutContent {
-    from { opacity: 1; transform: translateY(0); }
-    to { opacity: 0; transform: translateY(20px); }
-}
 
 .modal-content h3 {
-    margin-top: 0;
-    margin-bottom: 25px;
-    font-size: 18px;
-    color: #000000;
-    font-weight: bold;
+
+    margin: 0;
+
+    color: #ffffff;
+
+    font-size: 25px;
+
+    letter-spacing: 0.08em;
+
+    text-shadow:
+
+        0 0 8px #ffffff,
+
+        0 0 25px #d346ff;
+
 }
 
-.modal-body {
-    text-align: left;
-    margin-bottom: 25px;
-    padding-left: 30px;
+
+.modal-subtitle {
+
+    margin: 12px 0 30px;
+
+    color: #d6a8e8;
+
+    font-size: 14px;
+
 }
+
+
+/* =========================================
+   データパネル
+========================================= */
+
+.data-panel {
+
+    padding: 20px;
+
+    background:
+
+        rgba(10, 1, 20, 0.8);
+
+    border: 1px solid
+        rgba(190, 70, 255, 0.5);
+
+    box-shadow:
+
+        inset 0 0 20px
+        rgba(150, 30, 255, 0.15);
+
+}
+
+
+.data-panel-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    margin-bottom: 18px;
+
+    padding-bottom: 10px;
+
+    border-bottom: 1px solid
+        rgba(210, 100, 255, 0.25);
+
+    color: #cf7aff;
+
+    font-size: 10px;
+
+    font-weight: bold;
+
+    letter-spacing: 0.15em;
+
+}
+
+
+.data-status {
+
+    color: #8dffcf;
+
+}
+
 
 .modal-row {
+
     display: flex;
-    margin-bottom: 12px;
-    font-size: 15px;
-    line-height: 1.5;
+
+    align-items: center;
+
+    gap: 20px;
+
 }
+
 
 .modal-label {
-    width: 110px;
+
+    color: #c788e8;
+
+    font-size: 11px;
+
     font-weight: bold;
-    color: #00aa00;
-    display: inline-block;
+
+    letter-spacing: 0.1em;
+
 }
 
-.modal-label::after {
-    content: " ｜";
-    color: #cccccc;
-    float: right;
-}
 
 .modal-val {
+
     flex: 1;
-    padding-left: 15px;
-    color: #333333;
+
+    padding: 10px 14px;
+
+    color: #ffffff;
+
+    background:
+
+        rgba(40, 10, 55, 0.8);
+
+    border: 1px solid
+        rgba(220, 110, 255, 0.4);
+
+    font-size: 15px;
+
 }
+
+
+/* =========================================
+   警告
+========================================= */
+
+.execute-warning {
+
+    margin: 25px 0 20px;
+
+    color: #ff9cff;
+
+    font-size: 11px;
+
+    text-align: center;
+
+    text-shadow:
+
+        0 0 8px #d849ff;
+
+}
+
+
+/* =========================================
+   ボタン
+========================================= */
 
 .modal-actions {
+
     display: flex;
+
     justify-content: center;
-    gap: 15px;
+
+    gap: 18px;
+
 }
 
-.btn-modal-no {
-    background-color: #ffffff;
-    border: 1px solid #333333;
-    color: #333333;
-    padding: 6px 20px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-}
-.btn-modal-no:hover {
-    background-color: #f0f0f0;
-}
+
+.btn-modal-no,
 
 .btn-modal-yes {
-    background-color: #00aa00;
-    border: 1px solid #00aa00;
+
+    padding: 13px 25px;
+
+    border-radius: 8px;
+
     color: #ffffff;
-    padding: 6px 20px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
+
+    font-size: 12px;
+
     font-weight: bold;
+
+    letter-spacing: 0.08em;
+
+    cursor: pointer;
+
+    transition:
+
+        0.25s ease;
+
 }
+
+
+.btn-modal-no {
+
+    background:
+
+        #211827;
+
+    border: 1px solid
+        #8a7194;
+
+}
+
+
+.btn-modal-yes {
+
+    min-width: 170px;
+
+    background:
+
+        linear-gradient(
+            135deg,
+            #ff4be8,
+            #9b2cff
+        );
+
+    border: 1px solid
+        #ffb8ff;
+
+    box-shadow:
+
+        0 0 10px #df55ff,
+
+        0 0 30px
+        rgba(190, 40, 255, 0.7);
+
+}
+
+
+.btn-modal-no:hover {
+
+    transform:
+        translateY(-3px);
+
+    border-color:
+        #d78aff;
+
+}
+
+
 .btn-modal-yes:hover {
-    background-color: #008000;
+
+    transform:
+        translateY(-3px)
+        scale(1.03);
+
+    box-shadow:
+
+        0 0 15px #ffffff,
+
+        0 0 35px #ff63ff,
+
+        0 0 60px #a92cff;
+
+}
+
+/* =========================================
+   CANCEL時 モーダル終了アニメーション
+========================================= */
+
+.modal-overlay.closing {
+
+    animation:
+
+        modalOverlayClosing
+        0.35s
+        ease-in
+        forwards;
+
+}
+
+
+.modal-overlay.closing .modal-content {
+
+    animation:
+
+        modalClosing
+        0.35s
+        ease-in
+        forwards;
+
+}
+
+
+/* 背景がフェードアウト */
+
+@keyframes modalOverlayClosing {
+
+    from {
+
+        opacity: 1;
+
+        backdrop-filter:
+            blur(8px);
+
+    }
+
+    to {
+
+        opacity: 0;
+
+        backdrop-filter:
+            blur(0);
+
+    }
+
+}
+
+
+/* モーダル本体が縮小しながら消える */
+
+@keyframes modalClosing {
+
+    0% {
+
+        opacity: 1;
+
+        transform:
+            scale(1)
+            translateY(0);
+
+        filter:
+            brightness(1);
+
+    }
+
+    40% {
+
+        opacity: 1;
+
+        transform:
+            scale(1.03)
+            translateY(-5px);
+
+        filter:
+            brightness(1.8);
+
+        box-shadow:
+
+            0 0 20px #ffffff,
+
+            0 0 60px #e84cff,
+
+            0 0 120px #a52cff;
+
+    }
+
+    100% {
+
+        opacity: 0;
+
+        transform:
+            scale(0.75)
+            translateY(30px);
+
+        filter:
+            brightness(2);
+
+    }
+
+}
+
+/* =========================================
+   カーソル追従キラキラエフェクト
+========================================= */
+
+.cursor-sparkle {
+
+    position: fixed;
+
+    pointer-events: none;
+
+    color: #f4c2ff;
+
+    font-size: 12px;
+
+    text-shadow:
+
+        0 0 5px #ffffff,
+        0 0 12px #e56cff,
+        0 0 25px #a52cff;
+
+    transform: translate(-50%, -50%);
+
+    animation: sparkleFade 0.7s ease-out forwards;
+
+    z-index: 99999;
+
+}
+
+
+@keyframes sparkleFade {
+
+    0% {
+
+        opacity: 1;
+
+        transform:
+            translate(-50%, -50%)
+            scale(1);
+
+    }
+
+    100% {
+
+        opacity: 0;
+
+        transform:
+            translate(-50%, -50%)
+            scale(0);
+
+    }
+
+}
+
+/* =========================================
+   クリック時 星爆発エフェクト
+========================================= */
+
+.click-sparkle {
+
+    position: fixed;
+
+    pointer-events: none;
+
+    color: #ffffff;
+
+    /*
+     * 通常の星の約5倍
+     */
+    font-size: 50px;
+
+    font-weight: bold;
+
+    transform:
+
+        translate(-50%, -50%)
+        scale(0.2);
+
+    text-shadow:
+
+        0 0 8px #ffffff,
+        0 0 20px #ffbaff,
+        0 0 40px #e56cff,
+        0 0 70px #a52cff;
+
+    z-index: 100000;
+
+    animation:
+
+        clickSparkleBurst
+        0.9s
+        ease-out
+        forwards;
+
+}
+
+
+@keyframes clickSparkleBurst {
+
+    0% {
+
+        opacity: 0;
+
+        transform:
+
+            translate(-50%, -50%)
+            scale(0.2)
+            rotate(0deg);
+
+    }
+
+    15% {
+
+        opacity: 1;
+
+        transform:
+
+            translate(-50%, -50%)
+            scale(1.3)
+            rotate(25deg);
+
+    }
+
+    100% {
+
+        opacity: 0;
+
+        transform:
+
+            translate(
+                calc(-50% + var(--move-x)),
+                calc(-50% + var(--move-y))
+            )
+            scale(0.3)
+            rotate(180deg);
+
+    }
+
+}
+
+/* =========================================
+   SYSTEM SHUTDOWN
+========================================= */
+
+.shutdown-overlay {
+
+    position: fixed;
+
+    inset: 0;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    background:
+
+        radial-gradient(
+            circle at center,
+            rgba(70, 10, 100, 0.9),
+            rgba(5, 0, 10, 0.98)
+        );
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    z-index: 200000;
+
+}
+
+
+.shutdown-overlay.active {
+
+    opacity: 1;
+
+    visibility: visible;
+
+    animation:
+
+        shutdownAppear
+        0.4s
+        ease-out
+        forwards;
+
+}
+
+
+.shutdown-container {
+
+    width: 600px;
+
+    padding: 55px;
+
+    text-align: center;
+
+}
+
+
+.shutdown-warning {
+
+    margin-bottom: 20px;
+
+    color: #ff8cff;
+
+    font-size: 12px;
+
+    font-weight: bold;
+
+    letter-spacing: 0.3em;
+
+    text-shadow:
+
+        0 0 10px #ff4cff,
+        0 0 25px #a52cff;
+
+}
+
+
+.shutdown-title {
+
+    color: #ffffff;
+
+    font-size: 42px;
+
+    font-weight: bold;
+
+    letter-spacing: 0.15em;
+
+    text-shadow:
+
+        0 0 8px #ffffff,
+        0 0 25px #e56cff,
+        0 0 60px #a52cff;
+
+}
+
+
+.shutdown-subtitle {
+
+    margin-top: 15px;
+
+    color: #c890d9;
+
+    font-size: 13px;
+
+    letter-spacing: 0.2em;
+
+}
+
+
+.shutdown-core {
+
+    position: relative;
+
+    width: 180px;
+    height: 180px;
+
+    margin: 45px auto;
+
+    border: 2px solid #e56cff;
+
+    border-radius: 50%;
+
+    box-shadow:
+
+        0 0 15px #ffffff,
+        0 0 40px #d54cff,
+        0 0 90px #8c20ff;
+
+    animation:
+
+        shutdownCore
+        2s
+        ease-in
+        forwards;
+
+}
+
+
+.shutdown-symbol {
+
+    position: absolute;
+
+    inset: 0;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    color: #ffffff;
+
+    font-size: 55px;
+
+    text-shadow:
+
+        0 0 15px #ffffff,
+        0 0 40px #e56cff;
+
+}
+
+
+.shutdown-progress {
+
+    width: 100%;
+
+    height: 5px;
+
+    background: rgba(255,255,255,0.1);
+
+    border: 1px solid rgba(220,120,255,0.5);
+
+}
+
+
+#shutdownProgressBar {
+
+    width: 0%;
+
+    height: 100%;
+
+    background:
+
+        linear-gradient(
+            90deg,
+            #ff4cff,
+            #a52cff,
+            #ffffff
+        );
+
+    box-shadow:
+
+        0 0 10px #e56cff,
+        0 0 25px #a52cff;
+
+}
+
+
+.shutdown-message {
+
+    margin-top: 18px;
+
+    color: #e8a5ff;
+
+    font-size: 12px;
+
+    letter-spacing: 0.2em;
+
+}
+
+
+@keyframes shutdownAppear {
+
+    from {
+
+        opacity: 0;
+
+    }
+
+    to {
+
+        opacity: 1;
+
+    }
+
+}
+
+
+@keyframes shutdownCore {
+
+    0% {
+
+        transform: scale(1);
+
+        opacity: 1;
+
+    }
+
+    70% {
+
+        transform: scale(0.8);
+
+        opacity: 0.8;
+
+    }
+
+    100% {
+
+        transform: scale(0);
+
+        opacity: 0;
+
+    }
+
 }
