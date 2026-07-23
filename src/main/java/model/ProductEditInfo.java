@@ -7,6 +7,7 @@ public class ProductEditInfo implements Serializable {
     private int productId;
     private String productName;
     private int productPrice;
+    private int productStock;
     private int categoryId;
     private String categoryName;
     private List<Integer> selectedToppingIds = new ArrayList<>(); // 現在紐づいているトッピングID
@@ -23,7 +24,13 @@ public class ProductEditInfo implements Serializable {
     public void setCategoryName(String categoryName) { this.categoryName = categoryName; }
     public List<Integer> getSelectedToppingIds() { return selectedToppingIds; }
     public void setSelectedToppingIds(List<Integer> selectedToppingIds) { this.selectedToppingIds = selectedToppingIds; }
-    // --- トッピングマスタデータを表すstaticインナークラス ---
+    public int getProductStock() {
+		return productStock;
+	}
+	public void setProductStock(int productStock) {
+		this.productStock = productStock;
+	}
+	// --- トッピングマスタデータを表すstaticインナークラス ---
     public static class ToppingMaster implements Serializable {
         private static final long serialVersionUID = 1L;
         private int toppingId;

@@ -45,27 +45,39 @@ public class ProductEditServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
         request.setCharacterEncoding("UTF-8");
+
         int productId = toInt(request.getParameter("productId"));
         int productPrice = toInt(request.getParameter("productPrice"));
         int categoryId = toInt(request.getParameter("categoryId"));
+        int productStock = toInt(request.getParameter("productStock"));
+
         try {
-            boolean saved = dao.saveProduct(
-                    productId,
-                    request.getParameter("productName"),
-                    productPrice,
-                    categoryId,
-                    request.getParameterValues("toppingId"));
+        	boolean saved = dao.saveProduct(
+        	        productId,
+        	        request.getParameter("productName"),
+        	        productPrice,
+        	        categoryId,
+        	        productStock,
+        	        request.getParameterValues("toppingId"));
+
             if (!saved) {
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "入力内容に不正な値が含まれています。");
+                response.sendError(
+                        HttpServletResponse.SC_BAD_REQUEST,
+                        "入力内容に不正な値が含まれています。");
                 return;
             }
+
             response.sendRedirect("ProductListServlet");
+
         } catch (SQLException e) {
             e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.sendError(
+                    HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }
+    
     private void sendJsonDuplicateCheck(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
@@ -81,6 +93,7 @@ public class ProductEditServlet extends HttpServlet {
             out.print("{\"duplicate\": " + isDuplicate + "}");
         }
     }
+    
     private int toInt(String s) {
         return (s != null && !s.isEmpty()) ? Integer.parseInt(s) : 0;
     }
