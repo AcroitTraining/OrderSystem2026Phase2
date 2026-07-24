@@ -66,61 +66,43 @@
 
 
 			<!-- カテゴリー -->
-			<div class="form-group">
+			<!-- カテゴリー -->
+<div class="form-group">
 
-				<label class="label-title"> カテゴリー </label> <select name="categoryId">
+	<label class="label-title"> カテゴリー </label>
 
-					<option value="0"
-						<%=info.getCategoryId() == 0
-		? "selected"
-		: ""%>>
-						-選択してください-</option>
+	<select name="categoryId">
 
-					<option value="1"
-						<%=info.getCategoryId() == 1
-		? "selected"
-		: ""%>>
-						お好み焼き</option>
+		<option value="0"
+			<%=info.getCategoryId() == 0 ? "selected" : ""%>>
+			-選択してください-
+		</option>
 
-					<option value="2"
-						<%=info.getCategoryId() == 2
-		? "selected"
-		: ""%>>
-						もんじゃ焼き</option>
+		<%
+		List<ProductEditInfo.ToppingMaster> allCategories =
+				(List<ProductEditInfo.ToppingMaster>) request
+						.getAttribute("allCategories");
 
-					<option value="3"
-						<%=info.getCategoryId() == 3
-		? "selected"
-		: ""%>>
-						鉄板焼</option>
+		if (allCategories != null) {
 
-					<option value="4"
-						<%=info.getCategoryId() == 4
-		? "selected"
-		: ""%>>
-						サイドメニュー</option>
+			for (ProductEditInfo.ToppingMaster cm : allCategories) {
+		%>
 
-					<option value="5"
-						<%=info.getCategoryId() == 5
-		? "selected"
-		: ""%>>
-						ソフトドリンク</option>
+		<option value="<%=cm.getToppingId()%>"
+			<%=info.getCategoryId() == cm.getToppingId()
+					? "selected"
+					: ""%>>
+			<%=cm.getToppingName()%>
+		</option>
 
-					<option value="6"
-						<%=info.getCategoryId() == 6
-		? "selected"
-		: ""%>>
-						お酒</option>
+		<%
+			}
+		}
+		%>
 
-					<option value="7"
-						<%=info.getCategoryId() == 7
-		? "selected"
-		: ""%>>
-						ボトル</option>
+	</select>
 
-				</select>
-
-			</div>
+</div>
 
 
 			<!-- 商品名 -->

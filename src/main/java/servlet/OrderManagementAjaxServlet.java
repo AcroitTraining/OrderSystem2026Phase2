@@ -62,7 +62,7 @@ public class OrderManagementAjaxServlet extends HttpServlet {
             OrderManagementLogic logic = new OrderManagementLogic();
 
             // 件数計算
-            Map<String, Integer> counts = logic.calculateBadgeCounts(allList);
+            Map<String, Object> counts = logic.calculateBadgeCounts(allList);
 
             // フィルター取得
             String categoryFilter = request.getParameter("categoryFilter");

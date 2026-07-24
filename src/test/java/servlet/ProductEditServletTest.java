@@ -155,30 +155,33 @@ class ProductEditServletTest {
         verify(response).sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
     }
 
-    // ==================== doPost ====================
+ // ==================== doPost ====================
 
     @Test
     void doPost_既存商品が有効なら更新してリダイレクトする() throws Exception {
         when(request.getParameter("productId")).thenReturn("7");
         when(request.getParameter("productName")).thenReturn("既存商品");
         when(request.getParameter("productPrice")).thenReturn("800");
-        when(request.getParameter("categoryId")).thenReturn("1"); // categoryName から categoryId ("1") に変更
+        when(request.getParameter("categoryId")).thenReturn("1");
+        when(request.getParameter("productStock")).thenReturn("10");
         when(request.getParameterValues("toppingId")).thenReturn(null);
-        when(dao.saveProduct(eq(7), eq("既存商品"), eq(800), eq(1), any())).thenReturn(true); // 第4引数を 1 に修正
+
+        when(dao.saveProduct(eq(7), eq("既存商品"), eq(800), eq(1), eq(10), any())).thenReturn(true);
 
         servlet.doPost(request, response);
 
-        verify(dao).saveProduct(7, "既存商品", 800, 1, null); // 第4引数を 1 に修正
+        verify(dao).saveProduct(7, "既存商品", 800, 1, 10, null);
         verify(response).sendRedirect("ProductListServlet");
     }
+
 
     @Test
     void doPost_入力が不正ならBadRequestを返す() throws Exception {
         when(request.getParameter("productId")).thenReturn(null);
         when(request.getParameter("productName")).thenReturn("");
         when(request.getParameter("productPrice")).thenReturn("100");
-        when(request.getParameter("categoryId")).thenReturn("1"); // categoryName から categoryId ("1") に変更
-        when(dao.saveProduct(anyInt(), anyString(), anyInt(), anyInt(), any())).thenReturn(false); // 第4引数を anyInt() に修正
+        when(request.getParameter("categoryId")).thenReturn("1");
+        when(request.getParameter("productStock")).thenReturn("10");
 
         servlet.doPost(request, response);
 
@@ -186,14 +189,17 @@ class ProductEditServletTest {
         verify(response, never()).sendRedirect("ProductListServlet");
     }
 
+
     @Test
     void doPost_SQLExceptionなら500を返す() throws Exception {
         when(request.getParameter("productId")).thenReturn(null);
         when(request.getParameter("productName")).thenReturn("商品X");
         when(request.getParameter("productPrice")).thenReturn("300");
-        when(request.getParameter("categoryId")).thenReturn("1"); // categoryName から categoryId ("1") に変更
+        when(request.getParameter("categoryId")).thenReturn("1");
+        when(request.getParameter("productStock")).thenReturn("10");
+
         doThrow(new SQLException("DB error"))
-                .when(dao).saveProduct(anyInt(), anyString(), anyInt(), anyInt(), any()); // 第4引数を anyInt() に修正
+            .when(dao).saveProduct(anyInt(), anyString(), anyInt(), anyInt(), anyInt(), any());
 
         servlet.doPost(request, response);
 
@@ -201,18 +207,22 @@ class ProductEditServletTest {
         verify(response, never()).sendRedirect(anyString());
     }
 
+
     @Test
     void doPost_productIdが数値変換できない形式なら例外が伝播しない範囲を確認() throws Exception {
-        // productId="0"扱いになるケースの確認（空文字）
+        // productId="" → 0扱い
         when(request.getParameter("productId")).thenReturn("");
         when(request.getParameter("productName")).thenReturn("商品Y");
         when(request.getParameter("productPrice")).thenReturn("");
-        when(request.getParameter("categoryId")).thenReturn("1"); // categoryName から categoryId ("1") に変更
-        when(dao.saveProduct(eq(0), eq("商品Y"), eq(0), eq(1), any())).thenReturn(true); // 第4引数を 1 に修正
+        when(request.getParameter("categoryId")).thenReturn("1");
+        when(request.getParameter("productStock")).thenReturn("");
+        when(request.getParameterValues("toppingId")).thenReturn(null);
+
+        when(dao.saveProduct(eq(0), eq("商品Y"), eq(0), eq(1), eq(0), any())).thenReturn(true);
 
         servlet.doPost(request, response);
 
-        verify(dao).saveProduct(0, "商品Y", 0, 1, null); // 第4引数を 1 に修正
+        verify(dao).saveProduct(0, "商品Y", 0, 1, 0, null);
         verify(response).sendRedirect("ProductListServlet");
     }
 }
