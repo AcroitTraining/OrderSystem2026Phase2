@@ -151,16 +151,7 @@
 		</form>
 	</div>
 
-	<div id="customModal" class="modal-overlay" style="display: none;">
-		<div class="modal-content">
-			<p class="modal-message-title">確認</p>
-			<p class="modal-message-sub">本当に提供しますか？</p>
-			<div class="modal-buttons">
-				<button type="button" id="modalNoBtn" class="btn-modal-no">いいえ</button>
-				<button type="button" id="modalYesBtn" class="btn-modal-yes">はい</button>
-			</div>
-		</div>
-	</div>
+	
 
 	<script src="./js/orderManagement.js" defer></script>
 </body>

@@ -1,74 +1,4 @@
-document.addEventListener("DOMContentLoaded", () => {
 
-    /*
-     * =========================
-     * モーダル
-     * =========================
-     */
-
-    const servedForms =
-        document.querySelectorAll(".served-form");
-
-    const modal =
-        document.getElementById("customModal");
-
-    const yesBtn =
-        document.getElementById("modalYesBtn");
-
-    const noBtn =
-        document.getElementById("modalNoBtn");
-
-    let currentForm = null;
-
-
-    servedForms.forEach(form => {
-
-        form.addEventListener("submit", event => {
-
-            event.preventDefault();
-
-            currentForm = form;
-
-            modal.style.display = "flex";
-
-        });
-
-    });
-
-
-    yesBtn.addEventListener("click", () => {
-
-        if (currentForm) {
-
-            currentForm.submit();
-
-        }
-
-    });
-
-
-    noBtn.addEventListener("click", () => {
-
-        modal.style.display = "none";
-
-        currentForm = null;
-
-    });
-
-
-    modal.addEventListener("click", event => {
-
-        if (event.target === modal) {
-
-            modal.style.display = "none";
-
-            currentForm = null;
-
-        }
-
-    });
-
-});
 
 
 /*
@@ -82,68 +12,33 @@ function createOrderRow(item) {
     const toppingHtml =
         createToppingHtml(item.toppings);
 
+    return `
+        <tr class="order-row" data-category="${item.categoryName}">
+            <td>No.${item.orderId}</td>
+            <td>${item.orderTime}</td>
+            <td>${item.orderQuantity}個</td>
+            <td>${item.productName}</td>
+            <td>${toppingHtml}</td>
 
-    return "<tr class=\"order-row\" data-category=\""
-        + item.categoryName
-        + "\">"
+            <td>
+                <button type="button"
+                    class="edit-img-btn"
+                    data-order-id="${item.orderId}">
+                    <img src="./image/edit_icon.png"
+                        alt="注文編集"
+                        class="edit-icon-img">
+                </button>
+            </td>
 
-
-        + "<td>No."
-        + item.orderId
-        + "</td>"
-
-
-        + "<td>"
-        + item.orderTime
-        + "</td>"
-
-
-        + "<td>"
-        + item.orderQuantity
-        + "個</td>"
-
-
-        + "<td>"
-        + item.productName
-        + "</td>"
-
-
-        + "<td>"
-        + toppingHtml
-        + "</td>"
-
-
-        // 編集ボタン
-        + "<td>"
-        + "<button type=\"button\""
-        + " class=\"edit-img-btn\""
-        + " data-order-id=\""
-        + item.orderId
-        + "\">"
-        + "<img src=\"./image/edit_icon.png\""
-        + " alt=\"注文編集\""
-        + " class=\"edit-icon-img\">"
-        + "</button>"
-        + "</td>"
-
-
-        // 提供ボタン
-        + "<td>"
-+ "<button type=\"button\""
-+ " class=\"served-btn "
-+ item.timeColorClass
-+ "\""
-+ " data-order-id=\""
-+ item.orderId
-+ "\">"
-+ item.tableId
-+ "卓<br>提供"
-+ "</button>"
-+ "</td>"
-
-
-        + "</tr>";
-
+            <td>
+                <button type="button"
+                    class="served-btn ${item.timeColorClass}"
+                    data-order-id="${item.orderId}">
+                    ${item.tableId}卓<br>提供
+                </button>
+            </td>
+        </tr>
+    `;
 }
 
 
@@ -235,53 +130,21 @@ function updateTable(orders) {
  */
 
 async function fetchOrders() {
-
     try {
+        const filters = getCurrentFilters();
 
-        const filters =
-            getCurrentFilters();
+        const url = "OrderManagementAjaxServlet"
+            + "?categoryFilter=" + encodeURIComponent(filters.category)
+            + "&tableFilter=" + encodeURIComponent(filters.table);
 
-
-        const url =
-
-            "OrderManagementAjaxServlet"
-
-            + "?categoryFilter="
-
-            + encodeURIComponent(
-                filters.category
-            )
-
-            + "&tableFilter="
-
-            + encodeURIComponent(
-                filters.table
-            );
-
-
-        const response =
-            await fetch(url);
-
-
-        const data =
-            await response.json();
-
+        const response = await fetch(url);
+        const data = await response.json();
 
         updateTable(data.orders);
 
-
     } catch (error) {
-
-        console.error(
-
-            "注文データの取得に失敗しました",
-
-            error
-
-        );
-
+        console.error("注文データの取得に失敗しました", error);
     }
-
 }
 
 
@@ -376,7 +239,7 @@ document
 
             const servedButton =
                 event.target.closest(
-                    ".served-button"
+                    ".served-btn"
                 );
 
 

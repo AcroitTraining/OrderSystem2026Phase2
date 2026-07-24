@@ -109,6 +109,7 @@ public class OrderManagementServlet extends HttpServlet {
 			try {
 				if (action.equals("提供")) {
 					dao.updateServedFlag(orderId);
+					System.out.println("提供");
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
