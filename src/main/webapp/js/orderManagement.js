@@ -1,74 +1,4 @@
-document.addEventListener("DOMContentLoaded", () => {
 
-    /*
-     * =========================
-     * モーダル
-     * =========================
-     */
-
-    const servedForms =
-        document.querySelectorAll(".served-form");
-
-    const modal =
-        document.getElementById("customModal");
-
-    const yesBtn =
-        document.getElementById("modalYesBtn");
-
-    const noBtn =
-        document.getElementById("modalNoBtn");
-
-    let currentForm = null;
-
-
-    servedForms.forEach(form => {
-
-        form.addEventListener("submit", event => {
-
-            event.preventDefault();
-
-            currentForm = form;
-
-            modal.style.display = "flex";
-
-        });
-
-    });
-
-
-    yesBtn.addEventListener("click", () => {
-
-        if (currentForm) {
-
-            currentForm.submit();
-
-        }
-
-    });
-
-
-    noBtn.addEventListener("click", () => {
-
-        modal.style.display = "none";
-
-        currentForm = null;
-
-    });
-
-
-    modal.addEventListener("click", event => {
-
-        if (event.target === modal) {
-
-            modal.style.display = "none";
-
-            currentForm = null;
-
-        }
-
-    });
-
-});
 
 
 /*
@@ -309,7 +239,7 @@ document
 
             const servedButton =
                 event.target.closest(
-                    ".served-button"
+                    ".served-btn"
                 );
 
 

@@ -393,6 +393,11 @@
 
 </div>
 
+
+<div class="lightning-field"></div>
+
+<div id="lightningFlash"></div>
+
 	<script src="./js/categoryEdit.js" defer></script>
 </body>
 </html>
