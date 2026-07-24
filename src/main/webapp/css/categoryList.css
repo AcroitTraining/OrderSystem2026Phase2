@@ -181,8 +181,61 @@ body.teppan-championship {
 }
 
 /* ==========================================
-   4. カテゴリーテーブル（th/td同一デザイン・下線はthのみ・編集=黄緑/削除=赤）
+   4. 画面右上のあぶり出し（隠しエンブレム）
    ========================================== */
+.hidden-emblem-wrap {
+    position: fixed;
+    top: 5%;
+    right: 5%;
+    width: 320px;  /* お好みのサイズに調整してください */
+    height: 320px;
+    z-index: 5;    /* 流体Canvas(z-index:1)の上、ボタン等UI(z-index:10)の下 */
+    pointer-events: none; /* マウスイベントを下のCanvasへ通り抜けさせる */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hidden-credit {
+    position: fixed;
+    bottom: 3.5%;
+    left: 4.5%;
+    z-index: 5;             /* Canvasの上、UIの下 */
+    pointer-events: none;   /* マウスイベントを下のCanvasへ透過 */
+    display: flex;
+    align-items: baseline;
+    gap: 12px;              /* made by と felipe ishii の間隔 */
+    
+    color: #000000;         /* 完全な黒 */
+    mix-blend-mode: multiply; /* 炎の光で浮かび上がらせる */
+}
+
+/* 「made by」部分：シンプルで上品なフォント */
+.credit-label {
+    font-family: 'Cinzel', 'Georgia', serif;
+    font-size: 0.95rem;
+    font-weight: 400;
+    text-transform: lowercase; /* あえて小文字で控えめに */
+    letter-spacing: 2px;
+    opacity: 0.8;
+}
+
+/* 🌟「felipe ishii」部分：最高にカッコいい装飾フォント！ */
+.credit-name {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 1.4rem;        /* 名前部分をドカンと大きく */
+    font-weight: 700;
+    text-transform: uppercase; /* FELIPE ISHII（大文字化） */
+    letter-spacing: 4px;       /* 存在感バツグンの文字間隔 */
+}
+
+.hidden-emblem {
+    width: 100%;
+    height: auto;
+    
+    /* 白背景を透明化し、黒い模様だけを活かす「乗算」合成 */
+    mix-blend-mode: multiply; 
+}
 .category-table {
     position: relative; z-index: 12;
     width: 28vw; max-width: 400px;
@@ -349,4 +402,51 @@ body.teppan-championship {
     88%  { transform: translateY(-78vh) translateX(2px) scale(0.9); opacity: 0.6; }
     96%  { transform: translateY(-78vh) translateX(2px) scale(0.9); opacity: 0.3; }
     100% { transform: translateY(-80vh) translateX(0)  scale(0.2); opacity: 0; }
+}
+/* ==========================================
+   5. ヘラのお好み焼き調理アニメーション
+   ========================================== */
+
+/* 左上のヘラ（またはお好み焼きを調理するヘラ） */
+.hera-img {
+    /* 動きの軸をヘラの持ち手（または先端）に設定 */
+    transform-origin: center bottom;
+    
+    /* 🌟 アニメーションの適用 
+       1.2秒周期で無限ループ（infinite）、メリハリのある動き（ease-in-out） */
+    animation: cookOkonomiyaki 1.2s ease-in-out infinite alternate;
+}
+
+/* 🍳 お好み焼きを作っているキーフレームアニメーション */
+@keyframes cookOkonomiyaki {
+    0% {
+        /* 初期位置：少し上がった状態 */
+        transform: translateY(0px) rotate(0deg);
+    }
+    30% {
+        /* お好み焼きを上からギュッと押さえつける動作 */
+        transform: translateY(18px) rotate(-8deg) scale(0.98);
+    }
+    50% {
+        /* 押さえつけたまま少し横にスライドさせて整える動作 */
+        transform: translateY(22px) rotate(5deg) scale(1.02);
+    }
+    75% {
+        /* 再び少し持ち上げる */
+        transform: translateY(5px) rotate(-3deg);
+    }
+    100% {
+        /* 元の位置に戻る */
+        transform: translateY(0px) rotate(0deg);
+    }
+}
+/* 左手側のヘラ */
+.hera-left {
+    animation: cookOkonomiyaki 1.2s ease-in-out infinite alternate;
+}
+
+/* 右手側のヘラ（0.6秒遅らせて交互に動かす） */
+.hera-right {
+    animation: cookOkonomiyaki 1.2s ease-in-out infinite alternate;
+    animation-delay: -0.6s; /* タイミングを半周期ズラす */
 }

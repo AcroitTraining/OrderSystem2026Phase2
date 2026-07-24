@@ -11,14 +11,25 @@
 </head>
 <body class="teppan-championship">
 
-	<!-- WebGL Fluid Canvas（マウスで炎が出る演出） -->
-	<section id="fluid-container">
-		<canvas id="fluidCanvas"></canvas>
-	</section>
+<!-- WebGL Fluid Canvas（背景＆マウスの炎エフェクト） -->
+<section id="fluid-container">
+    <canvas id="fluidCanvas"></canvas>
+</section>
 
-	<!-- 高級ステンレス製 3Dヘリフレーム -->
-	<div class="teppan-border"></div>
+<!-- 🔥 画面右上：あぶり出し用の隠し模様画像 -->
+<div class="hidden-emblem-wrap">
+    <img src="./image/flame_emblem.png" alt="隠しエンブレム" class="hidden-emblem">
+</div>
 
+
+<div class="hidden-credit">
+    <span class="credit-label">made by</span>
+    <span class="credit-name">Felipe ishii ＆ aki</span>
+</div>
+
+<!-- 高級ステンレス製 3Dヘリフレーム -->
+<div class="teppan-border"></div>
+<!-- ... (以下省略) ... -->
 	<!-- 画面全体に舞う金色スパーク -->
 	<div class="spark sp-1"></div>
 	<div class="spark sp-2"></div>
