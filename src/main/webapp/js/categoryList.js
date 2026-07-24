@@ -85,6 +85,48 @@ document.addEventListener("DOMContentLoaded", () => {
     };
   }
 
+// 🎨 ヘラ画像の白背景を自動で透過にする処理
+  function removeWhiteBackground(imgEl) {
+    const process = () => {
+      const canvas = document.createElement("canvas");
+      canvas.width = imgEl.naturalWidth;
+      canvas.height = imgEl.naturalHeight;
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(imgEl, 0, 0);
+
+      let imageData;
+      try {
+        imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      } catch (err) {
+        console.warn("画像の透過処理に失敗しました（CORS制限の可能性）", err);
+        return;
+      }
+
+      const data = imageData.data;
+      const threshold = 235; // これより白いピクセルを透明にする（大きくすると厳しめ、小さくすると緩め）
+
+      for (let i = 0; i < data.length; i += 4) {
+        const r = data[i];
+        const g = data[i + 1];
+        const b = data[i + 2];
+        if (r > threshold && g > threshold && b > threshold) {
+          data[i + 3] = 0; // アルファを0にして透明化
+        }
+      }
+
+      ctx.putImageData(imageData, 0, 0);
+      imgEl.src = canvas.toDataURL("image/png");
+    };
+
+    if (imgEl.complete && imgEl.naturalWidth > 0) {
+      process();
+    } else {
+      imgEl.addEventListener("load", process);
+    }
+  }
+
+  document.querySelectorAll(".hera-img").forEach(removeWhiteBackground);
+
   function supportRenderTextureFormat(gl, internalFormat, format, type) {
     let texture = gl.createTexture();
     gl.bindTexture(gl.TEXTURE_2D, texture);

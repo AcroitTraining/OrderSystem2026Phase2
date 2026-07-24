@@ -22,7 +22,7 @@ body.teppan-championship {
     background: #000;
 }
 
-/* 提供いただいたスタイルを背景に固定化 */
+
 #fluid-container {
     position: fixed;
     top: 0;
@@ -35,7 +35,8 @@ body.teppan-championship {
     align-items: center;
     width: 100vw;
     height: 100vh;
-    z-index: 1; /* 最背面 */
+    z-index: 1;
+    pointer-events: none;
 }
 
 #fluidCanvas {
@@ -43,7 +44,6 @@ body.teppan-championship {
     height: 100%;
 }
 
-/* 3D立体ステンレスフレーム */
 .teppan-border {
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
@@ -55,72 +55,43 @@ body.teppan-championship {
 }
 
 /* ==========================================
-   2. ヘラ（ボタン）デザイン
+   2. ヘラ（ボタン）デザイン：画像版
    ========================================== */
-.form-hera-left { position: fixed; top: 7%; left: 5%; z-index: 20; perspective: 1000px; }
-.form-hera-right { position: fixed; bottom: 5%; right: 5%; z-index: 20; perspective: 1000px; }
+.form-hera-left { position: fixed; top: 7%; left: 5%; z-index: 20; }
+.form-hera-right { position: fixed; bottom: 5%; right: 5%; z-index: 20; }
 
 .hera-btn {
     background: none !important;
     border: none !important;
     cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    padding: 0;
     outline: none;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    filter: drop-shadow(0 12px 20px rgba(0,0,0,0.7));
 }
 
-.hera-handle {
-    width: 22px; height: 55px;
-    background: linear-gradient(90deg, #3d1c0e, #8b4513, #5c2c16, #2a1107);
-    border-radius: 6px;
-    box-shadow: 4px 6px 12px rgba(0,0,0,0.7);
+.hera-img {
+    width: 260px;
+    height: auto;
+    display: block;
+    pointer-events: none;
+}
+.hera-btn:hover {
+    transform: scale(1.1) rotate(-2deg);
+    filter: drop-shadow(0 18px 28px rgba(255, 152, 0, 0.5));
 }
 
-.handle-bottom { order: 2; }
-
-.hera-blade {
-    position: relative;
-    width: 125px; height: 85px;
-    background: linear-gradient(135deg, #ffffff 0%, #cfcfcf 40%, #999999 100%);
-    border-radius: 6px 6px 18px 18px;
-    display: flex; align-items: center; justify-content: center;
-    box-shadow: 0 12px 25px rgba(0,0,0,0.8), inset 0 2px 2px rgba(255,255,255,0.9);
-    border: 1px solid rgba(255,255,255,0.6);
-    overflow: hidden;
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.create-color {
-    border-radius: 18px 18px 6px 6px;
-    background: linear-gradient(135deg, #ff9800, #f57c00, #d84315);
-}
-
-.blade-text {
-    font-size: 15px; font-weight: 900; color: #111;
-    text-shadow: 0 1px 1px rgba(255,255,255,0.8); z-index: 2;
-}
-
-.create-color .blade-text { color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.6); }
-
-.mayo-drizzle {
-    position: absolute; top: 6px; width: 80%; height: 10px;
-    background: #fffde7; border-radius: 20px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.3); opacity: 0.9;
-}
-
-.hera-btn:hover .hera-blade {
-    transform: scale(1.15) translateZ(20px);
-    box-shadow: 0 20px 40px rgba(255, 152, 0, 0.5);
+.hera-btn:active {
+    transform: scale(0.96);
 }
 
 /* ==========================================
-   3. お好み焼き＆黒皿（形状固定）
+   3. お好み焼き（本物画像のみ・黒皿は非表示）
    ========================================== */
 .okonomi-plate-wrapper {
     position: relative;
-    width: 50vw; height: 50vw;
-    max-width: 580px; max-height: 580px;
+    width: 46vw; height: 46vw;
+    max-width: 650px; max-height: 650px;
     display: flex; justify-content: center; align-items: center;
     z-index: 10;
 }
@@ -128,101 +99,193 @@ body.teppan-championship {
 .black-plate {
     position: absolute; width: 100%; height: 100%;
     border-radius: 50%;
-    background: radial-gradient(circle at 30% 30%, #3a3838 0%, #1a1919 60%, #0d0c0c 100%);
-    box-shadow: 0 20px 60px rgba(0,0,0,0.9), inset 0 0 25px rgba(255,255,255,0.1);
-    border: 4px solid #222;
+    background: transparent;
+    box-shadow: none;
+    border: none;
     display: flex; justify-content: center; align-items: center;
 }
 
-.okonomiyaki-body {
+.okonomiyaki-photo-wrap {
     position: relative;
-    width: 84%; height: 84%;
+    width: 88%; height: 88%;
     border-radius: 50%;
-    background: radial-gradient(circle at 40% 40%, #ffb74d 0%, #e65100 45%, #4e1d00 90%);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.8), inset 0 0 30px rgba(0,0,0,0.6);
     overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.8), inset 0 0 25px rgba(0,0,0,0.5);
+    animation: photoSizzle 5s infinite ease-in-out;
+    background: #1a0e00;
 }
 
-.sauce-glaze {
-    position: absolute; width: 92%; height: 92%; top: 4%; left: 4%;
+.okonomiyaki-photo {
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 140%; height: 140%;
+    transform: translate(-50%, -50%);
+    object-fit: cover;
+    display: block;
+}
+
+.photo-vignette {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
     border-radius: 50%;
-    background: radial-gradient(circle at 35% 35%, #3d1403 0%, #1e0800 70%, transparent 100%);
-    opacity: 0.95;
-    box-shadow: inset 0 0 15px rgba(255, 204, 128, 0.3);
+    box-shadow: inset 0 0 40px 18px rgba(0,0,0,0.65);
+    pointer-events: none;
 }
 
-.mayo-line {
-    position: absolute; background: #fffde7; height: 6px; width: 110%; left: -5%;
-    border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.4); opacity: 0.85;
+@keyframes photoSizzle {
+    0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
+    25%      { transform: translateY(-4px) rotate(-0.8deg) scale(1.01); }
+    50%      { transform: translateY(0) rotate(0deg) scale(1); }
+    75%      { transform: translateY(-2px) rotate(0.8deg) scale(1.005); }
 }
-.line-1 { top: 25%; transform: rotate(-15deg); }
-.line-2 { top: 50%; transform: rotate(-15deg); }
-.line-3 { top: 75%; transform: rotate(-15deg); }
 
-.katsuobushi {
-    position: absolute; font-size: 2.2vw; opacity: 0.85;
-    animation: danceKatsuo 2.5s infinite ease-in-out alternate;
+.photo-shine {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(115deg,
+        transparent 0%,
+        rgba(255, 220, 150, 0) 35%,
+        rgba(255, 220, 150, 0.35) 48%,
+        rgba(255, 220, 150, 0) 60%,
+        transparent 100%);
+    background-size: 250% 250%;
+    mix-blend-mode: overlay;
+    pointer-events: none;
+    animation: shineSweep 8s infinite linear;
 }
-.k-1 { top: 30%; left: 35%; }
-.k-2 { top: 40%; right: 30%; animation-delay: 0.4s; }
-.k-3 { bottom: 35%; left: 40%; animation-delay: 0.8s; }
-.k-4 { top: 20%; right: 40%; animation-delay: 1.2s; }
 
-.aonori { position: absolute; top: 35%; left: 25%; font-size: 2vw; }
-.benishoga { position: absolute; bottom: 25%; right: 25%; font-size: 2vw; }
+@keyframes shineSweep {
+    0%   { background-position: 200% 200%; }
+    100% { background-position: -50% -50%; }
+}
 
-@keyframes danceKatsuo {
-    0% { transform: scale(1) rotate(0deg); }
-    50% { transform: scale(1.1) rotate(8deg) skewX(5deg); }
-    100% { transform: scale(0.95) rotate(-5deg); }
+/* 湯気（お皿の上からふわっと立ちのぼる） */
+.steam {
+    position: absolute;
+    width: 18px; height: 80px;
+    bottom: 62%;
+    background: linear-gradient(to top, rgba(255,255,255,0.65), transparent);
+    border-radius: 50%;
+    filter: blur(6px);
+    opacity: 0;
+    z-index: 15;
+    animation: steamRise 4.5s infinite ease-in-out;
+}
+.s-1 { left: 28%; animation-delay: 0s; }
+.s-2 { left: 48%; animation-delay: 1.5s; }
+.s-3 { left: 66%; animation-delay: 3s; }
+
+@keyframes steamRise {
+    0%   { transform: translateY(0) scaleX(1); opacity: 0; }
+    20%  { opacity: 0.6; }
+    60%  { transform: translateY(-70px) scaleX(1.4); opacity: 0.35; }
+    100% { transform: translateY(-140px) scaleX(1.8); opacity: 0; }
 }
 
 /* ==========================================
-   4. 完全透過ネオ・テーブルデザイン
+   4. カテゴリーテーブル（th/td同一デザイン・下線はthのみ・編集=黄緑/削除=赤）
    ========================================== */
 .category-table {
     position: relative; z-index: 12;
     width: 28vw; max-width: 400px;
-    font-size: 1.2vw; border-collapse: separate; border-spacing: 0 8px;
+    font-size: 1.2vw; border-collapse: separate; border-spacing: 0 10px;
     background: transparent !important;
+    font-family: "SF Pro Display", "Hiragino Sans", "メイリオ", sans-serif;
 }
 
-/* ★ 1. ヘッダー背景を完全透過に設定 */
-.category-table th {
-    padding: 8px 4px; color: #ffeb3b; font-size: 1.1em; font-weight: 900;
-    text-shadow: 0 2px 8px #000000, 0 0 10px #ff6f00; border: none;
-    background: transparent !important;
-}
-
+.category-table th,
 .category-table td {
-    padding: 6px 4px; background: transparent !important;
-    border: none; border-bottom: 1px dashed rgba(255, 255, 255, 0.3);
+    padding: 10px 6px;
+    border: none;
+    box-shadow: none;
     text-align: center !important; vertical-align: middle;
+    position: relative;
 }
 
+.category-table th {
+    border-bottom: 2px solid #ffd700;
+}
+
+/* 下線の上を光が流れるキラキラ演出（thのみ） */
+.category-table th::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 0; bottom: -2px;
+    height: 2px;
+    background: linear-gradient(90deg,
+        transparent 0%,
+        rgba(255, 215, 0, 0) 30%,
+        rgba(255, 246, 204, 1) 50%,
+        rgba(255, 215, 0, 0) 70%,
+        transparent 100%);
+    background-size: 250% 100%;
+    animation: underlineShimmer 6s infinite linear;
+    pointer-events: none;
+}
+
+/* ヘッダー・カテゴリ名を完全に同じスタイルで統一 */
+.category-table th,
 .category-text-badge {
-    color: #ffffff; font-weight: 900; font-size: 1.1em;
-    text-shadow: 0 2px 6px #000, 0 0 12px #000;
+    font-family: "SF Pro Display", "Hiragino Sans", "メイリオ", sans-serif;
+    font-weight: 900;
+    font-size: 1.2em;
+    background-image: linear-gradient(110deg, #ffd700 20%, #fff6cc 40%, #ffee58 50%, #fff6cc 60%, #ffd700 80%);
+    background-size: 250% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-stroke: 0.6px rgba(0,0,0,0.7);
+    filter:
+        drop-shadow(0 0 3px rgba(0,0,0,0.9))
+        drop-shadow(0 0 6px rgba(255,215,0,0.9))
+        drop-shadow(0 0 14px rgba(255,193,7,0.9))
+        drop-shadow(0 0 24px rgba(255,152,0,0.6));
+    animation: textShimmer 6s infinite linear;
 }
 
-/* ★ 2. ボタンの背景色を完全透過に設定 */
+@keyframes textShimmer {
+    0%   { background-position: 200% 0; }
+    100% { background-position: -50% 0; }
+}
+
+@keyframes underlineShimmer {
+    0%   { background-position: 200% 0; }
+    100% { background-position: -50% 0; }
+}
+
+/* ボタン共通の形 */
 .glass-action-btn {
-    background: transparent !important;
-    backdrop-filter: blur(4px);
-    border: 1px solid rgba(255, 255, 255, 0.5) !important;
-    border-radius: 50%; width: 36px; height: 36px;
+    border-radius: 50%; width: 38px; height: 38px;
     display: inline-flex; align-items: center; justify-content: center;
-    cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    cursor: pointer;
     transition: all 0.2s ease;
 }
 
-.glass-action-btn:hover {
-    transform: scale(1.2); 
-    background: rgba(255, 255, 255, 0.2) !important; /* ホバー時はうっすら浮き出る設定（完全透明のままにしたい場合は transparent に変更してください） */
-    box-shadow: 0 0 15px #ffca28;
+/* 編集ボタン：黄緑の背景＋枠線 */
+.edit-btn.glass-action-btn {
+    background: rgba(174, 234, 0, 0.3) !important;
+    border: 2px solid #aeea00 !important;
+    box-shadow: 0 0 8px rgba(174, 234, 0, 0.55);
 }
 
-.btn-icon { font-size: 16px; }
+.edit-btn.glass-action-btn:hover {
+    transform: scale(1.25);
+    background: rgba(174, 234, 0, 0.5) !important;
+    box-shadow: 0 0 18px #aeea00;
+}
+
+/* 削除ボタン：赤の背景＋枠線 */
+.delete-btn.glass-action-btn {
+    background: rgba(255, 82, 82, 0.3) !important;
+    border: 2px solid #ff5252 !important;
+    box-shadow: 0 0 8px rgba(255, 82, 82, 0.55);
+}
+
+.delete-btn.glass-action-btn:hover {
+    transform: scale(1.25);
+    background: rgba(255, 82, 82, 0.5) !important;
+    box-shadow: 0 0 18px #ff5252;
+}
+
+.btn-icon { font-size: 17px; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.8)); }
 
 /* モーダル */
 .modal-overlay {
@@ -253,4 +316,37 @@ body.teppan-championship {
 .btn-confirm {
     width: 110px; padding: 10px 0; background: linear-gradient(135deg, #ff1744, #d50000); color: #fff;
     border: none; border-radius: 8px; font-weight: bold; cursor: pointer;
+}
+
+.spark {
+    position: fixed;
+    bottom: 0;
+    width: 3px; height: 3px;
+    border-radius: 50%;
+    background: #ffe082;
+    box-shadow: 0 0 6px 2px rgba(255, 215, 0, 0.9), 0 0 12px 4px rgba(255, 152, 0, 0.5);
+    opacity: 0;
+    z-index: 50;
+    pointer-events: none;
+    animation: sparkRise 5.5s infinite linear;
+}
+
+.sp-1  { left: 8%;  animation-delay: 0s; }
+.sp-2  { left: 82%; animation-delay: 0.5s; }
+.sp-3  { left: 18%; animation-delay: 1.1s; }
+.sp-4  { left: 92%; animation-delay: 1.6s; }
+.sp-5  { left: 6%;  animation-delay: 2.2s; }
+.sp-6  { left: 75%; animation-delay: 2.7s; }
+.sp-7  { left: 55%; animation-delay: 3.3s; }
+.sp-8  { left: 45%; animation-delay: 3.8s; }
+.sp-9  { left: 35%; animation-delay: 4.4s; }
+.sp-10 { left: 30%; animation-delay: 4.9s; }
+
+@keyframes sparkRise {
+    0%   { transform: translateY(0)     translateX(0) scale(0.5); opacity: 0; }
+    8%   { opacity: 1; }
+    75%  { transform: translateY(-68vh) translateX(2px) scale(1);   opacity: 0.8; }
+    88%  { transform: translateY(-78vh) translateX(2px) scale(0.9); opacity: 0.6; }
+    96%  { transform: translateY(-78vh) translateX(2px) scale(0.9); opacity: 0.3; }
+    100% { transform: translateY(-80vh) translateX(0)  scale(0.2); opacity: 0; }
 }

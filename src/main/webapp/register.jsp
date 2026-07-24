@@ -23,7 +23,10 @@
                 
                 <div class="form-group">
                     <label for="password">パスワード</label>
-                    <input type="password" id="password" name="password" placeholder="パスワードを入力">
+                    <div class="password-wrapper">
+                        <input type="password" id="password" name="password" placeholder="パスワードを入力" autocomplete="new-password">
+                        <img src="image/eye-off.png" class="toggle-password" id="togglePassword" alt="表示切替">
+                    </div>
                 </div>
                 
                 <div class="form-group" style="margin-bottom: 0;">
@@ -50,6 +53,29 @@
         <!-- 右側：お好み焼き画像背景 -->
         <div class="image-section"></div>
     </div>
+
+    <!-- JavaScript: 初期クリア ＆ アイコン画像切り替え -->
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const userIdInput = document.getElementById('userId');
+            const passwordInput = document.getElementById('password');
+            const togglePassword = document.getElementById('togglePassword');
+
+            // 1. 画面表示時は初期値を空にする
+            setTimeout(() => {
+                userIdInput.value = '';
+                passwordInput.value = '';
+            }, 50);
+
+            // 2. パスワード表示／非表示の画像切り替え
+            togglePassword.addEventListener('click', () => {
+                const isPassword = passwordInput.getAttribute('type') === 'password';
+                passwordInput.setAttribute('type', isPassword ? 'text' : 'password');
+                // 非表示時は eye-off.png、表示時は eye.png に切り替え
+                togglePassword.src = isPassword ? 'image/eye.png' : 'image/eye-off.png';
+            });
+        });
+    </script>
 
 </body>
 </html>

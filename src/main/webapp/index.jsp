@@ -14,11 +14,11 @@
         <div class="login-section">
             <h1 class="page-title">ログイン<span class="dot">.</span></h1>
 
-            <form action="LoginServlet" method="POST">
+            <form action="LoginServlet" method="POST" id="loginForm">
                 
                 <div class="form-group">
                     <label for="userId">ID</label>
-                    <input type="text" id="userId" name="userId" value="${param.userId != null ? param.userId : ''}" autocomplete="off">
+                    <input type="text" id="userId" name="userId" value="" autocomplete="on">
                     <% if("empty".equals(request.getParameter("error")) && (request.getParameter("userId") == null || request.getParameter("userId").isEmpty())) { %>
                         <span class="error-message">IDを入力してください</span>
                     <% } %>
@@ -26,7 +26,10 @@
                 
                 <div class="form-group">
                     <label for="password">パスワード</label>
-                    <input type="password" id="password" name="password">
+                    <div class="password-wrapper">
+                        <input type="password" id="password" name="password" autocomplete="current-password">
+                        <img src="image/eye-off.png" class="toggle-password" id="togglePassword" alt="表示切替">
+                    </div>
                     <% if("empty".equals(request.getParameter("error")) && (request.getParameter("password") == null || request.getParameter("password").isEmpty())) { %>
                         <span class="error-message">パスワードを入力してください</span>
                     <% } %>
@@ -52,6 +55,29 @@
         <!-- 右側：お好み焼き画像背景 -->
         <div class="image-section"></div>
     </div>
+
+    <!-- JavaScript: 初期クリア ＆ アイコン画像切り替え -->
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const userIdInput = document.getElementById('userId');
+            const passwordInput = document.getElementById('password');
+            const togglePassword = document.getElementById('togglePassword');
+
+            // 1. 画面表示時は自動補完入力をクリア
+            setTimeout(() => {
+                userIdInput.value = '';
+                passwordInput.value = '';
+            }, 50);
+
+            // 2. パスワード表示／非表示の画像切り替え
+            togglePassword.addEventListener('click', () => {
+                const isPassword = passwordInput.getAttribute('type') === 'password';
+                passwordInput.setAttribute('type', isPassword ? 'text' : 'password');
+                // 非表示時は eye-off.png、表示時は eye.png に切り替え
+                togglePassword.src = isPassword ? 'image/eye.png' : 'image/eye-off.png';
+            });
+        });
+    </script>
 
 </body>
 </html>

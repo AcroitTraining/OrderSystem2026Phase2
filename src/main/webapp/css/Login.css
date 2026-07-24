@@ -63,10 +63,16 @@ label {
     font-weight: 500;
 }
 
+/* パスワード入力コンテナ */
+.password-wrapper {
+    position: relative;
+    width: 100%;
+}
+
 input[type="text"],
 input[type="password"] {
     width: 100%;
-    padding: 14px 16px;
+    padding: 14px 45px 14px 16px;
     background-color: #18181b;
     border: 1px solid #27272a;
     border-radius: 10px;
@@ -83,7 +89,30 @@ input[type="password"]:focus {
     box-shadow: 0 0 0 3px rgba(192, 132, 252, 0.25), 0 0 15px rgba(192, 132, 252, 0.3);
 }
 
-/* グラデーションボタン (紫 -> ピンク -> オレンジ) */
+/* 目のアイコン画像ボタン */
+.toggle-password {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%; /* 画像を丸く切り抜く */
+    background-color: #ffffff; /* アイコンの背景をきれいな白にする */
+    padding: 3px; /* アイコン画像と外枠の間の余白 */
+    box-sizing: border-box;
+    opacity: 0.85;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    user-select: none;
+}
+
+.toggle-password:hover {
+    opacity: 1.0;
+    transform: translateY(-50%) scale(1.08); /* ホバー時に少し大きくして押しやすくする */
+}
+
+/* グラデーションボタン */
 .submit-btn {
     width: 100%;
     padding: 14px;
@@ -149,7 +178,7 @@ input[type="password"]:focus {
     height: 100%;
 }
 
-/* レスポンシブ対応 (スマホ等で右画像を隠す) */
+/* レスポンシブ対応 */
 @media (max-width: 850px) {
     .image-section {
         display: none;

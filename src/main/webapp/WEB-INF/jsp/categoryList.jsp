@@ -7,67 +7,63 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>究極お好み焼き鉄板 UI - WORLD CHAMPIONSHIP</title>
-<link rel="stylesheet" href="./css/common.css">
 <link rel="stylesheet" href="./css/categoryList.css">
 </head>
 <body class="teppan-championship">
 
-	<!-- 🟢 リアル炎・流体シミュレーション WebGL Canvas Container -->
+	<!-- WebGL Fluid Canvas（マウスで炎が出る演出） -->
 	<section id="fluid-container">
 		<canvas id="fluidCanvas"></canvas>
 	</section>
 
-	<!-- 🟢 高級ステンレス製 3Dヘリフレーム -->
+	<!-- 高級ステンレス製 3Dヘリフレーム -->
 	<div class="teppan-border"></div>
 
-	<!-- 🟢 左上：ヘラ（ホームボタン） -->
+	<!-- 画面全体に舞う金色スパーク -->
+	<div class="spark sp-1"></div>
+	<div class="spark sp-2"></div>
+	<div class="spark sp-3"></div>
+	<div class="spark sp-4"></div>
+	<div class="spark sp-5"></div>
+	<div class="spark sp-6"></div>
+	<div class="spark sp-7"></div>
+	<div class="spark sp-8"></div>
+	<div class="spark sp-9"></div>
+	<div class="spark sp-10"></div>
+
+<!-- 左上：ヘラ（ホームボタン） -->
 	<form action="HomeServlet" method="get" class="form-hera-left">
 		<button type="submit" class="hera-btn hera-home" id="btnHome" title="ホームへ戻る">
-			<div class="hera-handle"></div>
-			<div class="hera-blade">
-				<div class="mayo-drizzle"></div>
-				<span class="blade-text">ホーム</span>
-			</div>
+			<img src="./image/hera-home.png" alt="ホーム" class="hera-img">
 		</button>
 	</form>
 
-	<!-- 🟢 右下：ヘラ（新規作成ボタン） -->
+	<!-- 右下：ヘラ（新規作成ボタン） -->
 	<form action="CategoryEditServlet" method="get" class="form-hera-right">
 		<button type="submit" class="hera-btn hera-create" id="btnCreate" title="新規作成">
-			<div class="hera-blade create-color">
-				<div class="mayo-drizzle"></div>
-				<span class="blade-text">新規作成</span>
-			</div>
-			<div class="hera-handle handle-bottom"></div>
+			<img src="./image/hera-create.png" alt="新規作成" class="hera-img">
 		</button>
 	</form>
 
-	<!-- 🟢 中央：リアルなお好み焼き＆黒皿 -->
+	<!-- 中央：本物のお好み焼き画像＆黒皿 -->
 	<div class="okonomi-plate-wrapper" id="okonomiWrapper">
+
+		<!-- 湯気 -->
+		<div class="steam s-1"></div>
+		<div class="steam s-2"></div>
+		<div class="steam s-3"></div>
+
 		<!-- 和風の黒皿 -->
 		<div class="black-plate">
-			<!-- ふっくらお好み焼き本体 -->
-			<div class="okonomiyaki-body">
-				<!-- 濃厚ソースのツヤ -->
-				<div class="sauce-glaze"></div>
-				
-				<!-- マヨネーズ演出 -->
-				<div class="mayo-line line-1"></div>
-				<div class="mayo-line line-2"></div>
-				<div class="mayo-line line-3"></div>
-
-				<!-- たっぷり鰹節（ゆらゆら動く） -->
-				<div class="katsuobushi k-1">🥕</div>
-				<div class="katsuobushi k-2">🫓</div>
-				<div class="katsuobushi k-3">🥕</div>
-				<div class="katsuobushi k-4">🫓</div>
-				<!-- 青のり・紅生姜 -->
-				<div class="aonori">🥢</div>
-				<div class="benishoga">🥢</div>
+			<!-- 本物のお好み焼き画像 -->
+			<div class="okonomiyaki-photo-wrap">
+				<img src="./image/okonomiyaki.png" alt="お好み焼き" class="okonomiyaki-photo">
+				<div class="photo-shine"></div>
+				<div class="photo-vignette"></div>
 			</div>
 		</div>
 
-		<!-- 🏆 完全透過型 ネオ・カテゴリーテーブル -->
+		<!-- カテゴリーテーブル -->
 		<table class="category-table">
 			<thead>
 				<tr>
@@ -82,7 +78,7 @@
 						<td class="col-name">
 							<span class="category-text-badge">${item.categoryName}</span>
 						</td>
-						
+
 						<!-- 編集ボタン -->
 						<td class="col-edit">
 							<form action="CategoryEditServlet" method="get">
@@ -110,14 +106,14 @@
 		</table>
 	</div>
 
-	<!-- 🟢 モーダル（ダイナミック演出） -->
+	<!-- 削除確認モーダル -->
 	<div id="deleteModal" class="modal-overlay" style="display: none;">
 		<div class="modal-box">
 			<div class="modal-header-icon">🔥</div>
 			<h2 id="modalCategoryName" class="modal-target-name">カテゴリ名</h2>
 			<p class="modal-text">このカテゴリを鉄板から<span class="highlight-red">削り削除</span>します。</p>
 			<p class="modal-text sub-text">よろしいですか？</p>
-			
+
 			<div class="modal-btn-group">
 				<button type="button" id="modalNoBtn" class="btn-cancel">いいえ</button>
 				<button type="button" id="modalYesBtn" class="btn-confirm">削り落とす！</button>
