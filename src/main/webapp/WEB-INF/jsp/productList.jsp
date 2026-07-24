@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
@@ -25,52 +24,35 @@
 				</form>
 			</div>
 
-			<!-- ② 新規作成ボタン ＆ ③ カテゴリタブエリア -->
+			<!-- 新規作成ボタン ＆ カテゴリタブエリア -->
 			<div class="category-wrapper">
-			<form action="ProductEditServlet" method="get"
-				class="create-form-sticky">
-				<button type="submit" class="create-btn">
-					<img src="./image/createNew.png" alt="新規作成" class="create-img">
-				</button>
-			</form>
+				<form action="ProductEditServlet" method="get" class="create-form-sticky">
+					<button type="submit" class="create-btn">
+						<img src="./image/createNew.png" alt="新規作成" class="create-img">
+					</button>
+				</form>
 
-			<form action="ProductListServlet" method="get"
-				style="display: inline; width: 100%;">
-				<div class="category-tabs">
-					<!-- currentCategoryと一致するボタンにだけ 'active' クラスを付与 -->
-					<button type="submit" name="filter" value="全て"
-						class="tab-btn ${currentCategory == '全て' ? 'active' : ''}"
-						data-category="全て">全て</button>
-					<button type="submit" name="filter" value="お好み焼き"
-						class="tab-btn ${currentCategory == 'お好み焼き' ? 'active' : ''}"
-						data-category="お好み焼き">お好み焼き</button>
-					<button type="submit" name="filter" value="もんじゃ焼き"
-						class="tab-btn ${currentCategory == 'もんじゃ焼き' ? 'active' : ''}"
-						data-category="もんじゃ焼き">もんじゃ焼き</button>
-					<button type="submit" name="filter" value="鉄板焼き"
-						class="tab-btn ${currentCategory == '鉄板焼き' ? 'active' : ''}"
-						data-category="鉄板焼き">鉄板焼き</button>
-					<button type="submit" name="filter" value="サイドメニュー"
-						class="tab-btn ${currentCategory == 'サイドメニュー' ? 'active' : ''}"
-						data-category="サイドメニュー">サイドメニュー</button>
-					<button type="submit" name="filter" value="ソフトドリンク"
-						class="tab-btn ${currentCategory == 'ソフトドリンク' ? 'active' : ''}"
-						data-category="ソフトドリンク">ソフトドリンク</button>
-					<button type="submit" name="filter" value="お酒"
-						class="tab-btn ${currentCategory == 'お酒' ? 'active' : ''}"
-						data-category="お酒">お酒</button>
-					<button type="submit" name="filter" value="ボトル"
-						class="tab-btn ${currentCategory == 'ボトル' ? 'active' : ''}"
-						data-category="ボトル">ボトル</button>
-				</div>
-			</form>
-			</category-area>
+				<form action="ProductListServlet" method="get" style="display: inline; width: 100%;">
+					<div class="category-tabs">
+						<!-- 全て（categoryId = 0） -->
+						<button type="submit" name="categoryId" value="0"
+							class="tab-btn ${currentCategoryId == 0 ? 'active' : ''}">全て</button>
+
+						<!-- DBから取得したカテゴリ一覧をループ表示 -->
+						<c:forEach var="cat" items="${categoryList}">
+							<button type="submit" name="categoryId" value="${cat.categoryId}"
+								class="tab-btn ${currentCategoryId == cat.categoryId ? 'active' : ''}">
+								${cat.categoryName}
+							</button>
+						</c:forEach>
+					</div>
+				</form>
+			</div>
 		</div>
 	</header>
 
 	<table class="table-wrapper">
 		<tr>
-			<!-- 🟢 各ヘッダーにカラム識別用クラスを追加 -->
 			<th class="col-name">商品名</th>
 			<th class="col-price">価格</th>
 			<th class="col-edit">編集</th>
@@ -79,14 +61,12 @@
 		</tr>
 		<c:forEach var="item" items="${pList}">
 			<tr>
-				<!-- 🟢 各データセルにヘッダーと共通のクラスを追加 -->
 				<td class="col-name">${item.productName}</td>
-				<td class="col-price">${item.productPrice}</td>
+				<td class="col-price">${item.productPrice}円</td>
 				<td class="col-edit">
 					<form action="ProductEditServlet" method="get">
 						<input type="hidden" name="productId" value="${item.productId}">
-						<button type="submit" name="action" value="商品編集"
-							class="edit-img-btn">
+						<button type="submit" name="action" value="商品編集" class="edit-img-btn">
 							<img src="./image/edit_icon.png" alt="商品編集" class="edit-icon-img">
 						</button>
 					</form>
@@ -94,6 +74,7 @@
 				<td class="col-toggle display">
 					<form action="ProductListServlet" method="post">
 						<input type="hidden" name="productId" value="${item.productId}">
+						<input type="hidden" name="categoryId" value="${currentCategoryId}">
 						<input type="hidden" name="action" value="表示切り替え">
 						<c:choose>
 							<c:when test="${item.productDisplayFlag == 1}">
@@ -103,26 +84,23 @@
 								<span class="status-text text-hide">非表示：</span>
 							</c:otherwise>
 						</c:choose>
-						<label class="toggle-button-4"> <input type="checkbox"
-							name="displayStatus" value="true" onclick="this.form.submit()"
-							${item.productDisplayFlag == 1 ? 'checked' : ''} />
+						<label class="toggle-button-4">
+							<input type="checkbox" name="displayStatus" value="true" onclick="this.form.submit()"
+								${item.productDisplayFlag == 1 ? 'checked' : ''} />
 						</label>
 					</form>
 				</td>
 				<td class="col-delete">
 					<form action="ProductListServlet" method="post" class="delete-form">
-						<!-- 🟢 サーブレットへ「削除」のアクション名とIDを確実に送信 -->
-						<input type="hidden" name="action" value="削除"> <input
-							type="hidden" name="productId" value="${item.productId}">
+						<input type="hidden" name="action" value="削除">
+						<input type="hidden" name="productId" value="${item.productId}">
+						<input type="hidden" name="categoryId" value="${currentCategoryId}">
 
-						<!-- 🟢 画像を内包したボタン（押すとformがPOST送信されます） -->
 						<button type="submit" class="img-delete-btn">
-							<img src="./image/delete_button.png" alt="削除"
-								class="delete-icon-img">
+							<img src="./image/delete_button.png" alt="削除" class="delete-icon-img">
 						</button>
 					</form>
 				</td>
-
 			</tr>
 		</c:forEach>
 	</table>
